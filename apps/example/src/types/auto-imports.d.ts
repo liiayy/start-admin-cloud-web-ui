@@ -81,6 +81,8 @@ declare global {
   const useAttrs: typeof import('vue').useAttrs
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
+  const useDict: typeof import('../composables/useDict').useDict
+  const useDictStore: typeof import('../store/modules/app/dict').useDictStore
   const useFaDrawer: typeof import('@fantastic-admin/components').useFaDrawer
   const useFaImagePreview: typeof import('@fantastic-admin/components').useFaImagePreview
   const useFaLoading: typeof import('@fantastic-admin/components').useFaLoading
@@ -92,6 +94,7 @@ declare global {
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
   const useSlots: typeof import('vue').useSlots
+  const useTable: typeof import('../composables/useTable').useTable
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
@@ -103,4 +106,7 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { UseTableOptions } from '../composables/useTable'
+  import('../composables/useTable')
 }

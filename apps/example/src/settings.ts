@@ -6,6 +6,7 @@ export default setSettings({
       auth: true,
     },
     dynamicTitle: true,
+    routeBaseOn: 'backend',
     copyright: {
       enable: true,
       dates: '2020-present',

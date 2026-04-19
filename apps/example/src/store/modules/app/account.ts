@@ -1,4 +1,4 @@
-import apiApp from '@/api/modules/app'
+import apiUser from '@/api/modules/system/auth/auth'
 import router from '@/router'
 
 export const useAppAccountStore = defineStore('appAccount', () => {
@@ -25,20 +25,23 @@ export const useAppAccountStore = defineStore('appAccount', () => {
 
   // 登录
   async function login(data: {
-    account: string
+    username: string
     password: string
   }) {
-    const res = await apiApp.login(data)
-    localStorage.setItem('account', res.data.account)
-    localStorage.setItem('token', res.data.token)
-    localStorage.setItem('avatar', res.data.avatar)
-    account.value = res.data.account
-    token.value = res.data.token
-    avatar.value = res.data.avatar
+    const res = await apiUser.login(data)
+    localStorage.setItem('account', res.username)
+    localStorage.setItem('token', res.tokenValue)
+    localStorage.setItem('avatar', res.avatar ?? '')
+    account.value = res.username
+    token.value = res.tokenValue
+    avatar.value = res.avatar ?? ''
   }
 
   // 手动登出
-  function logout(redirect = router.currentRoute.value.fullPath) {
+  async function logout(redirect = router.currentRoute.value.fullPath) {
+    // 调用后端登出接口（不等待结果）
+    await apiUser.logout()
+    // 清除本地状态
     localStorage.removeItem('token')
     token.value = ''
     router.push({
@@ -82,8 +85,8 @@ export const useAppAccountStore = defineStore('appAccount', () => {
 
   // 获取权限
   async function getPermissions() {
-    const res = await apiApp.permission()
-    permissions.value = res.data.permissions
+    const res = await apiUser.getInfo()
+    permissions.value = [...(res.permissions ?? [])]
   }
 
   // 修改密码
@@ -91,7 +94,7 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     password: string
     newPassword: string
   }) {
-    await apiApp.passwordEdit(data)
+    await apiUser.passwordEdit(data)
   }
 
   // 锁屏

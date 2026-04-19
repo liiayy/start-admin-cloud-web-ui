@@ -1,23 +1,19 @@
 import api from '../index'
 
 export default {
-  // 后端获取路由数据
+  // 后端获取路由数据 (暂时指向 Mock，直到 Store 完成对接)
   routeList: () => api.get('app/route/list', {
     fake: true,
   }),
 
   // 登录
   login: (data: {
-    account: string
+    username: string
     password: string
-  }) => api.post('app/account/login', data, {
-    fake: true,
-  }),
+  }) => api.post('api/system/auth/login', data),
 
-  // 获取权限
-  permission: () => api.get('app/account/permission', {
-    fake: true,
-  }),
+  // 获取权限 (对应后端的 get-info)
+  permission: () => api.get('api/system/auth/get-info'),
 
   // 修改密码
   passwordEdit: (data: {
@@ -26,5 +22,4 @@ export default {
   }) => api.post('app/account/password/edit', data, {
     fake: true,
   }),
-
 }

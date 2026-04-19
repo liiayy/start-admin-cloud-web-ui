@@ -57,12 +57,16 @@ function setupRoutes(router: Router) {
           })
           appRouteStore.setCurrentRemoveRoutes(removeRoutes)
         }
-        catch {}
+        catch (error) {
+          console.error('Route generation failed:', error)
+        }
         // 动态路由生成并注册后，重新进入当前路由
-        return {
-          path: to.path,
-          query: to.query,
-          replace: true,
+        if (appRouteStore.isGenerate) {
+          return {
+            path: to.path,
+            query: to.query,
+            replace: true,
+          }
         }
       }
     }

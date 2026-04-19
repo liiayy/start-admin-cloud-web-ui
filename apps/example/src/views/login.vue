@@ -19,7 +19,7 @@ const redirect = ref(route.query.redirect?.toString() ?? appSettingsStore.settin
 // 布局对齐方式
 const layoutAlign = ref<'left' | 'center' | 'right'>('center')
 // 表单相关
-const account = ref<string>()
+const username = ref<string>()
 const formType = ref<'login' | 'register' | 'resetPassword'>('login')
 
 function handleLogin() {
@@ -65,21 +65,21 @@ function handleLogin() {
       <div class="w-full">
         <Login
           v-if="formType === 'login'"
-          :account
+          :username
           @on-login="handleLogin"
-          @on-register="(val) => { formType = 'register'; account = val }"
-          @on-reset-password="(val) => { formType = 'resetPassword'; account = val }"
+          @on-register="(val) => { formType = 'register'; username = val }"
+          @on-reset-password="(val) => { formType = 'resetPassword'; username = val }"
         />
         <Register
           v-else-if="formType === 'register'"
-          :account
-          @on-register="(val) => { formType = 'login'; account = val }"
+          :account="username"
+          @on-register="(val) => { formType = 'login'; username = val }"
           @on-login="formType = 'login'"
         />
         <ResetPassword
           v-else
-          :account
-          @on-reset-password="(val) => { formType = 'login'; account = val }"
+          :account="username"
+          @on-reset-password="(val) => { formType = 'login'; username = val }"
           @on-login="formType = 'login'"
         />
       </div>

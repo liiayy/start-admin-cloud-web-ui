@@ -9,13 +9,13 @@ defineOptions({
 })
 
 const props = defineProps<{
-  account?: string
+  username?: string
 }>()
 
 const emits = defineEmits<{
-  onLogin: [account?: string]
-  onRegister: [account?: string]
-  onResetPassword: [account?: string]
+  onLogin: [username?: string]
+  onRegister: [username?: string]
+  onResetPassword: [username?: string]
 }>()
 
 const appAccountStore = useAppAccountStore()
@@ -28,33 +28,33 @@ const type = ref<'default' | 'qrcode'>('default')
 
 const form = useForm({
   validationSchema: toTypedSchema(z.object({
-    account: z.string().min(1, '请输入用户名'),
+    username: z.string().min(1, '请输入用户名'),
     password: z.string().min(1, '请输入密码'),
     remember: z.boolean(),
   })),
   initialValues: {
-    account: props.account ?? localStorage.getItem('login_account') ?? '',
+    username: props.username ?? localStorage.getItem('login_username') ?? '',
     password: '',
-    remember: localStorage.getItem('login_account') !== null,
+    remember: localStorage.getItem('login_username') !== null,
   },
 })
 const onSubmit = form.handleSubmit((values) => {
   loading.value = true
   appAccountStore.login(values).then(() => {
     if (values.remember) {
-      localStorage.setItem('login_account', values.account)
+      localStorage.setItem('login_username', values.username)
     }
     else {
-      localStorage.removeItem('login_account')
+      localStorage.removeItem('login_username')
     }
-    emits('onLogin', values.account)
+    emits('onLogin', values.username)
   }).finally(() => {
     loading.value = false
   })
 })
 
 function testAccount(account: string) {
-  form.setFieldValue('account', account)
+  form.setFieldValue('username', account)
   form.setFieldValue('password', '123456')
   onSubmit()
 }
@@ -80,7 +80,7 @@ function testAccount(account: string) {
     </div>
     <div v-show="type === 'default'">
       <form @submit="onSubmit">
-        <FormField v-slot="{ componentField, errors }" name="account">
+        <FormField v-slot="{ componentField, errors }" name="username">
           <FormItem class="pb-6 relative space-y-0">
             <FormControl>
               <FaInput type="text" placeholder="用户名" class="w-full" :class="{ 'border-destructive': errors.length }" v-bind="componentField">
@@ -120,7 +120,7 @@ function testAccount(account: string) {
               </FormItem>
             </FormField>
           </div>
-          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onResetPassword', form.values.account)">
+          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onResetPassword', form.values.username)">
             忘记密码了?
           </FaButton>
         </div>
@@ -129,7 +129,7 @@ function testAccount(account: string) {
         </FaButton>
         <div class="text-sm mt-4 flex-center gap-2">
           <span class="text-secondary-foreground op-50">还没有帐号?</span>
-          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onRegister', form.values.account)">
+          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onRegister', form.values.username)">
             注册新帐号
           </FaButton>
         </div>
