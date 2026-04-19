@@ -1,18 +1,19 @@
-
-
 <script setup lang="ts">
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import type { RoleInfo } from '@/api/modules/system/permission/role.ts'
 
 import apiDept from '@/api/modules/system/organization/dept.ts'
 import apiRole from '@/api/modules/system/permission/role.ts'
+import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
-
 
 import AssignPermDialog from './components/AssignPermDialog.vue'
 import RoleFormDialog from './components/RoleFormDialog.vue'
 
 defineOptions({ name: 'SystemRole' })
+
+// 获取系统状态字典
+const { sys_status } = useDict('sys_status')
 
 // === 使用封装好的 Table Hook ===
 const {
@@ -100,7 +101,7 @@ onMounted(() => {
     <FaPageHeader title="角色管理" />
     <FaPageMain>
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap items-center gap-3">
+      <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput
           v-model="searchParams.name"
           placeholder="角色名称"
@@ -116,8 +117,12 @@ onMounted(() => {
           @keyup.enter="handleSearch"
         />
         <ElSelect v-model="searchParams.status" placeholder="状态" clearable class="w-36">
-          <ElOption label="启用" :value="0" />
-          <ElOption label="禁用" :value="1" />
+          <ElOption
+            v-for="dict in sys_status"
+            :key="dict.value"
+            :label="dict.label"
+            :value="Number(dict.value)"
+          />
         </ElSelect>
         <FaButton @click="handleSearch">
           <FaIcon name="i-ep:search" />

@@ -1,18 +1,18 @@
-
-
 <script setup lang="ts">
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import type { PostInfo } from '@/api/modules/system/organization/post.ts'
 
 import apiDept from '@/api/modules/system/organization/dept.ts'
 import apiPost from '@/api/modules/system/organization/post.ts'
-// 引入我们的通用 Table Hook 以及解耦的 Dialog 组件
+import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
-
 
 import PostFormDialog from './components/PostFormDialog.vue'
 
 defineOptions({ name: 'SystemPost' })
+
+// 获取系统状态字典
+const { sys_status } = useDict('sys_status')
 
 // === 部门树 ===
 const deptTree = ref<DeptTreeNode[]>([])
@@ -99,9 +99,9 @@ onMounted(() => {
     <FaPageMain>
       <div class="flex gap-4">
         <!-- 左：部门树 -->
-        <div class="w-[280px] shrink-0">
-          <div class="border rounded-lg p-3">
-            <div class="mb-2 text-sm text-gray-600 font-semibold">
+        <div class="shrink-0 w-[280px]">
+          <div class="p-3 border rounded-lg">
+            <div class="text-sm text-gray-600 font-semibold mb-2">
               部门列表
             </div>
             <ElTree
@@ -118,9 +118,9 @@ onMounted(() => {
         </div>
 
         <!-- 右：搜索 + 表格 + 分页 -->
-        <div class="min-w-0 flex-1">
+        <div class="flex-1 min-w-0">
           <!-- 搜索栏（直接双向绑定 searchParams） -->
-          <div class="mb-4 flex flex-wrap items-center gap-3">
+          <div class="mb-4 flex flex-wrap gap-3 items-center">
             <ElInput
               v-model="searchParams.name"
               placeholder="岗位名称"
@@ -138,8 +138,12 @@ onMounted(() => {
               class="w-48"
             />
             <ElSelect v-model="searchParams.status" placeholder="岗位状态" clearable class="w-36">
-              <ElOption label="启用" :value="0" />
-              <ElOption label="禁用" :value="1" />
+              <ElOption
+                v-for="dict in sys_status"
+                :key="dict.value"
+                :label="dict.label"
+                :value="Number(dict.value)"
+              />
             </ElSelect>
             <FaButton @click="handleSearch">
               <FaIcon name="i-ep:search" />

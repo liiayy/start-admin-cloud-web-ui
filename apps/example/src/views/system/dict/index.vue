@@ -1,18 +1,19 @@
-
-
 <script setup lang="ts">
 import type { DictDataInfo } from '@/api/modules/system/dict/dictData.ts'
 import type { DictTypeInfo } from '@/api/modules/system/dict/dictType.ts'
 
 import apiDictData from '@/api/modules/system/dict/dictData.ts'
 import apiDictType from '@/api/modules/system/dict/dictType.ts'
+import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
-
 
 import DictDataFormDialog from './components/DictDataFormDialog.vue'
 import DictTypeFormDialog from './components/DictTypeFormDialog.vue'
 
 defineOptions({ name: 'SystemDict' })
+
+// 获取字典项状态的字典数据（通常字典项自己的状态也是一个字典）
+const { sys_status } = useDict('sys_status')
 
 // ===================== 左侧：字典类型 =====================
 const leftLoading = ref(false)
@@ -125,9 +126,9 @@ onMounted(() => {
     <FaPageMain>
       <div class="flex gap-4">
         <!-- 左：字典类型列表 -->
-        <div class="w-[380px] shrink-0">
-          <div class="border rounded-lg p-3">
-            <div class="mb-2 text-sm text-gray-600 font-semibold">
+        <div class="shrink-0 w-[380px]">
+          <div class="p-3 border rounded-lg">
+            <div class="text-sm text-gray-600 font-semibold mb-2">
               字典类型
             </div>
             <div class="mb-2">
@@ -167,9 +168,9 @@ onMounted(() => {
         </div>
 
         <!-- 右：字典数据 -->
-        <div class="min-w-0 flex-1">
+        <div class="flex-1 min-w-0">
           <!-- 搜索栏 -->
-          <div class="mb-4 flex flex-wrap items-center gap-3">
+          <div class="mb-4 flex flex-wrap gap-3 items-center">
             <ElInput
               v-model="searchParams.label"
               placeholder="字典标签"
@@ -189,7 +190,7 @@ onMounted(() => {
           </div>
 
           <!-- 未选择时的空状态 -->
-          <div v-if="!selectedType" class="py-20 text-center text-gray-400">
+          <div v-if="!selectedType" class="text-gray-400 py-20 text-center">
             请在左侧选择一个字典类型
           </div>
 
@@ -199,11 +200,9 @@ onMounted(() => {
               <ElTableColumn prop="label" label="字典标签" width="150" />
               <ElTableColumn prop="value" label="字典键值" width="120" />
               <ElTableColumn prop="sort" label="排序" width="80" align="center" />
-              <ElTableColumn label="状态" width="80" align="center">
+              <ElTableColumn label="状态" width="100" align="center">
                 <template #default="{ row }">
-                  <ElTag :type="row.status === 0 ? 'success' : 'danger'" size="small">
-                    {{ row.status === 0 ? '正常' : '停用' }}
-                  </ElTag>
+                  <DictTag :options="sys_status" :value="row.status" />
                 </template>
               </ElTableColumn>
               <ElTableColumn prop="colorType" label="颜色" width="100" align="center" />

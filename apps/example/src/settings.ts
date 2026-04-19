@@ -15,6 +15,7 @@ export default setSettings({
     },
   },
   menu: {
+    mode: 'single',
     mainMenuClickMode: 'smart',
     subMenuCollapseButton: true,
     hotkeys: true,

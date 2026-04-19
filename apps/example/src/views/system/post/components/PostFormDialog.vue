@@ -2,6 +2,7 @@
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import type { PostFormData, PostInfo } from '@/api/modules/system/organization/post.ts'
 import apiPost from '@/api/modules/system/organization/post.ts'
+import { useDict } from '@/composables/useDict.ts'
 
 defineProps<{
   deptTree: DeptTreeNode[]
@@ -10,6 +11,9 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'success'): void
 }>()
+
+// 获取系统状态字典
+const { sys_status } = useDict('sys_status')
 
 const visible = ref(false)
 const dialogTitle = ref('')
@@ -128,12 +132,13 @@ async function handleSubmit() {
         <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
       </ElFormItem>
       <ElFormItem label="状态">
-        <ElRadioGroup v-model="formData.status">
-          <ElRadio :value="0">
-            正常
-          </ElRadio>
-          <ElRadio :value="1">
-            停用
+        <ElRadioGroup v-model="formData.status" class="flex-wrap">
+          <ElRadio
+            v-for="item in sys_status"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.label }}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>

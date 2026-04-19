@@ -3,11 +3,11 @@ import type { ConfigAddFormData, ConfigInfo, ConfigUpdateFormData } from '@/api/
 import apiConfig from '@/api/modules/system/config/config.ts'
 import { useDict } from '@/composables/useDict.ts'
 
-const { sys_yes_no } = useDict('sys_yes_no')
-
 const emit = defineEmits<{
   (e: 'success'): void
 }>()
+
+const { sys_yes_no } = useDict('sys_yes_no')
 
 const visible = ref(false)
 const dialogTitle = ref('')
@@ -72,19 +72,23 @@ async function handleSubmit() {
   await formRef.value?.validate()
   formLoading.value = true
   try {
-    if (isEdit.value) {
-      await apiConfig.update(formData.id!, formData as ConfigUpdateFormData)
+    const submitData = { ...formData }
+    const id = submitData.id
+    delete submitData.id
+
+    if (isEdit.value && id) {
+      await apiConfig.update(id, submitData as ConfigUpdateFormData)
       faToast.success('更新成功')
     }
     else {
-      await apiConfig.add(formData as ConfigAddFormData)
+      await apiConfig.add(submitData as ConfigAddFormData)
       faToast.success('新增成功')
     }
     visible.value = false
     emit('success')
   }
   catch (err) {
-    // Error handling is usually global or handled by generic toast in interceptors
+    // 错误已由拦截器处理
   }
   finally {
     formLoading.value = false
