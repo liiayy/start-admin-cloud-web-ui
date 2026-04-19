@@ -21,6 +21,7 @@ const formData = reactive<ConfigAddFormData & { id?: number }>({
   configKey: '',
   configValue: '',
   builtin: 'N',
+  isPublic: 'N',
   remark: '',
 })
 
@@ -37,6 +38,7 @@ function resetForm() {
     configKey: '',
     configValue: '',
     builtin: 'N',
+    isPublic: 'N',
     remark: '',
   })
   if (formRef.value) {
@@ -61,6 +63,7 @@ function openEdit(row: ConfigInfo) {
     configKey: row.configKey,
     configValue: row.configValue,
     builtin: row.builtin || 'N',
+    isPublic: row.isPublic || 'N',
     remark: row.remark || '',
   })
   visible.value = true
@@ -110,6 +113,24 @@ async function handleSubmit() {
       </ElFormItem>
       <ElFormItem label="系统内置">
         <ElSelect v-model="formData.builtin" placeholder="请选择">
+          <ElOption
+            v-for="item in sys_yes_no"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </ElSelect>
+      </ElFormItem>
+      <ElFormItem label="是否公开">
+        <template #label>
+          <div class="flex items-center gap-1">
+            <span>是否公开</span>
+            <ElTooltip content="设为公开后，前端匿名接口可获取该参数值（如验证码开关）">
+              <FaIcon name="i-ep:question-filled" class="cursor-help text-gray-400" />
+            </ElTooltip>
+          </div>
+        </template>
+        <ElSelect v-model="formData.isPublic" placeholder="请选择">
           <ElOption
             v-for="item in sys_yes_no"
             :key="item.value"

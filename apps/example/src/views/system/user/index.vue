@@ -25,6 +25,17 @@ async function loadDeptTree() {
   deptTree.value = await apiDept.tree()
 }
 
+// 树过滤逻辑
+function filterDeptNode(value: string, data: DeptTreeNode) {
+  if (!value)
+    return true
+  return data.name.includes(value)
+}
+
+watch(searchDeptName, (val) => {
+  deptTreeRef.value?.filter(val)
+})
+
 // ===== 主列表：采用 Hook 管理 =====
 const {
   loading,
@@ -110,7 +121,11 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
-          <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="small" class="mb-3" />
+          <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="medium" class="mb-3">
+            <template #prefix>
+              <FaIcon name="i-ep:search" />
+            </template>
+          </ElInput>
           <ElTree
             ref="deptTreeRef"
             :data="deptTree"
@@ -119,6 +134,7 @@ onMounted(() => {
             highlight-current
             default-expand-all
             :expand-on-click-node="false"
+            :filter-node-method="filterDeptNode"
             @node-click="handleDeptNodeClick"
           />
         </div>

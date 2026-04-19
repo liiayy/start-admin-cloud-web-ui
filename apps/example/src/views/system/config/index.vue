@@ -98,6 +98,11 @@ function handleDelete(row: ConfigInfo) {
             <DictTag :options="sys_yes_no" :value="row.builtin" />
           </template>
         </ElTableColumn>
+        <ElTableColumn label="是否公开" width="100" align="center">
+          <template #default="{ row }">
+            <DictTag :options="sys_yes_no" :value="row.isPublic" />
+          </template>
+        </ElTableColumn>
         <ElTableColumn prop="remark" label="备注" min-width="150" show-overflow-tooltip />
         <ElTableColumn label="创建时间" width="170" align="center">
           <template #default="{ row }">

@@ -132,7 +132,11 @@ onMounted(() => {
               字典类型
             </div>
             <div class="mb-2">
-              <ElInput v-model="searchKeyword" placeholder="字典名称 / 类型" clearable size="small" />
+              <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="medium">
+                <template #prefix>
+                  <FaIcon name="i-ep:search" />
+                </template>
+              </ElInput>
             </div>
             <div class="mb-2 flex gap-2">
               <FaButton v-auth="'system:dict:add'" size="sm" @click="handleAddType">
