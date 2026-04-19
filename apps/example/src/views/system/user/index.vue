@@ -5,6 +5,7 @@ import apiUser from '@/api/modules/system/auth/user.ts'
 import apiDept from '@/api/modules/system/organization/dept.ts'
 import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
+import { SecurityConstants } from '@/constants/SecurityConstants.ts'
 
 import AssignRoleDialog from './components/AssignRoleDialog.vue'
 import ResetPwdDialog from './components/ResetPwdDialog.vue'
@@ -105,8 +106,8 @@ onMounted(() => {
     <FaPageMain>
       <div class="flex gap-4">
         <!-- 左：部门树 -->
-        <div class="w-[280px] shrink-0 border rounded-lg p-3">
-          <div class="mb-2 text-sm text-gray-600 font-semibold">
+        <div class="p-3 border rounded-lg shrink-0 w-[280px]">
+          <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
           <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="small" class="mb-3" />
@@ -123,8 +124,8 @@ onMounted(() => {
         </div>
 
         <!-- 右：用户列表 -->
-        <div class="min-w-0 flex-1">
-          <div class="mb-4 flex flex-wrap items-center gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="mb-4 flex flex-wrap gap-3 items-center">
             <ElInput v-model="searchParams.username" placeholder="用户名" clearable class="w-48" @keyup.enter="handleSearch" />
             <ElInput v-model="searchParams.phone" placeholder="手机号" clearable class="w-48" @keyup.enter="handleSearch" />
             <ElSelect v-model="searchParams.status" placeholder="状态" clearable class="w-36">
@@ -173,7 +174,7 @@ onMounted(() => {
             <ElTableColumn label="操作" width="280" align="center" fixed="right">
               <template #default="{ row }">
                 <!-- 避免超级管理员由于默认值无意义被修改 -->
-                <template v-if="row.id !== 1">
+                <template v-if="row.id !== SecurityConstants.SUPER_ADMIN_ID">
                   <ElButton v-auth="'system:user:update'" link type="primary" size="small" @click="handleEdit(row)">
                     编辑
                   </ElButton>
