@@ -2,7 +2,10 @@ import request from '../../../index.ts'
 
 export default {
   // 登录
-  login: (data: { username: string, password: string }) => request.post('api/system/auth/login', data),
+  login: (data: { username: string, password: string, code?: string, uuid?: string }) => request.post('api/system/auth/login', data),
+
+  // 获取验证码
+  getCaptcha: () => request.get<{ uuid: string, img: string, enabled: boolean }>('api/system/auth/captcha'),
 
   // 登出
   logout: () => request.post('api/system/auth/logout'),

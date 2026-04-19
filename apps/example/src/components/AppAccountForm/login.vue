@@ -2,6 +2,9 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import * as z from 'zod'
+import apiAuth from '@/api/modules/system/auth/auth'
+import { useConfig } from '@/composables/useConfig'
+import { ConfigConstants } from '@/constants/ConfigConstants'
 import { FormControl, FormField, FormItem, FormMessage } from '@/ui/shadcn/ui/form'
 
 defineOptions({
@@ -26,18 +29,47 @@ const loading = ref(false)
 // 登录方式，default 账号密码登录，qrcode 扫码登录
 const type = ref<'default' | 'qrcode'>('default')
 
+const { captchaEnabled } = useConfig(ConfigConstants.CAPTCHA_ENABLED)
+const captchaImg = ref('')
+
 const form = useForm({
   validationSchema: toTypedSchema(z.object({
     username: z.string().min(1, '请输入用户名'),
     password: z.string().min(1, '请输入密码'),
+    code: z.string().optional(),
+    uuid: z.string().optional(),
     remember: z.boolean(),
+  }).refine((data) => {
+    if (captchaEnabled.value && !data.code) {
+      return false
+    }
+    return true
+  }, {
+    message: '请输入验证码',
+    path: ['code'],
   })),
   initialValues: {
     username: props.username ?? localStorage.getItem('login_username') ?? '',
     password: '',
+    code: '',
+    uuid: '',
     remember: localStorage.getItem('login_username') !== null,
   },
 })
+
+async function getCaptcha() {
+  if (!captchaEnabled.value)
+    return
+  const res = await apiAuth.getCaptcha()
+  captchaImg.value = res.img
+  form.setFieldValue('uuid', res.uuid)
+}
+
+watch(captchaEnabled, (val) => {
+  if (val)
+    getCaptcha()
+}, { immediate: true })
+
 const onSubmit = form.handleSubmit((values) => {
   loading.value = true
   appAccountStore.login(values).then(() => {
@@ -48,6 +80,9 @@ const onSubmit = form.handleSubmit((values) => {
       localStorage.removeItem('login_username')
     }
     emits('onLogin', values.username)
+  }).catch(() => {
+    // 登录失败重刷验证码
+    getCaptcha()
   }).finally(() => {
     loading.value = false
   })
@@ -103,6 +138,25 @@ function testAccount(account: string) {
                 </template>
               </FaInput>
             </FormControl>
+            <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
+              <FormMessage class="text-xs bottom-1 absolute" />
+            </Transition>
+          </FormItem>
+        </FormField>
+        <FormField v-if="captchaEnabled" v-slot="{ componentField, errors }" name="code">
+          <FormItem class="pb-6 relative space-y-0">
+            <div class="flex gap-2">
+              <FormControl class="flex-1">
+                <FaInput type="text" placeholder="验证码" :class="{ 'border-destructive': errors.length }" v-bind="componentField">
+                  <template #start>
+                    <FaIcon name="i-lucide:shield-check" />
+                  </template>
+                </FaInput>
+              </FormControl>
+              <div class="cursor-pointer shrink-0 h-9 w-28 overflow-hidden rounded-md border" @click="getCaptcha">
+                <img v-if="captchaImg" :src="captchaImg" class="h-full w-full object-cover">
+              </div>
+            </div>
             <Transition enter-active-class="transition-opacity" enter-from-class="opacity-0" leave-active-class="transition-opacity" leave-to-class="opacity-0">
               <FormMessage class="text-xs bottom-1 absolute" />
             </Transition>

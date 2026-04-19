@@ -27,14 +27,16 @@ export function useConfig(...keys: string[]) {
     result[camelKey] = ref<any>(null)
 
     // 异步获取初始值
-    apiConfig.getValue(key).then((res) => {
-      let val: any = res.data
-      // 类型转换处理
-      if (val === 'true') { val = true }
-      if (val === 'false') { val = false }
-      if (!isNaN(Number(val)) && val !== '') { val = Number(val) }
+    apiConfig.getValue(key).then((res: any) => {
+      let val: any = res
+      // 类型转换处理：支持后端返回的 Y/N、true/false 等各种布尔格式
+      if (val === 'Y' || val === 'true' || val === true) { val = true }
+      else if (val === 'N' || val === 'false' || val === false) { val = false }
+      else if (!isNaN(Number(val)) && val !== '' && typeof val === 'string') { val = Number(val) }
 
       result[camelKey].value = val
+    }).catch(() => {
+      // 忽略错误，由于已经初始化为 null，页面可保持安全默认值
     })
   })
 
