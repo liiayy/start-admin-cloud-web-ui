@@ -18,6 +18,7 @@ export function useTable<T = any, S = any>(options: UseTableOptions<T, S>) {
   const loading = ref(false)
   const list = ref<T[]>([])
   const total = ref(0)
+  const selectedIds = ref<any[]>([])
 
   // 分页状态
   const pagination = reactive({
@@ -79,6 +80,11 @@ export function useTable<T = any, S = any>(options: UseTableOptions<T, S>) {
     getList()
   }
 
+  /** 多选处理 */
+  const handleSelectionChange = (selection: any[]) => {
+    selectedIds.value = selection.map(item => item.id)
+  }
+
   if (options.immediate !== false) {
     onMounted(() => getList())
   }
@@ -89,10 +95,12 @@ export function useTable<T = any, S = any>(options: UseTableOptions<T, S>) {
     total,
     pagination,
     searchParams,
+    selectedIds,
     getList,
     handleSearch,
     handleReset,
     handleCurrentChange,
     handleSizeChange,
+    handleSelectionChange,
   }
 }
