@@ -24,6 +24,15 @@ const formData = reactive<DictDataFormData & { id?: number }>({
   remark: '',
 })
 
+const colorOptions = [
+  { label: '默认', value: '' },
+  { label: '主要 (primary)', value: 'primary' },
+  { label: '成功 (success)', value: 'success' },
+  { label: '信息 (info)', value: 'info' },
+  { label: '警告 (warning)', value: 'warning' },
+  { label: '危险 (danger)', value: 'danger' },
+]
+
 const formRules = {
   label: [{ required: true, message: '请输入字典标签', trigger: 'blur' }],
   value: [{ required: true, message: '请输入字典键值', trigger: 'blur' }],
@@ -129,7 +138,24 @@ async function handleSubmit() {
       <ElRow :gutter="16">
         <ElCol :span="12">
           <ElFormItem label="颜色类型">
-            <ElInput v-model="formData.colorType" placeholder="如 primary、success" />
+            <ElSelect v-model="formData.colorType" placeholder="请选择颜色类型" clearable class="w-full">
+              <ElOption
+                v-for="item in colorOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+                <div class="flex items-center gap-2">
+                  <span
+                    class="w-3 h-3 rounded-full"
+                    :style="{
+                      backgroundColor: item.value ? `var(--el-color-${item.value})` : '#dcdfe6'
+                    }"
+                  />
+                  <span>{{ item.label }}</span>
+                </div>
+              </ElOption>
+            </ElSelect>
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">
