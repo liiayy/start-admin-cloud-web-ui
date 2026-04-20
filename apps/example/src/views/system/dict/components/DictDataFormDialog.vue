@@ -138,18 +138,18 @@ async function handleSubmit() {
       <ElRow :gutter="16">
         <ElCol :span="12">
           <ElFormItem label="颜色类型">
-            <ElSelect v-model="formData.colorType" placeholder="请选择颜色类型" clearable class="w-full">
+            <ElSelect v-model="formData.colorType" placeholder="请选择颜色类型" clearable :teleported="false" class="w-full">
               <ElOption
                 v-for="item in colorOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               >
-                <div class="flex items-center gap-2">
+                <div class="flex gap-2 items-center">
                   <span
-                    class="w-3 h-3 rounded-full"
+                    class="rounded-full h-3 w-3"
                     :style="{
-                      backgroundColor: item.value ? `var(--el-color-${item.value})` : '#dcdfe6'
+                      backgroundColor: item.value ? `var(--el-color-${item.value})` : '#dcdfe6',
                     }"
                   />
                   <span>{{ item.label }}</span>
