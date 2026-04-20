@@ -39,6 +39,8 @@ export interface DictDataPageParam {
 export default {
   /** 根据类型获取字典数据列表 */
   listByType: (dictType: string) => request.get<DictDataInfo[]>('api/system/system/dict-data/list-by-type', { params: { dictType } }),
+  /** 根据类型列表批量获取字典数据 */
+  listByTypes: (dictTypes: string[]) => request.get<Record<string, DictDataInfo[]>>('api/system/system/dict-data/list-by-types', { params: { dictTypes: dictTypes.join(',') } }),
 
   /** 字典数据分页 */
   page: (params: DictDataPageParam) => request.get<PageResult<DictDataInfo>>('api/system/system/dict-data/page', { params }),

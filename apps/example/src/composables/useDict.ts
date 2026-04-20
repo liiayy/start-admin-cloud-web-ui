@@ -14,12 +14,18 @@ export function useDict(...args: string[]): Record<string, Ref<DictDataInfo[]>> 
   args.forEach((dictType) => {
     // 提供一个干净的空数组用于页面初次挂载，避免 undefined
     result[dictType] = ref<DictDataInfo[]>([])
+  })
 
-    // 找 Store 要数据，有了立刻给响应式变量赋值
-    dictStore.getDict(dictType).then((res) => {
-      result[dictType].value = res
+  // 批量获取字典数据
+  dictStore.getDicts(args).then((res) => {
+    Object.keys(res).forEach((type) => {
+      if (result[type]) {
+        result[type].value = res[type]
+      }
     })
   })
+
+  return result
 
   return result
 }
