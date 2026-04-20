@@ -7,7 +7,7 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-const { sys_yes_no } = useDict('sys_yes_no')
+// 字典数据会自动加载
 
 const visible = ref(false)
 const dialogTitle = ref('')
@@ -112,14 +112,7 @@ async function handleSubmit() {
         <ElInput v-model="formData.configValue" placeholder="请输入参数键值" type="textarea" :rows="4" />
       </ElFormItem>
       <ElFormItem label="系统内置">
-        <ElSelect v-model="formData.builtin" placeholder="请选择">
-          <ElOption
-            v-for="item in sys_yes_no"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </ElSelect>
+        <DictRadio v-model="formData.builtin" type="sys_yes_no" />
       </ElFormItem>
       <ElFormItem label="是否公开">
         <template #label>
@@ -130,14 +123,7 @@ async function handleSubmit() {
             </ElTooltip>
           </div>
         </template>
-        <ElSelect v-model="formData.isPublic" placeholder="请选择">
-          <ElOption
-            v-for="item in sys_yes_no"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </ElSelect>
+        <DictRadio v-model="formData.isPublic" type="sys_yes_no" />
       </ElFormItem>
       <ElFormItem label="备注">
         <ElInput v-model="formData.remark" type="textarea" :rows="2" placeholder="请输入备注" />

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{
-  operTypeOptions: any[]
-  statusOptions: any[]
+  // 字典配置已标准化，内部自动加载
 }>()
 
 const visible = ref(false)
@@ -27,7 +26,7 @@ defineExpose({ open })
           <ElFormItem label="操作模块">
             <span class="text-gray-800 font-bold">{{ formData.title }}</span>
             <span class="text-gray-300 mx-2">/</span>
-            <DictTag :options="props.operTypeOptions" :value="formData.businessType" />
+            <DictTag type="sys_oper_type" :value="formData.businessType" />
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">
@@ -47,7 +46,7 @@ defineExpose({ open })
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="操作状态">
-            <DictTag :options="props.statusOptions" :value="formData.status" />
+            <DictTag type="sys_common_status" :value="formData.status" />
             <span class="text-xs text-gray-500 ml-3">{{ formData.costTime }}ms</span>
           </ElFormItem>
         </ElCol>

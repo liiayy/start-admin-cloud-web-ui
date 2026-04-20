@@ -12,8 +12,7 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-// 获取系统状态字典
-const { sys_status } = useDict('sys_status')
+// 字典数据会自动加载
 
 const visible = ref(false)
 const dialogTitle = ref('')
@@ -132,15 +131,7 @@ async function handleSubmit() {
         <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
       </ElFormItem>
       <ElFormItem label="状态">
-        <ElRadioGroup v-model="formData.status" class="flex-wrap">
-          <ElRadio
-            v-for="item in sys_status"
-            :key="item.value"
-            :value="Number(item.value)"
-          >
-            {{ item.label }}
-          </ElRadio>
-        </ElRadioGroup>
+        <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
       </ElFormItem>
       <ElFormItem label="备注">
         <ElInput v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />

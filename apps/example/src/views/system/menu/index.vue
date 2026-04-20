@@ -126,9 +126,7 @@ onMounted(() => {
         <ElTableColumn prop="component" label="组件路径" width="200" show-overflow-tooltip />
         <ElTableColumn label="状态" width="80" align="center">
           <template #default="{ row }">
-            <ElTag :type="row.status === 0 ? 'success' : 'danger'" size="small">
-              {{ row.status === 0 ? '正常' : '停用' }}
-            </ElTag>
+            <DictTag type="sys_status" :value="row.status" />
           </template>
         </ElTableColumn>
         <ElTableColumn label="创建时间" width="180" align="center">

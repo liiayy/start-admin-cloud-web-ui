@@ -209,14 +209,7 @@ async function handleSubmit() {
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="状态">
-              <ElRadioGroup v-model="formData.status">
-                <ElRadio :value="0">
-                  正常
-                </ElRadio>
-                <ElRadio :value="1">
-                  停用
-                </ElRadio>
-              </ElRadioGroup>
+              <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
             </ElFormItem>
           </ElCol>
         </template>
@@ -255,14 +248,7 @@ async function handleSubmit() {
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="状态">
-              <ElRadioGroup v-model="formData.status">
-                <ElRadio :value="0">
-                  正常
-                </ElRadio>
-                <ElRadio :value="1">
-                  停用
-                </ElRadio>
-              </ElRadioGroup>
+              <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.type === 2" :span="12">

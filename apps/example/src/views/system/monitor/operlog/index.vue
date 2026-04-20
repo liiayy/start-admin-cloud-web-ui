@@ -6,8 +6,7 @@ import DetailDialog from './components/DetailDialog.vue'
 
 defineOptions({ name: 'MonitorOperLog' })
 
-// 获取业务类型和状态字典
-const { sys_oper_type, sys_common_status } = useDict('sys_oper_type', 'sys_common_status')
+// 字典数据会自动加载
 
 const {
   loading,
@@ -75,12 +74,8 @@ onMounted(() => {
       <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput v-model="searchParams.title" placeholder="系统模块" clearable class="w-48" @keyup.enter="handleSearch" />
         <ElInput v-model="searchParams.operName" placeholder="操作人员" clearable class="w-48" @keyup.enter="handleSearch" />
-        <ElSelect v-model="searchParams.businessType" placeholder="业务类型" clearable class="w-36">
-          <ElOption v-for="dict in sys_oper_type" :key="dict.value" :label="dict.label" :value="Number(dict.value)" />
-        </ElSelect>
-        <ElSelect v-model="searchParams.status" placeholder="操作状态" clearable class="w-36">
-          <ElOption v-for="dict in sys_common_status" :key="dict.value" :label="dict.label" :value="Number(dict.value)" />
-        </ElSelect>
+        <DictSelect v-model="searchParams.businessType" type="sys_oper_type" value-type="number" placeholder="业务类型" clearable class="w-36" />
+        <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="操作状态" clearable class="w-36" />
         <FaButton @click="handleSearch">
           <FaIcon name="i-ep:search" />
           搜索
@@ -106,7 +101,7 @@ onMounted(() => {
         <ElTableColumn prop="title" label="系统模块" />
         <ElTableColumn label="业务类型" width="100" align="center">
           <template #default="{ row }">
-            <DictTag :options="sys_oper_type" :value="row.businessType" />
+            <DictTag type="sys_oper_type" :value="row.businessType" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="operName" label="操作人员" width="120" />
@@ -114,7 +109,7 @@ onMounted(() => {
         <ElTableColumn prop="operLocation" label="操作地点" width="150" show-overflow-tooltip />
         <ElTableColumn label="操作状态" width="100" align="center">
           <template #default="{ row }">
-            <DictTag :options="sys_common_status" :value="row.status" />
+            <DictTag type="sys_common_status" :value="row.status" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="createTime" label="操作时间" width="170" align="center" />
@@ -148,6 +143,6 @@ onMounted(() => {
       </div>
     </FaPageMain>
 
-    <DetailDialog ref="detailDialogRef" :oper-type-options="sys_oper_type" :status-options="sys_common_status" />
+    <DetailDialog ref="detailDialogRef" />
   </div>
 </template>

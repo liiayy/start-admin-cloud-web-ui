@@ -7,7 +7,7 @@ import ConfigFormDialog from './components/ConfigFormDialog.vue'
 
 defineOptions({ name: 'SystemConfig' })
 
-const { sys_yes_no } = useDict('sys_yes_no')
+// 字典数据会自动加载
 
 // === 使用 Hook 管理表格基础逻辑 ===
 const {
@@ -95,12 +95,12 @@ function handleDelete(row: ConfigInfo) {
         <ElTableColumn prop="configValue" label="参数键值" min-width="200" show-overflow-tooltip />
         <ElTableColumn label="系统内置" width="100" align="center">
           <template #default="{ row }">
-            <DictTag :options="sys_yes_no" :value="row.builtin" />
+            <DictTag type="sys_yes_no" :value="row.builtin" />
           </template>
         </ElTableColumn>
         <ElTableColumn label="是否公开" width="100" align="center">
           <template #default="{ row }">
-            <DictTag :options="sys_yes_no" :value="row.isPublic" />
+            <DictTag type="sys_yes_no" :value="row.isPublic" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="remark" label="备注" min-width="150" show-overflow-tooltip />

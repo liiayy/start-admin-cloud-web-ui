@@ -11,8 +11,7 @@ import PostFormDialog from './components/PostFormDialog.vue'
 
 defineOptions({ name: 'SystemPost' })
 
-// 获取系统状态字典
-const { sys_status } = useDict('sys_status')
+// 字典数据会自动加载
 
 // === 部门树 ===
 const deptTree = ref<DeptTreeNode[]>([])
@@ -137,14 +136,7 @@ onMounted(() => {
               check-strictly
               class="w-48"
             />
-            <ElSelect v-model="searchParams.status" placeholder="岗位状态" clearable class="w-36">
-              <ElOption
-                v-for="dict in sys_status"
-                :key="dict.value"
-                :label="dict.label"
-                :value="Number(dict.value)"
-              />
-            </ElSelect>
+            <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="岗位状态" clearable class="w-36" />
             <FaButton @click="handleSearch">
               <FaIcon name="i-ep:search" />
               搜索

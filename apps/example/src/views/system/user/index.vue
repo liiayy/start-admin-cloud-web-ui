@@ -144,7 +144,7 @@ onMounted(() => {
           <div class="mb-4 flex flex-wrap gap-3 items-center">
             <ElInput v-model="searchParams.username" placeholder="用户名" clearable class="w-48" @keyup.enter="handleSearch" />
             <ElInput v-model="searchParams.phone" placeholder="手机号" clearable class="w-48" @keyup.enter="handleSearch" />
-            <DictSelect v-model="searchParams.status" type="sys_status" placeholder="状态" clearable class="w-36" />
+            <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="状态" clearable class="w-36" />
             <FaButton @click="handleSearch">
               <FaIcon name="i-ep:search" />
               搜索

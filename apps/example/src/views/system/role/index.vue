@@ -12,8 +12,7 @@ import RoleFormDialog from './components/RoleFormDialog.vue'
 
 defineOptions({ name: 'SystemRole' })
 
-// 获取系统状态字典
-const { sys_status } = useDict('sys_status')
+// 字典数据会自动加载
 
 // === 使用封装好的 Table Hook ===
 const {
@@ -116,14 +115,7 @@ onMounted(() => {
           class="w-48"
           @keyup.enter="handleSearch"
         />
-        <ElSelect v-model="searchParams.status" placeholder="状态" clearable class="w-36">
-          <ElOption
-            v-for="dict in sys_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="Number(dict.value)"
-          />
-        </ElSelect>
+        <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="状态" clearable class="w-36" />
         <FaButton @click="handleSearch">
           <FaIcon name="i-ep:search" />
           搜索

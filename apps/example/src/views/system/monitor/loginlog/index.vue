@@ -5,7 +5,7 @@ import { useTable } from '@/composables/useTable.ts'
 
 defineOptions({ name: 'MonitorLoginLog' })
 
-const { sys_common_status } = useDict('sys_common_status')
+// 字典数据会自动加载
 
 const {
   loading,
@@ -66,9 +66,7 @@ onMounted(() => {
       <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput v-model="searchParams.username" placeholder="用户账号" clearable class="w-48" @keyup.enter="handleSearch" />
         <ElInput v-model="searchParams.loginIp" placeholder="登录地址" clearable class="w-48" @keyup.enter="handleSearch" />
-        <ElSelect v-model="searchParams.status" placeholder="状态" clearable class="w-36">
-          <ElOption v-for="dict in sys_common_status" :key="dict.value" :label="dict.label" :value="Number(dict.value)" />
-        </ElSelect>
+        <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="状态" clearable class="w-36" />
         <FaButton @click="handleSearch">
           <FaIcon name="i-ep:search" />
           搜索
@@ -98,7 +96,7 @@ onMounted(() => {
         <ElTableColumn prop="os" label="操作系统" width="120" />
         <ElTableColumn label="状态" width="100" align="center">
           <template #default="{ row }">
-            <DictTag :options="sys_common_status" :value="row.status" />
+            <DictTag type="sys_common_status" :value="row.status" />
           </template>
         </ElTableColumn>
         <ElTableColumn prop="msg" label="提示消息" min-width="150" show-overflow-tooltip />
