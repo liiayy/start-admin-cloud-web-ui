@@ -80,6 +80,7 @@ declare global {
   const useAppTabbarStore: typeof import('../store/modules/app/tabbar').useAppTabbarStore
   const useAttrs: typeof import('vue').useAttrs
   const useConfig: typeof import('../composables/useConfig').useConfig
+  const useConfigStore: typeof import('../store/modules/app/config').useConfigStore
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
   const useDict: typeof import('../composables/useDict').useDict

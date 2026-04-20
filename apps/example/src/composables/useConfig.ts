@@ -1,5 +1,5 @@
-import { ref } from 'vue'
-import apiConfig from '@/api/modules/system/config/config'
+import { ref, onMounted } from 'vue'
+import { useConfigStore } from '@/store/modules/app/config'
 
 /**
  * 获取系统配置的 Hook
@@ -11,10 +11,11 @@ import apiConfig from '@/api/modules/system/config/config'
  * const { captchaEnabled, registerEnabled } = useConfig('sys.captcha.enabled', 'sys.register.enabled')
  */
 export function useConfig(...keys: string[]) {
+  const configStore = useConfigStore()
   const result: Record<string, any> = {}
 
+  // 1. 初始化结果对象，并将键名转换为驼峰兼容格式
   keys.forEach((key) => {
-    // 将键名转换为小驼峰格式作为返回对象的 key
     // 例如 sys.captcha.enabled -> captchaEnabled
     const camelKey = key
       .split('.')
@@ -24,19 +25,23 @@ export function useConfig(...keys: string[]) {
       )
       .join('')
 
-    result[camelKey] = ref<any>(null)
+    // 初始化为当前缓存中的值（可能为 undefined）
+    const initialValue = configStore.configValues[key]
+    result[camelKey] = ref<any>(initialValue ?? null)
+    
+    // 给结果对象附加原始 Key 映射，方便后续更新
+    result[`__meta_${camelKey}`] = key
+  })
 
-    // 异步获取初始值
-    apiConfig.getValue(key).then((res: any) => {
-      let val: any = res
-      // 类型转换处理：支持后端返回的 Y/N、true/false 等各种布尔格式
-      if (val === 'Y' || val === 'true' || val === true) { val = true }
-      else if (val === 'N' || val === 'false' || val === false) { val = false }
-      else if (!isNaN(Number(val)) && val !== '' && typeof val === 'string') { val = Number(val) }
-
-      result[camelKey].value = val
-    }).catch(() => {
-      // 忽略错误，由于已经初始化为 null，页面可保持安全默认值
+  // 2. 批量拉取数据
+  onMounted(async () => {
+    const configData = await configStore.getConfigs(keys)
+    
+    // 更新响应式数据
+    Object.keys(result).forEach((camelKey) => {
+      if (camelKey.startsWith('__meta_')) { return }
+      const originalKey = result[`__meta_${camelKey}`]
+      result[camelKey].value = configData[originalKey]
     })
   })
 

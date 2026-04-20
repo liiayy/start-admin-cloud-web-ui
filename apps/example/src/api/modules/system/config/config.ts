@@ -29,7 +29,7 @@ export interface ConfigPageParam {
   configKey?: string
 }
 
-export default {
+const configApi = {
   /** 系统参数分页 */
   page: (params: ConfigPageParam) => request.get<PageResult<ConfigInfo>>('api/system/system/config/page', { params }),
 
@@ -38,6 +38,9 @@ export default {
 
   /** 根据键名获取参数值 */
   getValue: (configKey: string) => request.get<string>('api/system/system/config/value', { params: { configKey } }),
+
+  /** 批量根据键名获取参数值 */
+  listValues: (configKeys: string[]) => request.get<Record<string, string>>('api/system/system/config/list-values', { params: { configKeys } }),
 
   /** 新增系统参数 */
   add: (data: ConfigFormData) => request.post('api/system/system/config/add', data),
@@ -48,3 +51,5 @@ export default {
   /** 删除系统参数 */
   delete: (id: number) => request.delete('api/system/system/config/delete', { params: { id } }),
 }
+
+export default configApi
