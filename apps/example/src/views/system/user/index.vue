@@ -14,7 +14,7 @@ import UserFormDialog from './components/UserFormDialog.vue'
 defineOptions({ name: 'SystemUser' })
 
 // 获取系统字典（例如性别）
-const { sys_user_sex, sys_status } = useDict('sys_user_sex', 'sys_status')
+// 字典数据会自动加载，无需手动 useDict
 
 // ===== 侧边栏：部门树 =====
 const deptTree = ref<DeptTreeNode[]>([])
@@ -121,7 +121,7 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
-          <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="medium" class="mb-3">
+          <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="default" class="mb-3">
             <template #prefix>
               <FaIcon name="i-ep:search" />
             </template>
@@ -144,14 +144,7 @@ onMounted(() => {
           <div class="mb-4 flex flex-wrap gap-3 items-center">
             <ElInput v-model="searchParams.username" placeholder="用户名" clearable class="w-48" @keyup.enter="handleSearch" />
             <ElInput v-model="searchParams.phone" placeholder="手机号" clearable class="w-48" @keyup.enter="handleSearch" />
-            <ElSelect v-model="searchParams.status" placeholder="状态" clearable class="w-36">
-              <ElOption
-                v-for="dict in sys_status"
-                :key="dict.value"
-                :label="dict.label"
-                :value="Number(dict.value)"
-              />
-            </ElSelect>
+            <DictSelect v-model="searchParams.status" type="sys_status" placeholder="状态" clearable class="w-36" />
             <FaButton @click="handleSearch">
               <FaIcon name="i-ep:search" />
               搜索
@@ -174,7 +167,7 @@ onMounted(() => {
             <ElTableColumn prop="phone" label="手机号码" width="140" />
             <ElTableColumn label="性别" width="70" align="center">
               <template #default="{ row }">
-                <DictTag :options="sys_user_sex" :value="row.sex" />
+                <DictTag type="sys_user_sex" :value="row.sex" />
               </template>
             </ElTableColumn>
             <ElTableColumn label="状态" width="100" align="center">

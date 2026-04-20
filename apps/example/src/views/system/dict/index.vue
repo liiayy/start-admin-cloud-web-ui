@@ -12,8 +12,7 @@ import DictTypeFormDialog from './components/DictTypeFormDialog.vue'
 
 defineOptions({ name: 'SystemDict' })
 
-// 获取字典项状态的字典数据（通常字典项自己的状态也是一个字典）
-const { sys_status } = useDict('sys_status')
+// 字典管理逻辑
 
 // ===================== 左侧：字典类型 =====================
 const leftLoading = ref(false)
@@ -132,7 +131,7 @@ onMounted(() => {
               字典类型
             </div>
             <div class="mb-2">
-              <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="medium">
+              <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="default">
                 <template #prefix>
                   <FaIcon name="i-ep:search" />
                 </template>
@@ -206,7 +205,7 @@ onMounted(() => {
               <ElTableColumn prop="sort" label="排序" width="80" align="center" />
               <ElTableColumn label="状态" width="100" align="center">
                 <template #default="{ row }">
-                  <DictTag :options="sys_status" :value="row.status" />
+                  <DictTag type="sys_status" :value="row.status" />
                 </template>
               </ElTableColumn>
               <ElTableColumn prop="colorType" label="颜色" width="100" align="center" />

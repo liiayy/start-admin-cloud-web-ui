@@ -170,19 +170,51 @@ async function onCancel() {
   }
 }
 
+function isTrustedPortal(target: HTMLElement | null) {
+  if (!target || !target.closest) return false
+  return !!(
+    target.closest('.el-select-dropdown') ||
+    target.closest('.el-popper') ||
+    target.closest('.el-cascader-menus') ||
+    target.closest('.el-picker-panel') ||
+    target.closest('.el-time-panel') ||
+    target.closest('.el-color-dropdown') ||
+    target.closest('.el-overlay')
+  )
+}
+
+function getEventTarget(e: Event): HTMLElement | null {
+  return ((e as any).detail?.originalEvent?.target || e.target) as HTMLElement | null
+}
+
 function handleOpenAutoFocus(e: Event) {
   if (!props.openAutoFocus) {
     e.preventDefault()
     e.stopPropagation()
+    // 强制取消背景按钮的焦点，解决 Aria-hidden 警告
+    // (Blocked aria-hidden on an element because its descendant retained focus)
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
   }
 }
 
 function handleFocusOutside(e: Event) {
+
   e.preventDefault()
   e.stopPropagation()
 }
 
 function handleClickOutside(e: Event) {
+  const target = getEventTarget(e)
+  if (isTrustedPortal(target)) {
+    // 关键修正！必须在这里调用 e.preventDefault()
+    // 这不是阻止原生浏览器点击，而是向 reka-ui 发送指令：“我已接管这个外部组件，不要做任何关闭或焦点拦截”
+    e.preventDefault()
+    e.stopPropagation()
+    return
+  }
+
   if (!props.closeOnClickOverlay || (e.target as HTMLElement).dataset.modalId !== modalId.value) {
     e.preventDefault()
     e.stopPropagation()
@@ -300,3 +332,19 @@ function handleAnimationEnd() {
     </DialogContent>
   </Dialog>
 </template>
+
+<style>
+/*
+ * 核心强突围：破解 reka-ui (Radix) 开启时向 body 注入的 `pointer-events: none`
+ * 被 Teleport 到外部的 Element Plus 组件如果没有重置这个属性，所有鼠标点击 / Hover 都会失效 (这就是为什么纯键盘有效，鼠标失效)。
+ */
+.el-popper,
+.el-select-dropdown,
+.el-cascader-menus,
+.el-picker-panel,
+.el-color-dropdown,
+.el-time-panel,
+.el-overlay {
+  pointer-events: auto !important;
+}
+</style>

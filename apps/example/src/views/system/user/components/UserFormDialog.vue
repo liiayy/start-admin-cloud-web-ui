@@ -14,7 +14,7 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-const { sys_user_sex, sys_status } = useDict('sys_user_sex', 'sys_status')
+// 字典数据会自动加载
 
 const visible = ref(false)
 const dialogTitle = ref('')
@@ -196,27 +196,12 @@ async function handleSubmit() {
       <ElRow :gutter="20">
         <ElCol :span="12">
           <ElFormItem label="性别">
-            <ElSelect v-model="formData.sex" placeholder="请选择" class="w-full">
-              <ElOption
-                v-for="dict in sys_user_sex"
-                :key="dict.value"
-                :label="dict.label"
-                :value="Number(dict.value)"
-              />
-            </ElSelect>
+            <DictSelect v-model="formData.sex" type="sys_user_sex" value-type="number" placeholder="请选择" class="w-full" />
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="状态">
-            <ElRadioGroup v-model="formData.status">
-              <ElRadio
-                v-for="dict in sys_status"
-                :key="dict.value"
-                :value="Number(dict.value)"
-              >
-                {{ dict.label }}
-              </ElRadio>
-            </ElRadioGroup>
+            <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
           </ElFormItem>
         </ElCol>
       </ElRow>
