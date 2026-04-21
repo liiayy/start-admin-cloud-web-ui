@@ -19,11 +19,22 @@ const tableAutoHeight = ref(true)
 const deptTree = ref<DeptTreeNode[]>([])
 const defaultExpandedKeys = ref<number[]>([])
 const deptTreeRef = ref()
+const searchDeptName = ref('')
 
 async function getDeptTree() {
   deptTree.value = await apiDept.tree()
   defaultExpandedKeys.value = deptTree.value.map(node => node.id)
 }
+
+// 树过滤逻辑
+function filterDeptNode(value: string, data: DeptTreeNode) {
+  if (!value) { return true }
+  return data.name.includes(value)
+}
+
+watch(searchDeptName, (val) => {
+  deptTreeRef.value?.filter(val)
+})
 
 // === API 表格 Hook 实战 ===
 const {
@@ -104,6 +115,11 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门列表
           </div>
+          <FaInput v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
+            <template #prefix>
+              <FaIcon name="i-ri:search-line" />
+            </template>
+          </FaInput>
           <div class="flex-1 overflow-auto">
             <ElTree
               ref="deptTreeRef"
@@ -113,6 +129,7 @@ onMounted(() => {
               highlight-current
               :default-expanded-keys="defaultExpandedKeys"
               :expand-on-click-node="false"
+              :filter-node-method="filterDeptNode"
               @node-click="handleDeptNodeClick"
             />
           </div>

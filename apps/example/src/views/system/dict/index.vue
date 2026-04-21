@@ -132,11 +132,11 @@ onMounted(() => {
             字典类型
           </div>
           <div class="mb-2">
-            <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="default">
+            <FaInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable>
               <template #prefix>
                 <FaIcon name="i-ri:search-line" />
               </template>
-            </ElInput>
+            </FaInput>
           </div>
           <div class="mb-2 flex-center-between gap-2">
             <div class="flex gap-2">

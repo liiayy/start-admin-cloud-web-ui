@@ -122,11 +122,11 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
-          <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="default" class="mb-3">
+          <FaInput v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
             <template #prefix>
               <FaIcon name="i-ri:search-line" />
             </template>
-          </ElInput>
+          </FaInput>
           <div class="flex-1 overflow-auto">
             <ElTree
               ref="deptTreeRef"

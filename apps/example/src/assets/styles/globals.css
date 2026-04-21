@@ -17,10 +17,10 @@
   --g-sidebar-logo-height: 50px;
 
   /* 标签栏高度 */
-  --g-tabbar-height: 50px;
+  --g-tabbar-height: 35px;
 
   /* 工具栏高度 */
-  --g-toolbar-height: 50px;
+  --g-toolbar-height: 35px;
 
   &.dark {
     color-scheme: dark;
