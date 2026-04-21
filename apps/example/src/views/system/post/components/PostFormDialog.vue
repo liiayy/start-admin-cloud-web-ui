@@ -2,7 +2,6 @@
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import type { PostFormData, PostInfo } from '@/api/modules/system/organization/post.ts'
 import apiPost from '@/api/modules/system/organization/post.ts'
-import { useDict } from '@/composables/useDict.ts'
 
 defineProps<{
   deptTree: DeptTreeNode[]

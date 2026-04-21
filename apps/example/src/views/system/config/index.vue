@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ConfigInfo } from '@/api/modules/system/config/config.ts'
 import apiConfig from '@/api/modules/system/config/config.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 import ConfigFormDialog from './components/ConfigFormDialog.vue'
 
@@ -58,7 +57,7 @@ function handleDelete(row: ConfigInfo) {
     <FaPageHeader title="参数设置" />
     <FaPageMain>
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap items-center gap-3">
+      <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput
           v-model="searchParams.name"
           placeholder="参数名称"

@@ -7,12 +7,20 @@ import { SelectIcon, SelectTrigger, useForwardProps } from 'reka-ui'
 import { cn } from '../../../utils'
 
 const props = withDefaults(
-  defineProps<SelectTriggerProps & { class?: HTMLAttributes['class'], size?: 'sm' | 'default' }>(),
-  { size: 'default' },
+  defineProps<SelectTriggerProps & { class?: HTMLAttributes['class'], size?: 'sm' | 'default', clearable?: boolean, hasValue?: boolean }>(),
+  { size: 'default', clearable: false, hasValue: false },
 )
 
-const delegatedProps = reactiveOmit(props, 'class', 'size')
+const emits = defineEmits<{
+  clear: []
+}>()
+const delegatedProps = reactiveOmit(props, 'class', 'size', 'clearable', 'hasValue')
 const forwardedProps = useForwardProps(delegatedProps)
+
+function handleClear(e: MouseEvent) {
+  e.stopPropagation()
+  emits('clear')
+}
 </script>
 
 <template>
@@ -26,8 +34,20 @@ const forwardedProps = useForwardProps(delegatedProps)
     )"
   >
     <slot />
-    <SelectIcon as-child>
-      <ChevronDown class="opacity-50 size-4" />
-    </SelectIcon>
+    <div class="flex gap-1 items-center">
+      <FaButton
+        v-if="props.clearable && props.hasValue"
+        variant="ghost"
+        size="icon"
+        type="button"
+        class="size-5 hover:bg-transparent"
+        @click="handleClear"
+      >
+        <FaIcon name="i-lucide:x" class="opacity-50 size-3" />
+      </FaButton>
+      <SelectIcon as-child>
+        <ChevronDown class="opacity-50 size-4" />
+      </SelectIcon>
+    </div>
   </SelectTrigger>
 </template>

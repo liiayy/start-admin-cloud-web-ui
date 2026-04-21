@@ -3,7 +3,6 @@ import type { UserInfo } from '@/api/modules/system/auth/user.ts'
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import apiUser from '@/api/modules/system/auth/user.ts'
 import apiDept from '@/api/modules/system/organization/dept.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 import { SecurityConstants } from '@/constants/SecurityConstants.ts'
 
@@ -27,8 +26,7 @@ async function loadDeptTree() {
 
 // 树过滤逻辑
 function filterDeptNode(value: string, data: DeptTreeNode) {
-  if (!value)
-    return true
+  if (!value) { return true }
   return data.name.includes(value)
 }
 

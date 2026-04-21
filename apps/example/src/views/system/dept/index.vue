@@ -1,7 +1,4 @@
-
-
 <script setup lang="ts">
-
 import apiDept from '@/api/modules/system/organization/dept.ts'
 
 import DeptFormDialog from './components/DeptFormDialog.vue'
@@ -87,7 +84,7 @@ onMounted(() => {
     <FaPageHeader title="部门管理" />
     <FaPageMain>
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap items-center gap-3">
+      <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput
           v-model="searchName"
           placeholder="搜索部门名称"

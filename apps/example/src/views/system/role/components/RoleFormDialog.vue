@@ -190,7 +190,7 @@ async function handleSubmit() {
           check-strictly
           default-expand-all
           :expand-on-click-node="false"
-          class="max-h-60 w-full overflow-auto border rounded p-2"
+          class="p-2 border rounded max-h-60 w-full overflow-auto"
         />
       </ElFormItem>
       <ElFormItem label="备注">

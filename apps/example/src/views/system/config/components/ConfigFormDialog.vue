@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { ConfigAddFormData, ConfigInfo, ConfigUpdateFormData } from '@/api/modules/system/config/config.ts'
 import apiConfig from '@/api/modules/system/config/config.ts'
-import { useDict } from '@/composables/useDict.ts'
 
 const emit = defineEmits<{
   (e: 'success'): void
@@ -116,10 +115,10 @@ async function handleSubmit() {
       </ElFormItem>
       <ElFormItem label="是否公开">
         <template #label>
-          <div class="flex items-center gap-1">
+          <div class="flex gap-1 items-center">
             <span>是否公开</span>
             <ElTooltip content="设为公开后，前端匿名接口可获取该参数值（如验证码开关）">
-              <FaIcon name="i-ep:question-filled" class="cursor-help text-gray-400" />
+              <FaIcon name="i-ep:question-filled" class="text-gray-400 cursor-help" />
             </ElTooltip>
           </div>
         </template>

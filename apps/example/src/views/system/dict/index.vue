@@ -4,7 +4,6 @@ import type { DictTypeInfo } from '@/api/modules/system/dict/dictType.ts'
 
 import apiDictData from '@/api/modules/system/dict/dictData.ts'
 import apiDictType from '@/api/modules/system/dict/dictType.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 
 import DictDataFormDialog from './components/DictDataFormDialog.vue'

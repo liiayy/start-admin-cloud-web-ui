@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import apiDept from '@/api/modules/system/organization/dept.ts'
-import { useDict } from '@/composables/useDict.ts'
 
 const props = defineProps<{
   deptTree: any[]

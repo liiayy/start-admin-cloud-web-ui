@@ -4,7 +4,6 @@ import type { RoleInfo } from '@/api/modules/system/permission/role.ts'
 
 import apiDept from '@/api/modules/system/organization/dept.ts'
 import apiRole from '@/api/modules/system/permission/role.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 
 import AssignPermDialog from './components/AssignPermDialog.vue'

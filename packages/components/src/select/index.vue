@@ -32,6 +32,7 @@ const props = defineProps<{
   disabled?: boolean
   options: (Option | GroupOption)[]
   placeholder?: string
+  clearable?: boolean
   class?: HTMLAttributes['class']
 }>()
 
@@ -94,7 +95,12 @@ const selectedOption = computed({
 
 <template>
   <Select v-model="value" :multiple :disabled :dir="dir === 'ltr' ? 'ltr' : 'rtl'">
-    <SelectTrigger :class="cn('w-[200px]', props.class)">
+    <SelectTrigger
+      :class="cn('w-[200px]', props.class)"
+      :clearable="props.clearable"
+      :has-value="!!value"
+      @clear="value = undefined"
+    >
       <SelectValue :placeholder="props.placeholder" :selected-option="selectedOption?.label" />
     </SelectTrigger>
     <SelectContent class="z-2000">

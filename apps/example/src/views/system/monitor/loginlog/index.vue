@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import apiLoginLog from '@/api/modules/system/monitor/loginlog.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 
 defineOptions({ name: 'MonitorLoginLog' })

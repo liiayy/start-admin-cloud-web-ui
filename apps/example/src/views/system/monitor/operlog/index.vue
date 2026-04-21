@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import apiOperLog from '@/api/modules/system/monitor/operlog.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 import DetailDialog from './components/DetailDialog.vue'
 

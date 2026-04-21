@@ -4,7 +4,6 @@ import type { PostInfo } from '@/api/modules/system/organization/post.ts'
 
 import apiDept from '@/api/modules/system/organization/dept.ts'
 import apiPost from '@/api/modules/system/organization/post.ts'
-import { useDict } from '@/composables/useDict.ts'
 import { useTable } from '@/composables/useTable.ts'
 
 import PostFormDialog from './components/PostFormDialog.vue'

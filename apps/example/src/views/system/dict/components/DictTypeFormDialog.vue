@@ -78,23 +78,16 @@ async function handleSubmit() {
   <FaModal v-model="visible" :title="dialogTitle" class="max-w-md">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="90px">
       <ElFormItem label="字典名称" prop="name">
-        <ElInput v-model="formData.name" placeholder="请输入字典名称" />
+        <FaInput v-model="formData.name" placeholder="请输入字典名称" />
       </ElFormItem>
       <ElFormItem label="字典类型" prop="type">
-        <ElInput v-model="formData.type" placeholder="请输入字典类型" :disabled="isEdit" />
+        <FaInput v-model="formData.type" placeholder="请输入字典类型" :disabled="isEdit" />
       </ElFormItem>
       <ElFormItem label="状态">
-        <ElRadioGroup v-model="formData.status">
-          <ElRadio :value="0">
-            正常
-          </ElRadio>
-          <ElRadio :value="1">
-            停用
-          </ElRadio>
-        </ElRadioGroup>
+        <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
       </ElFormItem>
       <ElFormItem label="备注">
-        <ElInput v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <FaTextarea v-model="formData.remark" placeholder="请输入备注" />
       </ElFormItem>
     </ElForm>
     <template #footer>

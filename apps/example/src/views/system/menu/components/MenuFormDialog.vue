@@ -191,7 +191,7 @@ async function handleSubmit() {
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="菜单名称" prop="name">
-            <ElInput v-model="formData.name" placeholder="请输入菜单名称" />
+            <FaInput v-model="formData.name" placeholder="请输入菜单名称" />
           </ElFormItem>
         </ElCol>
 
@@ -199,12 +199,12 @@ async function handleSubmit() {
         <template v-if="formData.type === 3">
           <ElCol :span="12">
             <ElFormItem label="权限标识">
-              <ElInput v-model="formData.permission" placeholder="如 system:user:add" />
+              <FaInput v-model="formData.permission" placeholder="如 system:user:add" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="显示排序" prop="sort">
-              <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
+              <FaNumberField v-model="formData.sort" :min="0" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
@@ -218,17 +218,17 @@ async function handleSubmit() {
         <template v-if="formData.type !== 3">
           <ElCol :span="12">
             <ElFormItem label="路由地址">
-              <ElInput v-model="formData.path" :placeholder="formData.type === 1 ? '如 /system' : '如 user'" />
+              <FaInput v-model="formData.path" :placeholder="formData.type === 1 ? '如 /system' : '如 user'" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.type === 2" :span="12">
             <ElFormItem label="组件路径">
-              <ElInput v-model="formData.component" placeholder="如 system/user/index" />
+              <FaInput v-model="formData.component" placeholder="如 system/user/index" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.type === 2" :span="12">
             <ElFormItem label="组件名称">
-              <ElInput v-model="formData.componentName" placeholder="如 SystemUser" />
+              <FaInput v-model="formData.componentName" placeholder="如 SystemUser" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
@@ -238,12 +238,12 @@ async function handleSubmit() {
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="权限标识">
-              <ElInput v-model="formData.permission" placeholder="如 system:user:view" />
+              <FaInput v-model="formData.permission" placeholder="如 system:user:view" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="显示排序" prop="sort">
-              <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
+              <FaNumberField v-model="formData.sort" :min="0" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
@@ -253,17 +253,17 @@ async function handleSubmit() {
           </ElCol>
           <ElCol v-if="formData.type === 2" :span="12">
             <ElFormItem label="是否缓存">
-              <ElSwitch v-model="formData.keepAlive" />
+              <FaSwitch v-model="formData.keepAlive" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.type === 2" :span="12">
             <ElFormItem label="是否可见">
-              <ElSwitch v-model="formData.visible" />
+              <FaSwitch v-model="formData.visible" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.type === 1" :span="12">
             <ElFormItem label="总是显示">
-              <ElSwitch v-model="formData.alwaysShow" />
+              <FaSwitch v-model="formData.alwaysShow" />
             </ElFormItem>
           </ElCol>
         </template>

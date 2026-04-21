@@ -1,5 +1,3 @@
-
-
 <script setup lang="ts">
 import type { MenuTreeNode } from '@/api/modules/system/permission/menu.ts'
 
@@ -80,7 +78,7 @@ onMounted(() => {
     <FaPageHeader title="菜单管理" />
     <FaPageMain>
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap items-center gap-3">
+      <div class="mb-4 flex flex-wrap gap-3 items-center">
         <ElInput
           v-model="searchName"
           placeholder="搜索菜单名称"

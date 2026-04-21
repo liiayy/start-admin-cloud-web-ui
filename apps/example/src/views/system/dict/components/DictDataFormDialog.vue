@@ -122,9 +122,9 @@ async function handleSubmit() {
             <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" class="w-full" />
           </ElFormItem>
         </ElCol>
-          <ElFormItem label="状态">
-            <DictRadio v-model="formData.status" type="sys_status" />
-          </ElFormItem>
+        <ElFormItem label="状态">
+          <DictRadio v-model="formData.status" type="sys_status" />
+        </ElFormItem>
       </ElRow>
       <ElRow :gutter="16">
         <ElCol :span="12">
