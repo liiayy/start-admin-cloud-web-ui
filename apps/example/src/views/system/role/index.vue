@@ -11,6 +11,9 @@ import RoleFormDialog from './components/RoleFormDialog.vue'
 
 defineOptions({ name: 'SystemRole' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 字典数据会自动加载
 
 // === 使用封装好的 Table Hook ===
@@ -95,43 +98,46 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="角色管理" />
-    <FaPageMain>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput
-          v-model="searchParams.name"
-          placeholder="角色名称"
-          clearable
-          class="w-48"
-          @keyup.enter="handleSearch"
-        />
-        <ElInput
-          v-model="searchParams.code"
-          placeholder="角色编码"
-          clearable
-          class="w-48"
-          @keyup.enter="handleSearch"
-        />
-        <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="状态" clearable class="w-36" />
-        <FaButton @click="handleSearch">
-          <FaIcon name="i-ep:search" />
-          搜索
-        </FaButton>
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
+      <FaSearchBar :show-toggle="false">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="角色名称">
+              <FaInput v-model="searchParams.name" placeholder="请输入角色名称" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="角色编码">
+              <FaInput v-model="searchParams.code" placeholder="请输入角色编码" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="状态">
+              <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="请选择" clearable class="w-36" />
+            </FaLabel>
+            <FaButton @click="handleSearch">
+              <FaIcon name="i-ri:search-line" />
+              搜索
+            </FaButton>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
         <FaButton v-auth="'system:role:add'" @click="handleAdd">
-          <FaIcon name="i-ep:plus" />
+          <FaIcon name="i-ri:add-line" />
           新增角色
         </FaButton>
       </div>
 
       <!-- 表格 -->
-      <ElTable v-loading="loading" :data="roleList" border>
+      <ElTable v-loading="loading" class="my-4" :data="roleList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined">
         <ElTableColumn prop="name" label="角色名称" width="150" />
         <ElTableColumn prop="code" label="角色编码" width="180" />
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
@@ -151,33 +157,39 @@ onMounted(() => {
             {{ row.createTime }}
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="240" align="center" fixed="right">
+        <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton v-auth="'system:role:update'" link type="primary" size="small" @click="handleAssignPerm(row)">
-              分配权限
-            </ElButton>
-            <ElButton v-auth="'system:role:update'" link type="primary" size="small" @click="handleEdit(row)">
-              编辑
-            </ElButton>
-            <ElButton v-auth="'system:role:delete'" link type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton v-auth="'system:role:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
+                <FaIcon name="i-ri:edit-line" />
+              </FaButton>
+              <FaDropdown
+                :items="[
+                  [
+                    { label: '分配权限', icon: 'i-ri:shield-keyhole-line', vAuth: 'system:role:update', handle: () => handleAssignPerm(row) },
+                  ],
+                  [
+                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:role:delete', handle: () => handleDelete(row) },
+                  ],
+                ]"
+              >
+                <FaButton variant="outline" size="icon-sm">
+                  <FaIcon name="i-ri:more-line" />
+                </FaButton>
+              </FaDropdown>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>
 
       <!-- 分页 -->
-      <div class="mt-4 flex justify-end">
-        <ElPagination
-          v-model:current-page="pagination.pageNum"
-          v-model:page-size="pagination.pageSize"
-          :total="total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
+      <FaPagination
+        v-model:page="pagination.pageNum"
+        v-model:size="pagination.pageSize"
+        :total="total"
+        @page-change="getList"
+        @size-change="getList"
+      />
     </FaPageMain>
 
     <!-- 弹窗组件 -->

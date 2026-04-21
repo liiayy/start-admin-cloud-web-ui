@@ -11,6 +11,9 @@ import DictTypeFormDialog from './components/DictTypeFormDialog.vue'
 
 defineOptions({ name: 'SystemDict' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 字典管理逻辑
 
 // ===================== 左侧：字典类型 =====================
@@ -119,50 +122,54 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="字典管理" />
-    <FaPageMain>
-      <div class="flex gap-4">
+    <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
+      <div class="flex gap-4" :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }">
         <!-- 左：字典类型列表 -->
-        <div class="shrink-0 w-[380px]">
-          <div class="p-3 border rounded-lg">
-            <div class="text-sm text-gray-600 font-semibold mb-2">
-              字典类型
-            </div>
-            <div class="mb-2">
-              <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="default">
-                <template #prefix>
-                  <FaIcon name="i-ep:search" />
-                </template>
-              </ElInput>
-            </div>
-            <div class="mb-2 flex gap-2">
+        <div class="shrink-0 w-[380px] flex flex-col pt-3 pr-3 border-r">
+          <div class="text-sm text-gray-600 font-semibold mb-2">
+            字典类型
+          </div>
+          <div class="mb-2">
+            <ElInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable size="default">
+              <template #prefix>
+                <FaIcon name="i-ri:search-line" />
+              </template>
+            </ElInput>
+          </div>
+          <div class="mb-2 flex-center-between gap-2">
+            <div class="flex gap-2">
               <FaButton v-auth="'system:dict:add'" size="sm" @click="handleAddType">
-                <FaIcon name="i-ep:plus" />
+                <FaIcon name="i-ri:add-line" />
                 新增
               </FaButton>
               <FaButton variant="outline" size="sm" @click="searchKeyword = ''; getTypeList()">
-                <FaIcon name="i-ep:refresh" />
+                <FaIcon name="i-ri:refresh-line" />
                 刷新
               </FaButton>
             </div>
+          </div>
+          <div class="flex-1 overflow-auto">
             <ElTable
               v-loading="leftLoading"
               :data="filteredTypeList"
-              :height="500"
-              :highlight-current-row="true"
+              :height="tableAutoHeight ? '100%' : 500"
+              highlight-current-row
               @row-click="handleTypeClick"
             >
-              <ElTableColumn prop="name" label="名称" min-width="80" show-overflow-tooltip />
-              <ElTableColumn prop="type" label="类型" min-width="80" show-overflow-tooltip />
-              <ElTableColumn label="操作" align="center">
+              <ElTableColumn prop="name" label="名称" min-width="120" show-overflow-tooltip />
+              <ElTableColumn prop="type" label="类型" min-width="120" show-overflow-tooltip />
+              <ElTableColumn label="操作" width="100" align="center">
                 <template #default="{ row }">
-                  <ElButton v-auth="'system:dict:update'" link type="primary" size="small" @click.stop="handleEditType(row)">
-                    编辑
-                  </ElButton>
-                  <ElButton v-auth="'system:dict:delete'" link type="danger" size="small" @click.stop="handleDeleteType(row)">
-                    删除
-                  </ElButton>
+                  <div class="flex-center gap-1">
+                    <FaButton v-auth="'system:dict:update'" variant="outline" size="icon-sm" @click.stop="handleEditType(row)">
+                      <FaIcon name="i-ri:edit-line" />
+                    </FaButton>
+                    <FaButton v-auth="'system:dict:delete'" variant="outline" size="icon-sm" @click.stop="handleDeleteType(row)">
+                      <FaIcon name="i-ri:delete-bin-line" />
+                    </FaButton>
+                  </div>
                 </template>
               </ElTableColumn>
             </ElTable>
@@ -170,35 +177,46 @@ onMounted(() => {
         </div>
 
         <!-- 右：字典数据 -->
-        <div class="flex-1 min-w-0">
+        <div class="flex-1 min-w-0 flex flex-col pt-3">
           <!-- 搜索栏 -->
-          <div class="mb-4 flex flex-wrap gap-3 items-center">
-            <ElInput
-              v-model="searchParams.label"
-              placeholder="字典标签"
-              clearable
-              class="w-48"
-              @keyup.enter="handleSearch"
-            />
-            <FaButton @click="handleSearch">
-              <FaIcon name="i-ep:search" />
-              搜索
-            </FaButton>
-            <div class="flex-1" />
+          <FaSearchBar :show-toggle="false">
+            <template #default>
+              <div class="flex flex-wrap gap-3 items-center">
+                <FaLabel label="字典标签">
+                  <FaInput
+                    v-model="searchParams.label"
+                    placeholder="请输入字典标签"
+                    clearable
+                    class="w-48"
+                    @keyup.enter="handleSearch"
+                  />
+                </FaLabel>
+                <FaButton @click="handleSearch">
+                  <FaIcon name="i-ri:search-line" />
+                  搜索
+                </FaButton>
+              </div>
+            </template>
+          </FaSearchBar>
+
+          <div class="my-4 border-t border-t-dashed" />
+
+          <div class="flex-center-between gap-2">
+            <div class="flex gap-2" />
             <FaButton v-auth="'system:dict:add'" :disabled="!selectedType" @click="handleAddData">
-              <FaIcon name="i-ep:plus" />
+              <FaIcon name="i-ri:add-line" />
               新增字典数据
             </FaButton>
           </div>
 
           <!-- 未选择时的空状态 -->
-          <div v-if="!selectedType" class="text-gray-400 py-20 text-center">
+          <div v-if="!selectedType" class="flex-1 flex items-center justify-center text-gray-400">
             请在左侧选择一个字典类型
           </div>
 
           <!-- 字典数据表格 -->
           <template v-else>
-            <ElTable v-loading="rightLoading" :data="dataList" border>
+            <ElTable v-loading="rightLoading" class="my-4" :data="dataList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined">
               <ElTableColumn prop="label" label="字典标签" width="150" />
               <ElTableColumn prop="value" label="字典键值" width="120" />
               <ElTableColumn prop="sort" label="排序" width="80" align="center" />
@@ -214,30 +232,36 @@ onMounted(() => {
                   {{ row.createTime }}
                 </template>
               </ElTableColumn>
-              <ElTableColumn label="操作" width="140" align="center" fixed="right">
+              <ElTableColumn label="操作" width="120" align="center" fixed="right">
                 <template #default="{ row }">
-                  <ElButton v-auth="'system:dict:update'" link type="primary" size="small" @click="handleEditData(row)">
-                    编辑
-                  </ElButton>
-                  <ElButton v-auth="'system:dict:delete'" link type="danger" size="small" @click="handleDeleteData(row)">
-                    删除
-                  </ElButton>
+                  <div class="flex-center gap-2">
+                    <FaButton v-auth="'system:dict:update'" variant="outline" size="icon-sm" @click="handleEditData(row)">
+                      <FaIcon name="i-ri:edit-line" />
+                    </FaButton>
+                    <FaDropdown
+                      :items="[
+                        [
+                          { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:dict:delete', handle: () => handleDeleteData(row) },
+                        ],
+                      ]"
+                    >
+                      <FaButton variant="outline" size="icon-sm">
+                        <FaIcon name="i-ri:more-line" />
+                      </FaButton>
+                    </FaDropdown>
+                  </div>
                 </template>
               </ElTableColumn>
             </ElTable>
 
-            <!-- 分页对接 -->
-            <div class="mt-4 flex justify-end">
-              <ElPagination
-                v-model:current-page="pagination.pageNum"
-                v-model:page-size="pagination.pageSize"
-                :total="dataTotal"
-                :page-sizes="[10, 20, 50, 100]"
-                layout="total, sizes, prev, pager, next, jumper"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-              />
-            </div>
+            <!-- 分页 -->
+            <FaPagination
+              v-model:page="pagination.pageNum"
+              v-model:size="pagination.pageSize"
+              :total="dataTotal"
+              @page-change="getList"
+              @size-change="getList"
+            />
           </template>
         </div>
       </div>

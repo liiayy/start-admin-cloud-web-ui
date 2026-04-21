@@ -7,6 +7,9 @@ import MenuFormDialog from './components/MenuFormDialog.vue'
 
 defineOptions({ name: 'SystemMenu' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 const loading = ref(false)
 const menuTree = ref<MenuTreeNode[]>([])
 const searchName = ref('')
@@ -74,29 +77,40 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="菜单管理" />
-    <FaPageMain>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput
-          v-model="searchName"
-          placeholder="搜索菜单名称"
-          clearable
-          class="w-60"
-        />
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
+      <FaSearchBar :show-toggle="false">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="菜单名称">
+              <FaInput
+                v-model="searchName"
+                placeholder="请输入菜单名称"
+                clearable
+                class="w-60"
+              />
+            </FaLabel>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
         <div class="flex gap-2">
           <FaButton v-auth="'system:menu:add'" @click="handleAdd(0, 1)">
-            <FaIcon name="i-ep:plus" />
+            <FaIcon name="i-ri:folder-add-line" />
             新增目录
           </FaButton>
           <FaButton v-auth="'system:menu:add'" @click="handleAdd(0, 2)">
-            <FaIcon name="i-ep:plus" />
+            <FaIcon name="i-ri:menu-add-line" />
             新增菜单
           </FaButton>
         </div>
@@ -105,10 +119,14 @@ onMounted(() => {
       <!-- 树形表格 -->
       <ElTable
         v-loading="loading"
+        class="my-4"
         :data="filteredTree"
         row-key="id"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+        stripe
+        highlight-current-row
         border
+        :height="tableAutoHeight ? '100%' : undefined"
       >
         <ElTableColumn prop="name" label="菜单名称" min-width="180" />
         <ElTableColumn label="类型" width="80" align="center">
@@ -132,17 +150,27 @@ onMounted(() => {
             {{ row.createTime }}
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="220" align="center" fixed="right">
+        <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton v-if="row.type !== 3" v-auth="'system:menu:add'" link type="primary" size="small" @click="handleAdd(row.id, row.type === 1 ? 2 : 3)">
-              新增
-            </ElButton>
-            <ElButton v-auth="'system:menu:update'" link type="primary" size="small" @click="handleEdit(row)">
-              编辑
-            </ElButton>
-            <ElButton v-auth="'system:menu:delete'" link type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton v-auth="'system:menu:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
+                <FaIcon name="i-ri:edit-line" />
+              </FaButton>
+              <FaDropdown
+                :items="[
+                  [
+                    { label: '新增下级', icon: 'i-ri:add-line', hidden: row.type === 3, vAuth: 'system:menu:add', handle: () => handleAdd(row.id, row.type === 1 ? 2 : 3) },
+                  ],
+                  [
+                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:menu:delete', handle: () => handleDelete(row) },
+                  ],
+                ]"
+              >
+                <FaButton variant="outline" size="icon-sm">
+                  <FaIcon name="i-ri:more-line" />
+                </FaButton>
+              </FaDropdown>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>

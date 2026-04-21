@@ -5,6 +5,9 @@ import DeptFormDialog from './components/DeptFormDialog.vue'
 
 defineOptions({ name: 'SystemDept' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 const loading = ref(false)
 const deptTree = ref<any[]>([])
 const searchName = ref('')
@@ -80,24 +83,35 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="部门管理" />
-    <FaPageMain>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput
-          v-model="searchName"
-          placeholder="搜索部门名称"
-          clearable
-          class="w-60"
-        />
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
+      <FaSearchBar :show-toggle="false" class="mb-4">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="部门名称">
+              <FaInput
+                v-model="searchName"
+                placeholder="请输入部门名称"
+                clearable
+                class="w-60"
+              />
+            </FaLabel>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
         <FaButton v-auth="'system:dept:add'" @click="handleAdd(0)">
-          <FaIcon name="i-ep:plus" />
+          <FaIcon name="i-ri:add-line" />
           新增部门
         </FaButton>
       </div>
@@ -105,10 +119,15 @@ onMounted(() => {
       <!-- 树形表格 -->
       <ElTable
         v-loading="loading"
+        class="my-4"
         :data="filteredTree"
         row-key="id"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-        default-expand-all border
+        default-expand-all
+        stripe
+        highlight-current-row
+        border
+        :height="tableAutoHeight ? '100%' : undefined"
       >
         <ElTableColumn prop="name" label="部门名称" min-width="200" />
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
@@ -124,17 +143,27 @@ onMounted(() => {
             {{ row.createTime }}
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="200" align="center" fixed="right">
+        <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton v-auth="'system:dept:add'" link type="primary" size="small" @click="handleAdd(row.id)">
-              新增
-            </ElButton>
-            <ElButton v-auth="'system:dept:update'" link type="primary" size="small" @click="handleEdit(row)">
-              编辑
-            </ElButton>
-            <ElButton v-auth="'system:dept:delete'" link type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton v-auth="'system:dept:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
+                <FaIcon name="i-ri:edit-line" />
+              </FaButton>
+              <FaDropdown
+                :items="[
+                  [
+                    { label: '新增下级', icon: 'i-ri:add-line', vAuth: 'system:dept:add', handle: () => handleAdd(row.id) },
+                  ],
+                  [
+                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:dept:delete', handle: () => handleDelete(row) },
+                  ],
+                ]"
+              >
+                <FaButton variant="outline" size="icon-sm">
+                  <FaIcon name="i-ri:more-line" />
+                </FaButton>
+              </FaDropdown>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>

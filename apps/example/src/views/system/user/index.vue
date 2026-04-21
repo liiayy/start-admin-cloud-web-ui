@@ -12,6 +12,9 @@ import UserFormDialog from './components/UserFormDialog.vue'
 
 defineOptions({ name: 'SystemUser' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 获取系统字典（例如性别）
 // 字典数据会自动加载，无需手动 useDict
 
@@ -110,55 +113,72 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="用户管理" />
-    <FaPageMain>
-      <div class="flex gap-4">
+    <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
+      <div class="flex gap-4" :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }">
         <!-- 左：部门树 -->
-        <div class="p-3 border rounded-lg shrink-0 w-[280px]">
+        <div class="p-3 border rounded-lg shrink-0 w-[240px] flex flex-col">
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
           <ElInput v-model="searchDeptName" placeholder="过滤部门..." clearable size="default" class="mb-3">
             <template #prefix>
-              <FaIcon name="i-ep:search" />
+              <FaIcon name="i-ri:search-line" />
             </template>
           </ElInput>
-          <ElTree
-            ref="deptTreeRef"
-            :data="deptTree"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            highlight-current
-            default-expand-all
-            :expand-on-click-node="false"
-            :filter-node-method="filterDeptNode"
-            @node-click="handleDeptNodeClick"
-          />
+          <div class="flex-1 overflow-auto">
+            <ElTree
+              ref="deptTreeRef"
+              :data="deptTree"
+              :props="{ label: 'name', children: 'children' }"
+              node-key="id"
+              highlight-current
+              default-expand-all
+              :expand-on-click-node="false"
+              :filter-node-method="filterDeptNode"
+              @node-click="handleDeptNodeClick"
+            />
+          </div>
         </div>
 
         <!-- 右：用户列表 -->
-        <div class="flex-1 min-w-0">
-          <div class="mb-4 flex flex-wrap gap-3 items-center">
-            <ElInput v-model="searchParams.username" placeholder="用户名" clearable class="w-48" @keyup.enter="handleSearch" />
-            <ElInput v-model="searchParams.phone" placeholder="手机号" clearable class="w-48" @keyup.enter="handleSearch" />
-            <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="状态" clearable class="w-36" />
-            <FaButton @click="handleSearch">
-              <FaIcon name="i-ep:search" />
-              搜索
-            </FaButton>
-            <FaButton variant="outline" @click="handleReset">
-              <FaIcon name="i-ep:refresh" />
-              重置
-            </FaButton>
-            <div class="flex-1" />
+        <div class="flex-1 min-w-0 flex flex-col">
+          <FaSearchBar :show-toggle="false">
+            <template #default>
+              <div class="flex flex-wrap gap-3 items-center">
+                <FaLabel label="用户名">
+                  <FaInput v-model="searchParams.username" placeholder="请输入用户名" clearable class="w-44" @keyup.enter="handleSearch" />
+                </FaLabel>
+                <FaLabel label="手机号">
+                  <FaInput v-model="searchParams.phone" placeholder="请输入手机号" clearable class="w-44" @keyup.enter="handleSearch" />
+                </FaLabel>
+                <FaLabel label="状态">
+                  <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="请选择" clearable class="w-32" />
+                </FaLabel>
+                <FaButton @click="handleSearch">
+                  <FaIcon name="i-ri:search-line" />
+                  搜索
+                </FaButton>
+                <FaButton variant="outline" @click="handleReset">
+                  <FaIcon name="i-ri:refresh-line" />
+                  重置
+                </FaButton>
+              </div>
+            </template>
+          </FaSearchBar>
+
+          <div class="my-4 border-t border-t-dashed" />
+
+          <div class="flex-center-between gap-2">
+            <div class="flex gap-2" />
             <FaButton v-auth="'system:user:add'" @click="handleAdd">
-              <FaIcon name="i-ep:plus" />
+              <FaIcon name="i-ri:add-line" />
               新增用户
             </FaButton>
           </div>
 
-          <ElTable v-loading="loading" :data="userList" border>
+          <ElTable v-loading="loading" class="my-4" :data="userList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined">
             <ElTableColumn prop="username" label="用户名" width="120" />
             <ElTableColumn prop="nickname" label="昵称" width="120" />
             <ElTableColumn prop="deptName" label="部门" width="150" />
@@ -178,38 +198,41 @@ onMounted(() => {
                 {{ row.createTime }}
               </template>
             </ElTableColumn>
-            <ElTableColumn label="操作" width="280" align="center" fixed="right">
+            <ElTableColumn label="操作" width="120" align="center" fixed="right">
               <template #default="{ row }">
-                <!-- 避免超级管理员由于默认值无意义被修改 -->
-                <template v-if="row.id !== SecurityConstants.SUPER_ADMIN_ID">
-                  <ElButton v-auth="'system:user:update'" link type="primary" size="small" @click="handleEdit(row)">
-                    编辑
-                  </ElButton>
-                  <ElButton v-auth="'system:user:assign-role'" link type="primary" size="small" @click="handleAssignRole(row)">
-                    分配角色
-                  </ElButton>
-                  <ElButton v-auth="'system:user:reset-password'" link type="warning" size="small" @click="handleResetPwd(row)">
-                    重置密码
-                  </ElButton>
-                  <ElButton v-auth="'system:user:delete'" link type="danger" size="small" @click="handleDelete(row)">
-                    删除
-                  </ElButton>
-                </template>
+                <div class="flex-center gap-2">
+                  <template v-if="row.id !== SecurityConstants.SUPER_ADMIN_ID">
+                    <FaButton v-auth="'system:user:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
+                      <FaIcon name="i-ri:edit-line" />
+                    </FaButton>
+                    <FaDropdown
+                      :items="[
+                        [
+                          { label: '分配角色', icon: 'i-ri:user-settings-line', vAuth: 'system:user:assign-role', handle: () => handleAssignRole(row) },
+                          { label: '重置密码', icon: 'i-ri:lock-password-line', vAuth: 'system:user:reset-password', handle: () => handleResetPwd(row) },
+                        ],
+                        [
+                          { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:user:delete', handle: () => handleDelete(row) },
+                        ],
+                      ]"
+                    >
+                      <FaButton variant="outline" size="icon-sm">
+                        <FaIcon name="i-ri:more-line" />
+                      </FaButton>
+                    </FaDropdown>
+                  </template>
+                </div>
               </template>
             </ElTableColumn>
           </ElTable>
 
-          <div class="mt-4 flex justify-end">
-            <ElPagination
-              v-model:current-page="pagination.pageNum"
-              v-model:page-size="pagination.pageSize"
-              :total="total"
-              :page-sizes="[10, 20, 50, 100]"
-              layout="total, sizes, prev, pager, next, jumper"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
-          </div>
+          <FaPagination
+            v-model:page="pagination.pageNum"
+            v-model:size="pagination.pageSize"
+            :total="total"
+            @page-change="getList"
+            @size-change="getList"
+          />
         </div>
       </div>
     </FaPageMain>

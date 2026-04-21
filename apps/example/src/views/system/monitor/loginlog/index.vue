@@ -4,6 +4,9 @@ import { useTable } from '@/composables/useTable.ts'
 
 defineOptions({ name: 'MonitorLoginLog' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 字典数据会自动加载
 
 const {
@@ -59,33 +62,51 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="登录日志" />
-    <FaPageMain>
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput v-model="searchParams.username" placeholder="用户账号" clearable class="w-48" @keyup.enter="handleSearch" />
-        <ElInput v-model="searchParams.loginIp" placeholder="登录地址" clearable class="w-48" @keyup.enter="handleSearch" />
-        <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="状态" clearable class="w-36" />
-        <FaButton @click="handleSearch">
-          <FaIcon name="i-ep:search" />
-          搜索
-        </FaButton>
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
-        <FaButton v-auth="'monitor:loginlog:remove'" type="danger" variant="outline" :disabled="!selectedIds.length" @click="handleDelete()">
-          <FaIcon name="i-ep:delete" />
-          批量删除
-        </FaButton>
-        <FaButton v-auth="'monitor:loginlog:remove'" type="danger" @click="handleClean">
-          <FaIcon name="i-ep:brush" />
-          清空日志
-        </FaButton>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
+      <!-- 搜索栏 -->
+      <FaSearchBar :show-toggle="false">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="用户账号">
+              <FaInput v-model="searchParams.username" placeholder="请输入用户账号" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="登录地址">
+              <FaInput v-model="searchParams.loginIp" placeholder="请输入登录地址" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="状态">
+              <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="请选择" clearable class="w-36" />
+            </FaLabel>
+            <FaButton @click="handleSearch">
+              <FaIcon name="i-ri:search-line" />
+              搜索
+            </FaButton>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
+        <div class="flex gap-2">
+          <FaButton v-auth="'monitor:loginlog:remove'" type="danger" variant="outline" :disabled="!selectedIds.length" @click="handleDelete()">
+            <FaIcon name="i-ri:delete-bin-line" />
+            批量删除
+          </FaButton>
+          <FaButton v-auth="'monitor:loginlog:remove'" type="danger" @click="handleClean">
+            <FaIcon name="i-ri:brush-line" />
+            清空日志
+          </FaButton>
+        </div>
       </div>
 
-      <ElTable v-loading="loading" :data="logList" border @selection-change="handleSelectionChange">
+      <ElTable v-loading="loading" class="my-4" :data="logList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined" @selection-change="handleSelectionChange">
         <ElTableColumn type="selection" width="55" align="center" />
         <ElTableColumn prop="id" label="ID" width="100" />
         <ElTableColumn prop="username" label="用户账号" width="120" />
@@ -102,24 +123,22 @@ onMounted(() => {
         <ElTableColumn prop="createTime" label="访问时间" width="170" align="center" />
         <ElTableColumn label="操作" width="100" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton v-auth="'monitor:loginlog:remove'" link type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton v-auth="'monitor:loginlog:remove'" variant="outline" size="icon-sm" @click="handleDelete(row)">
+                <FaIcon name="i-ri:delete-bin-line" />
+              </FaButton>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>
 
-      <div class="mt-4 flex justify-end">
-        <ElPagination
-          v-model:current-page="pagination.pageNum"
-          v-model:page-size="pagination.pageSize"
-          :total="total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
+      <FaPagination
+        v-model:page="pagination.pageNum"
+        v-model:size="pagination.pageSize"
+        :total="total"
+        @page-change="getList"
+        @size-change="getList"
+      />
     </FaPageMain>
   </div>
 </template>

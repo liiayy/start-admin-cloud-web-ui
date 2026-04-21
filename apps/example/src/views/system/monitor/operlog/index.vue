@@ -5,6 +5,9 @@ import DetailDialog from './components/DetailDialog.vue'
 
 defineOptions({ name: 'MonitorOperLog' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 字典数据会自动加载
 
 const {
@@ -67,34 +70,54 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="操作日志" />
-    <FaPageMain>
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput v-model="searchParams.title" placeholder="系统模块" clearable class="w-48" @keyup.enter="handleSearch" />
-        <ElInput v-model="searchParams.operName" placeholder="操作人员" clearable class="w-48" @keyup.enter="handleSearch" />
-        <DictSelect v-model="searchParams.businessType" type="sys_oper_type" value-type="number" placeholder="业务类型" clearable class="w-36" />
-        <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="操作状态" clearable class="w-36" />
-        <FaButton @click="handleSearch">
-          <FaIcon name="i-ep:search" />
-          搜索
-        </FaButton>
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
-        <FaButton v-auth="'monitor:operlog:remove'" type="danger" variant="outline" :disabled="!selectedIds.length" @click="handleDelete()">
-          <FaIcon name="i-ep:delete" />
-          批量删除
-        </FaButton>
-        <FaButton v-auth="'monitor:operlog:remove'" type="danger" @click="handleClean">
-          <FaIcon name="i-ep:brush" />
-          清空日志
-        </FaButton>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
+      <!-- 搜索栏 -->
+      <FaSearchBar :show-toggle="false">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="系统模块">
+              <FaInput v-model="searchParams.title" placeholder="请输入系统模块" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="操作人员">
+              <FaInput v-model="searchParams.operName" placeholder="请输入操作人员" clearable class="w-48" @keyup.enter="handleSearch" />
+            </FaLabel>
+            <FaLabel label="业务类型">
+              <DictSelect v-model="searchParams.businessType" type="sys_oper_type" value-type="number" placeholder="请选择" clearable class="w-36" />
+            </FaLabel>
+            <FaLabel label="操作状态">
+              <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="请选择" clearable class="w-36" />
+            </FaLabel>
+            <FaButton @click="handleSearch">
+              <FaIcon name="i-ri:search-line" />
+              搜索
+            </FaButton>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
+        <div class="flex gap-2">
+          <FaButton v-auth="'monitor:operlog:remove'" type="danger" variant="outline" :disabled="!selectedIds.length" @click="handleDelete()">
+            <FaIcon name="i-ri:delete-bin-line" />
+            批量删除
+          </FaButton>
+          <FaButton v-auth="'monitor:operlog:remove'" type="danger" @click="handleClean">
+            <FaIcon name="i-ri:brush-line" />
+            清空日志
+          </FaButton>
+        </div>
       </div>
 
-      <ElTable v-loading="loading" :data="logList" border @selection-change="handleSelectionChange">
+      <ElTable v-loading="loading" class="my-4" :data="logList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined" @selection-change="handleSelectionChange">
         <ElTableColumn type="selection" width="55" align="center" />
         <ElTableColumn prop="id" label="日志编号" width="100" />
         <ElTableColumn prop="title" label="系统模块" />
@@ -117,29 +140,27 @@ onMounted(() => {
             {{ row.costTime }}毫秒
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="150" align="center" fixed="right">
+        <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton link type="primary" size="small" @click="handleDetail(row)">
-              详情
-            </ElButton>
-            <ElButton v-auth="'monitor:operlog:remove'" link type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton variant="outline" size="icon-sm" @click="handleDetail(row)">
+                <FaIcon name="i-ri:eye-line" />
+              </FaButton>
+              <FaButton v-auth="'monitor:operlog:remove'" variant="outline" size="icon-sm" @click="handleDelete(row)">
+                <FaIcon name="i-ri:delete-bin-line" />
+              </FaButton>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>
 
-      <div class="mt-4 flex justify-end">
-        <ElPagination
-          v-model:current-page="pagination.pageNum"
-          v-model:page-size="pagination.pageSize"
-          :total="total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
+      <FaPagination
+        v-model:page="pagination.pageNum"
+        v-model:size="pagination.pageSize"
+        :total="total"
+        @page-change="getList"
+        @size-change="getList"
+      />
     </FaPageMain>
 
     <DetailDialog ref="detailDialogRef" />

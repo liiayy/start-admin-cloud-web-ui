@@ -6,6 +6,9 @@ import ConfigFormDialog from './components/ConfigFormDialog.vue'
 
 defineOptions({ name: 'SystemConfig' })
 
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
+
 // 字典数据会自动加载
 
 // === 使用 Hook 管理表格基础逻辑 ===
@@ -53,42 +56,55 @@ function handleDelete(row: ConfigInfo) {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="参数设置" />
-    <FaPageMain>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 搜索栏 -->
-      <div class="mb-4 flex flex-wrap gap-3 items-center">
-        <ElInput
-          v-model="searchParams.name"
-          placeholder="参数名称"
-          clearable
-          class="w-48"
-          @keyup.enter="handleSearch"
-        />
-        <ElInput
-          v-model="searchParams.configKey"
-          placeholder="参数键名"
-          clearable
-          class="w-48"
-          @keyup.enter="handleSearch"
-        />
-        <FaButton @click="handleSearch">
-          <FaIcon name="i-ep:search" />
-          搜索
-        </FaButton>
-        <FaButton variant="outline" @click="handleReset">
-          <FaIcon name="i-ep:refresh" />
-          重置
-        </FaButton>
-        <div class="flex-1" />
+      <FaSearchBar :show-toggle="false">
+        <template #default>
+          <div class="flex flex-wrap gap-3 items-center">
+            <FaLabel label="参数名称">
+              <FaInput
+                v-model="searchParams.name"
+                placeholder="请输入参数名称"
+                clearable
+                class="w-48"
+                @keyup.enter="handleSearch"
+              />
+            </FaLabel>
+            <FaLabel label="参数键名">
+              <FaInput
+                v-model="searchParams.configKey"
+                placeholder="请输入参数键名"
+                clearable
+                class="w-48"
+                @keyup.enter="handleSearch"
+              />
+            </FaLabel>
+            <FaButton @click="handleSearch">
+              <FaIcon name="i-ri:search-line" />
+              搜索
+            </FaButton>
+            <FaButton variant="outline" @click="handleReset">
+              <FaIcon name="i-ri:refresh-line" />
+              重置
+            </FaButton>
+          </div>
+        </template>
+      </FaSearchBar>
+
+      <div class="mx--5 my-4 border-t border-t-dashed" />
+
+      <div class="flex-center-between gap-2">
+        <div class="flex gap-2" />
         <FaButton v-auth="'system:config:add'" @click="handleAdd">
-          <FaIcon name="i-ep:plus" />
+          <FaIcon name="i-ri:add-line" />
           新增参数
         </FaButton>
       </div>
 
       <!-- 表格 -->
-      <ElTable v-loading="loading" :data="configList" border>
+      <ElTable v-loading="loading" class="my-4" :data="configList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined">
         <ElTableColumn prop="name" label="参数名称" width="180" show-overflow-tooltip />
         <ElTableColumn prop="configKey" label="参数键名" width="200" show-overflow-tooltip />
         <ElTableColumn prop="configValue" label="参数键值" min-width="200" show-overflow-tooltip />
@@ -108,37 +124,36 @@ function handleDelete(row: ConfigInfo) {
             {{ row.createTime }}
           </template>
         </ElTableColumn>
-        <ElTableColumn label="操作" width="140" align="center" fixed="right">
+        <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
-            <ElButton v-auth="'system:config:update'" link type="primary" size="small" @click="handleEdit(row)">
-              编辑
-            </ElButton>
-            <ElButton
-              v-if="row.builtin !== 'Y'"
-              v-auth="'system:config:delete'"
-              link
-              type="danger"
-              size="small"
-              @click="handleDelete(row)"
-            >
-              删除
-            </ElButton>
+            <div class="flex-center gap-2">
+              <FaButton v-auth="'system:config:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
+                <FaIcon name="i-ri:edit-line" />
+              </FaButton>
+              <FaDropdown
+                :items="[
+                  [
+                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', hidden: row.builtin === 'Y', vAuth: 'system:config:delete', handle: () => handleDelete(row) },
+                  ],
+                ]"
+              >
+                <FaButton variant="outline" size="icon-sm">
+                  <FaIcon name="i-ri:more-line" />
+                </FaButton>
+              </FaDropdown>
+            </div>
           </template>
         </ElTableColumn>
       </ElTable>
 
       <!-- 分页 -->
-      <div class="mt-4 flex justify-end">
-        <ElPagination
-          v-model:current-page="pagination.pageNum"
-          v-model:page-size="pagination.pageSize"
-          :total="total"
-          :page-sizes="[10, 20, 50, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </div>
+      <FaPagination
+        v-model:page="pagination.pageNum"
+        v-model:size="pagination.pageSize"
+        :total="total"
+        @page-change="getList"
+        @size-change="getList"
+      />
     </FaPageMain>
 
     <ConfigFormDialog ref="configFormDialogRef" @success="getList" />
