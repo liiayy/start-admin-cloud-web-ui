@@ -158,7 +158,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <FaModal v-model="visible" :title="dialogTitle" class="max-w-2xl">
+  <FaModal v-model="visible" :title="dialogTitle" class="max-w-3xl!">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="100px">
       <ElRow :gutter="20">
         <ElCol :span="24">

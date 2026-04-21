@@ -179,8 +179,8 @@ onMounted(() => {
           </div>
 
           <ElTable v-loading="loading" class="my-4" :data="userList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined">
-            <ElTableColumn prop="username" label="用户名" width="120" />
-            <ElTableColumn prop="nickname" label="昵称" width="120" />
+            <ElTableColumn prop="username" label="用户名" min-width="120" />
+            <ElTableColumn prop="nickname" label="昵称" min-width="120" />
             <ElTableColumn prop="deptName" label="部门" width="150" />
             <ElTableColumn prop="phone" label="手机号码" width="140" />
             <ElTableColumn label="性别" width="70" align="center">
