@@ -21,6 +21,7 @@ const props = withDefaults(
   {
     modelValue: false,
     zIndex: 2000,
+    modal: true,
     loading: false,
     closable: true,
     maximize: false,
@@ -170,23 +171,6 @@ async function onCancel() {
   }
 }
 
-function isTrustedPortal(target: HTMLElement | null) {
-  if (!target || !target.closest) return false
-  return !!(
-    target.closest('.el-select-dropdown') ||
-    target.closest('.el-popper') ||
-    target.closest('.el-cascader-menus') ||
-    target.closest('.el-picker-panel') ||
-    target.closest('.el-time-panel') ||
-    target.closest('.el-color-dropdown') ||
-    target.closest('.el-overlay')
-  )
-}
-
-function getEventTarget(e: Event): HTMLElement | null {
-  return ((e as any).detail?.originalEvent?.target || e.target) as HTMLElement | null
-}
-
 function handleOpenAutoFocus(e: Event) {
   if (!props.openAutoFocus) {
     e.preventDefault()
@@ -200,21 +184,11 @@ function handleOpenAutoFocus(e: Event) {
 }
 
 function handleFocusOutside(e: Event) {
-
   e.preventDefault()
   e.stopPropagation()
 }
 
 function handleClickOutside(e: Event) {
-  const target = getEventTarget(e)
-  if (isTrustedPortal(target)) {
-    // 关键修正！必须在这里调用 e.preventDefault()
-    // 这不是阻止原生浏览器点击，而是向 reka-ui 发送指令：“我已接管这个外部组件，不要做任何关闭或焦点拦截”
-    e.preventDefault()
-    e.stopPropagation()
-    return
-  }
-
   if (!props.closeOnClickOverlay || (e.target as HTMLElement).dataset.modalId !== modalId.value) {
     e.preventDefault()
     e.stopPropagation()
@@ -245,7 +219,7 @@ function handleAnimationEnd() {
 </script>
 
 <template>
-  <Dialog :open="isOpen" @update:open="updateOpen">
+  <Dialog :open="isOpen" :modal="props.modal" @update:open="updateOpen">
     <DialogContent
       ref="dialogContentRef"
       :modal-id="modalId"

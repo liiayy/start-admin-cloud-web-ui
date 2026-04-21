@@ -9,6 +9,7 @@ export interface ModalProps {
   title?: string | (() => string)
   description?: string | (() => string)
   icon?: 'info' | 'success' | 'warning' | 'error'
+  modal?: boolean
   loading?: boolean
   closable?: boolean
   maximize?: boolean
@@ -35,6 +36,7 @@ export interface ModalProps {
   closeOnPressEscape?: boolean
   destroyOnClose?: boolean
   openAutoFocus?: boolean
+  trapFocus?: boolean
   class?: HTMLAttributes['class']
   headerClass?: HTMLAttributes['class']
   contentClass?: HTMLAttributes['class']
