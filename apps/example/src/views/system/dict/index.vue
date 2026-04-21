@@ -24,10 +24,13 @@ const selectedType = ref<DictTypeInfo | null>(null)
 
 const typeDialogRef = ref<InstanceType<typeof DictTypeFormDialog>>()
 
-async function getTypeList() {
+async function getTypeList(showToast = false) {
   leftLoading.value = true
   try {
     typeList.value = await apiDictType.list()
+    if (showToast) {
+      faToast.success('刷新成功')
+    }
   }
   finally {
     leftLoading.value = false
@@ -131,24 +134,18 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             字典类型
           </div>
-          <div class="mb-2">
-            <FaInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable>
+          <div class="mb-3 flex gap-2">
+            <FaInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable class="flex-1">
               <template #prefix>
                 <FaIcon name="i-ri:search-line" />
               </template>
             </FaInput>
-          </div>
-          <div class="mb-2 flex-center-between gap-2">
-            <div class="flex gap-2">
-              <FaButton v-auth="'system:dict:add'" size="sm" @click="handleAddType">
-                <FaIcon name="i-ri:add-line" />
-                新增
-              </FaButton>
-              <FaButton variant="outline" size="sm" @click="searchKeyword = ''; getTypeList()">
-                <FaIcon name="i-ri:refresh-line" />
-                刷新
-              </FaButton>
-            </div>
+            <FaButton v-auth="'system:dict:add'" size="icon-sm" title="新增类型" @click="handleAddType">
+              <FaIcon name="i-ri:add-line" />
+            </FaButton>
+            <FaButton variant="outline" size="icon-sm" title="刷新列表" @click="searchKeyword = ''; getTypeList(true)">
+              <FaIcon name="i-ri:refresh-line" />
+            </FaButton>
           </div>
           <div class="flex-1 overflow-auto">
             <ElTable
@@ -225,7 +222,14 @@ onMounted(() => {
                   <DictTag type="sys_status" :value="row.status" />
                 </template>
               </ElTableColumn>
-              <ElTableColumn prop="colorType" label="颜色" width="100" align="center" />
+              <ElTableColumn label="颜色" prop="colorType" width="120" align="center">
+                <template #default="{ row }">
+                  <ElTag v-if="row.colorType" :type="row.colorType" effect="light">
+                    {{ row.colorType }}
+                  </ElTag>
+                  <span v-else class="text-gray-400 text-xs">-</span>
+                </template>
+              </ElTableColumn>
               <ElTableColumn prop="remark" label="备注" min-width="150" show-overflow-tooltip />
               <ElTableColumn label="创建时间" width="170" align="center">
                 <template #default="{ row }">

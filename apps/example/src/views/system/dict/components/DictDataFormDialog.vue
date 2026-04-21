@@ -123,7 +123,7 @@ async function handleSubmit() {
           </ElFormItem>
         </ElCol>
         <ElFormItem label="状态">
-          <DictRadio v-model="formData.status" type="sys_status" />
+          <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
         </ElFormItem>
       </ElRow>
       <ElRow :gutter="16">
