@@ -8,6 +8,7 @@ const list = ref<OssConfig[]>([])
 
 const formVisible = ref(false)
 const formLoading = ref(false)
+const testLoading = ref(false)
 const formRef = ref()
 const formData = reactive<OssConfig>({
   id: undefined,
@@ -108,6 +109,20 @@ function handleServiceChange(val: any) {
   // 仅在新增模式下自动填充标识
   if (!formData.id) {
     formData.configKey = val
+  }
+}
+
+async function handleTest() {
+  await formRef.value?.validate()
+  testLoading.value = true
+  try {
+    await apiOss.configTest(formData)
+    faToast.success('测试连接成功，上传正常')
+  } catch (e: any) {
+    console.log( e)
+  }
+ finally {
+    testLoading.value = false
   }
 }
 </script>
@@ -233,8 +248,17 @@ function handleServiceChange(val: any) {
         </ElFormItem>
       </ElForm>
       <template #footer>
-        <FaButton variant="outline" @click="formVisible = false">取消</FaButton>
-        <FaButton :loading="formLoading" @click="handleSubmit">确定</FaButton>
+        <div class="flex justify-end gap-2">
+          <FaButton variant="outline" @click="formVisible = false">
+            取消
+          </FaButton>
+          <FaButton v-if="formData.service !== 'local'" variant="outline" :loading="testLoading" @click="handleTest">
+            测试连接
+          </FaButton>
+          <FaButton :loading="formLoading" @click="handleSubmit">
+            确定
+          </FaButton>
+        </div>
       </template>
     </FaModal>
   </FaModal>

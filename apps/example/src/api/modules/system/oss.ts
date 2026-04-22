@@ -41,7 +41,7 @@ export interface OssPageParam {
   service?: string
 }
 
-export default {
+const apiOss = {
   // --- OSS 资源管理 ---
 
   // 分页获取资源列表
@@ -66,4 +66,9 @@ export default {
 
   // 刷新客户端
   configReload: (configKey: string) => request.post('api/system/resource/oss/config/reload', null, { params: { configKey } }),
+
+  // 测试配置
+  configTest: (data: OssConfig) => request.post('api/system/resource/oss/config/test', data),
 }
+
+export default apiOss
