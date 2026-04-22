@@ -11,7 +11,7 @@ function handleSuccess() {
 <template>
   <FaFileUpload
     v-model="files"
-    action="/fake/upload"
+    action="/resource/oss/upload"
     :after-upload="(response) => response.data.url"
     multiple
     @on-success="handleSuccess"

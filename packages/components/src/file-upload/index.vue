@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { filesize } from 'filesize'
 import { toast } from 'vue-sonner'
+import { cn } from '../../utils'
 
 defineOptions({
   name: 'FaFileUpload',
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<{
   max?: number
   hideTips?: boolean
   disabled?: boolean
+  showFileList?: boolean
+  listClass?: string
 }>(), {
   method: 'post',
   headers: () => ({}),
@@ -31,6 +34,8 @@ const props = withDefaults(defineProps<{
   max: 0,
   hideTips: false,
   disabled: false,
+  showFileList: true,
+  listClass: '',
 })
 
 const emits = defineEmits<{
@@ -38,7 +43,7 @@ const emits = defineEmits<{
   onClick: [fileItem: FileItem, index: number]
 }>()
 
-const fileList = defineModel<FileItem[]>('modelValue', { required: true })
+const fileList = defineModel<FileItem[]>('modelValue', { default: () => [] })
 
 export interface FileItem {
   name: string
@@ -200,7 +205,7 @@ function removeFile(idx: number) {
         {{ formatText('数量不超过 {max} 个', { max: props.max }) }}
       </div>
     </div>
-    <div v-if="fileList.length > 0" class="gap-2 grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+    <div v-if="props.showFileList && fileList.length > 0" :class="cn('gap-2 grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))]', props.listClass)">
       <div
         v-for="(item, index) in fileList"
         :key="item.name + index"
