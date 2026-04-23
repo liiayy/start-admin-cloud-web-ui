@@ -6,7 +6,7 @@ export const useConfigStore = defineStore('config', {
     /** 系统配置值缓存 */
     configValues: {} as Record<string, any>,
     /** 正在请求中的配置键名及其对应的 Promise */
-    loadingPromises: {} as Record<string, Promise<any>>,
+    loadingPromises: {} as Record<string, Promise<any> | undefined>,
   }),
 
   actions: {
@@ -61,7 +61,7 @@ export const useConfigStore = defineStore('config', {
               console.error('[ConfigStore] CRITICAL: apiConfig.listValues is missing! apiConfig contains:', Object.keys(apiConfig))
               throw new Error('apiConfig.listValues is not a function')
             }
-            const { data } = await apiConfig.listValues(keysToFetch)
+            const data = await apiConfig.listValues(keysToFetch)
             // 更新缓存并解析布尔/数字类型
             Object.keys(data).forEach((key) => {
               this.configValues[key] = this.parseValue(data[key])

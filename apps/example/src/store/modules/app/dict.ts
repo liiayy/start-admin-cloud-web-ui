@@ -3,8 +3,8 @@ import { defineStore } from 'pinia'
 import apiDictData from '@/api/modules/system/dict/dictData.ts'
 
 interface DictState {
-  dictData: Record<string, DictDataInfo[]>
-  promises: Record<string, Promise<DictDataInfo[]>>
+  dictData: Record<string, DictDataInfo[] | undefined>
+  promises: Record<string, Promise<DictDataInfo[]> | undefined>
 }
 
 export const useDictStore = defineStore('dict', {

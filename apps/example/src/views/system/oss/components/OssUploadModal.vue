@@ -89,12 +89,12 @@ defineExpose({ open })
 
 <style scoped>
 .fade-enter-active,
- .fade-leave-active {
+.fade-leave-active {
   transition: opacity 0.3s, transform 0.3s;
 }
 
 .fade-enter-from,
- .fade-leave-to {
+.fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }

@@ -18,6 +18,7 @@ export interface UserInfo {
   loginDate: string
   createTime: string
   roleIds: number[]
+  remark?: string
 }
 
 /** 用户新增请求 */
@@ -30,6 +31,9 @@ export interface UserAddFormData {
   deptId: number | null
   postIds: number[]
   status: number
+  sex: number
+  avatar?: string
+  remark?: string
 }
 
 /** 用户编辑请求 */

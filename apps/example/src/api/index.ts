@@ -185,4 +185,5 @@ export const request = {
   },
 }
 
-export default api
+export default request
+export { api }

@@ -12,7 +12,7 @@ const { auth, authAll } = useAppAuth()
 
 async function accountSwitch(val: any) {
   await appAccountStore.login({
-    account: val,
+    username: val,
     password: '',
   })
   location.reload()

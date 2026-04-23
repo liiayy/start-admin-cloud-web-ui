@@ -15,7 +15,7 @@ const menuTree = ref<MenuTreeNode[]>([])
 const searchName = ref('')
 
 const typeMap: Record<number, string> = { 1: '目录', 2: '菜单', 3: '按钮' }
-const typeTagType: Record<number, string> = { 1: 'warning', 2: 'success', 3: 'info' }
+const typeTagType: Record<number, 'warning' | 'success' | 'info' | 'primary' | 'danger'> = { 1: 'warning', 2: 'success', 3: 'info' }
 
 const filteredTree = computed(() => {
   if (!searchName.value) {

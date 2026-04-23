@@ -70,8 +70,8 @@ function getParentCascaderValue(): number[] {
   return findPath(props.deptTree, formData.parentId)
 }
 
-function handleParentChange(value: number[]) {
-  formData.parentId = value.length > 0 ? (value.at(-1) as number) : 0
+function handleParentChange(value: any) {
+  formData.parentId = value && value.length > 0 ? (value[value.length - 1] as number) : 0
 }
 
 function openAdd(parentId = 0) {

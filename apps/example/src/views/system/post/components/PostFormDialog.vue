@@ -114,7 +114,7 @@ async function handleSubmit() {
         <ElTreeSelect
           v-model="formData.deptId"
           :data="deptTree"
-          :props="{ label: 'name', value: 'id', children: 'children' }"
+          :props="{ label: 'name', value: 'id', children: 'children' } as any"
           placeholder="请选择所属部门"
           check-strictly
           style="width: 100%;"

@@ -42,7 +42,7 @@
       </p>
       <div class="flex gap-2 items-center">
         <FaTrend value="12.3%" size="small" />
-        <FaTrend value="12.3%" size="default" />
+        <FaTrend value="12.3%" size="medium" />
         <FaTrend value="12.3%" size="large" />
       </div>
     </div>

@@ -31,7 +31,7 @@ const formData = reactive<UserAddFormData & { id?: number, postIds?: number[] }>
   deptId: null as any,
   postIds: [],
   email: '',
-  phone: '',
+  mobile: '',
   sex: 0,
   avatar: '',
   status: 0,
@@ -54,7 +54,7 @@ function resetForm() {
     deptId: null,
     postIds: [],
     email: '',
-    phone: '',
+    mobile: '',
     sex: 0,
     avatar: '',
     status: 0,
@@ -100,7 +100,7 @@ async function openEdit(row: UserInfo) {
     deptId: detail.deptId,
     postIds: detail.postIds || [],
     email: detail.email || '',
-    phone: detail.phone || '',
+    mobile: detail.mobile || '',
     sex: detail.sex || 0,
     avatar: detail.avatar || '',
     status: detail.status,
@@ -159,7 +159,7 @@ async function handleSubmit() {
             <ElTreeSelect
               v-model="formData.deptId"
               :data="deptTree"
-              :props="{ label: 'name', value: 'id', children: 'children' }"
+              :props="{ label: 'name', value: 'id', children: 'children' } as any"
               placeholder="请选择"
               check-strictly
               class="w-full"
@@ -182,8 +182,8 @@ async function handleSubmit() {
       </ElRow>
       <ElRow :gutter="20">
         <ElCol :span="12">
-          <ElFormItem label="手机号码" prop="phone">
-            <ElInput v-model="formData.phone" placeholder="请输入手机号码" />
+          <ElFormItem label="手机号码" prop="mobile">
+            <ElInput v-model="formData.mobile" placeholder="请输入手机号码" />
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">

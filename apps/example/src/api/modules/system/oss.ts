@@ -1,3 +1,4 @@
+import type { PageResult } from '@/api/type/base.ts'
 import request from '@/api/index.ts'
 
 /** OSS记录信息 */
@@ -45,10 +46,7 @@ const apiOss = {
   // --- OSS 资源管理 ---
 
   // 分页获取资源列表
-  page: (params: OssPageParam) => request.get<any>('api/system/resource/oss/page', { params }).then(res => ({
-    list: res.records,
-    total: res.totalRow,
-  })),
+  page: (params: OssPageParam) => request.get<PageResult<OssInfo>>('api/system/resource/oss/page', { params }),
 
   // 删除资源
   delete: (id: string | number) => request.delete('api/system/resource/oss/delete', { params: { id } }),

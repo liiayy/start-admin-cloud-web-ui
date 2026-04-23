@@ -27,7 +27,7 @@ async function getDeptTree() {
 }
 
 // 树过滤逻辑
-function filterDeptNode(value: string, data: DeptTreeNode) {
+function filterDeptNode(value: string, data: any) {
   if (!value) {
     return true
   }
@@ -116,7 +116,7 @@ onMounted(() => {
             部门列表
           </div>
           <FaInput v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
-            <template #prefix>
+            <template #start>
               <FaIcon name="i-ri:search-line" />
             </template>
           </FaInput>
@@ -148,7 +148,7 @@ onMounted(() => {
                   <ElTreeSelect
                     v-model="searchParams.deptId"
                     :data="deptTree"
-                    :props="{ label: 'name', value: 'id', children: 'children' }"
+                    :props="{ label: 'name', value: 'id', children: 'children' } as any"
                     placeholder="请选择"
                     clearable
                     check-strictly

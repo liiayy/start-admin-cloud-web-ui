@@ -28,7 +28,7 @@ async function loadDeptTree() {
 }
 
 // 树过滤逻辑
-function filterDeptNode(value: string, data: DeptTreeNode) {
+function filterDeptNode(value: string, data: any) {
   if (!value) {
     return true
   }
@@ -54,7 +54,7 @@ const {
   defaultParams: {
     deptId: null as number | null,
     username: '',
-    phone: '',
+    mobile: '',
     status: null as number | null,
   },
 })
@@ -123,7 +123,7 @@ onMounted(() => {
             部门组织
           </div>
           <FaInput v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
-            <template #prefix>
+            <template #start>
               <FaIcon name="i-ri:search-line" />
             </template>
           </FaInput>
@@ -151,7 +151,7 @@ onMounted(() => {
                   <FaInput v-model="searchParams.username" placeholder="请输入用户名" clearable class="w-44" @keyup.enter="handleSearch" />
                 </FaLabel>
                 <FaLabel label="手机号">
-                  <FaInput v-model="searchParams.phone" placeholder="请输入手机号" clearable class="w-44" @keyup.enter="handleSearch" />
+                  <FaInput v-model="searchParams.mobile" placeholder="请输入手机号" clearable class="w-44" @keyup.enter="handleSearch" />
                 </FaLabel>
                 <FaLabel label="状态">
                   <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="请选择" clearable class="w-32" />
@@ -182,7 +182,7 @@ onMounted(() => {
             <ElTableColumn prop="username" label="用户名" min-width="120" />
             <ElTableColumn prop="nickname" label="昵称" min-width="120" />
             <ElTableColumn prop="deptName" label="部门" width="150" />
-            <ElTableColumn prop="phone" label="手机号码" width="140" />
+            <ElTableColumn prop="mobile" label="手机号码" width="140" />
             <ElTableColumn label="性别" width="70" align="center">
               <template #default="{ row }">
                 <DictTag type="sys_user_sex" :value="row.sex" />

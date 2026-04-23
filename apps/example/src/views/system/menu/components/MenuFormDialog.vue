@@ -76,8 +76,8 @@ function getParentCascaderValue(): number[] {
   return findPathInTree(props.menuTree, formData.parentId)
 }
 
-function handleParentChange(value: number[]) {
-  formData.parentId = value.length > 0 ? value.at(-1) : 0
+function handleParentChange(value: any) {
+  formData.parentId = value && value.length > 0 ? value[value.length - 1] : 0
 }
 
 function resetForm() {
