@@ -2,9 +2,9 @@ import api from '@/api'
 
 export default {
   // 分页查询登录日志
-  list: (params: any) => api.get('api/system/monitor/loginlog/page', { params }),
+  list: (params: any) => api.get('api/admin/system/login-log/page', { params }),
   // 批量删除
-  delete: (ids: string) => api.delete(`api/system/monitor/loginlog/${ids}`),
+  delete: (ids: string) => api.delete(`api/admin/system/login-log/${ids}`),
   // 清空日志
-  clean: () => api.post('api/system/monitor/loginlog/clean'),
+  clean: () => api.post('api/admin/system/login-log/clean'),
 }

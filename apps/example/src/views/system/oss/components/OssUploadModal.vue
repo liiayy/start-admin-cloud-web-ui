@@ -19,8 +19,8 @@ const uploadHeaders = computed(() => ({
 // 修复：防止双斜杠产生
 const baseUrl = import.meta.env.VITE_APP_API_BASEURL || ''
 const uploadAction = baseUrl.endsWith('/')
-  ? `${baseUrl}api/system/resource/oss/upload`
-  : `${baseUrl}/api/system/resource/oss/upload`
+  ? `${baseUrl}api/admin/system/oss/upload`
+  : `${baseUrl}/api/admin/system/oss/upload`
 
 // 计算当前是否正在上传
 const isUploading = computed(() => fileList.value.some(file => file.status === 'uploading'))

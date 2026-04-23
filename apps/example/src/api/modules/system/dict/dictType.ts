@@ -30,20 +30,20 @@ export interface DictTypePageParam {
 
 export default {
   /** 字典类型列表 */
-  list: () => request.get<DictTypeInfo[]>('api/system/system/dict-type/list'),
+  list: () => request.get<DictTypeInfo[]>('api/admin/system/dict-type/list'),
 
   /** 字典类型分页 */
-  page: (params: DictTypePageParam) => request.get<PageResult<DictTypeInfo>>('api/system/system/dict-type/page', { params }),
+  page: (params: DictTypePageParam) => request.get<PageResult<DictTypeInfo>>('api/admin/system/dict-type/page', { params }),
 
   /** 字典类型详情 */
-  get: (id: number) => request.get<DictTypeInfo>('api/system/dict-type/system/get', { params: { id } }),
+  get: (id: number) => request.get<DictTypeInfo>('api/admin/system/dict-type/get', { params: { id } }),
 
   /** 新增字典类型 */
-  add: (data: DictTypeFormData) => request.post('api/system/system/dict-type/add', data),
+  add: (data: DictTypeFormData) => request.post('api/admin/system/dict-type/add', data),
 
   /** 更新字典类型 */
-  update: (id: number, data: DictTypeFormData) => request.put('api/system/system/dict-type/update', data, { params: { id } }),
+  update: (id: number, data: DictTypeFormData) => request.put('api/admin/system/dict-type/update', data, { params: { id } }),
 
   /** 删除字典类型 */
-  delete: (id: number) => request.delete('api/system/system/dict-type/delete', { params: { id } }),
+  delete: (id: number) => request.delete('api/admin/system/dict-type/delete', { params: { id } }),
 }

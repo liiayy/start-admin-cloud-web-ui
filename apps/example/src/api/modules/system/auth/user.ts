@@ -61,29 +61,29 @@ export interface UserPageParam {
 
 export default {
   // 用户分页
-  page: (params: UserPageParam) => request.get<PageResult<UserInfo>>('api/system/auth/user/page', { params }),
+  page: (params: UserPageParam) => request.get<PageResult<UserInfo>>('api/admin/system/user/page', { params }),
 
   // 用户详情
-  get: (id: number) => request.get<UserInfo>('api/system/auth/user/get', { params: { id } }),
+  get: (id: number) => request.get<UserInfo>('api/admin/system/user/get', { params: { id } }),
 
   // 新增用户
-  create: (data: UserAddFormData) => request.post('api/system/auth/user/create', data),
+  create: (data: UserAddFormData) => request.post('api/admin/system/user/create', data),
 
   // 更新用户
-  update: (data: UserUpdateFormData) => request.put('api/system/auth/user/update', data),
+  update: (data: UserUpdateFormData) => request.put('api/admin/system/user/update', data),
 
   // 删除用户
-  delete: (id: number) => request.delete('api/system/auth/user/delete', { params: { id } }),
+  delete: (id: number) => request.delete('api/admin/system/user/delete', { params: { id } }),
 
   // 更新状态
   updateStatus: (id: number, status: number) =>
-    request.put('api/system/auth/user/update-status', { id, status }),
+    request.put('api/admin/system/user/update-status', { id, status }),
 
   // 重置密码
   resetPassword: (id: number, newPassword: string) =>
-    request.put('api/system/auth/user/reset-password', { id, newPassword }),
+    request.put('api/admin/system/user/reset-password', { id, newPassword }),
 
   // 分配角色
   assignRole: (userId: number, roleIds: number[]) =>
-    request.post('api/system/auth/user/assign-role', { userId, roleIds }),
+    request.post('api/admin/system/user/assign-role', { userId, roleIds }),
 }

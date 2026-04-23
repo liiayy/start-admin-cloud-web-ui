@@ -35,24 +35,24 @@ export interface PostPageParam {
 
 export default {
   // 岗位分页
-  page: (params: PostPageParam) => request.get<PageResult<PostInfo>>('api/system/organization/post/page', { params }),
+  page: (params: PostPageParam) => request.get<PageResult<PostInfo>>('api/admin/system/post/page', { params }),
 
   // 岗位列表
-  list: () => request.get<PostInfo[]>('api/system/organization/post/list'),
+  list: () => request.get<PostInfo[]>('api/admin/system/post/list'),
 
   // 岗位详情
-  getById: (id: number) => request.get<PostInfo>(`api/system/organization/post/${id}`),
+  getById: (id: number) => request.get<PostInfo>(`api/admin/system/post/${id}`),
 
   // 新增岗位
-  add: (data: PostFormData) => request.post('api/system/organization/post/add', data),
+  add: (data: PostFormData) => request.post('api/admin/system/post/add', data),
 
   // 更新岗位
-  update: (id: number, data: PostFormData) => request.put(`api/system/organization/post/${id}`, data),
+  update: (id: number, data: PostFormData) => request.put(`api/admin/system/post/${id}`, data),
 
   // 删除岗位
-  delete: (id: number) => request.delete(`api/system/organization/post/${id}`),
+  delete: (id: number) => request.delete(`api/admin/system/post/${id}`),
 
   // 更新岗位状态
   updateStatus: (id: number, status: number) =>
-    request.put('api/system/organization/post/update-status', null, { params: { id, status } }),
+    request.put('api/admin/system/post/update-status', null, { params: { id, status } }),
 }

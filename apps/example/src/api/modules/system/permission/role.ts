@@ -49,25 +49,25 @@ export interface RolePageParam {
 
 export default {
   // 角色分页
-  page: (params: RolePageParam) => request.get<PageResult<RoleInfo>>('api/system/permission/role/page', { params }),
+  page: (params: RolePageParam) => request.get<PageResult<RoleInfo>>('api/admin/system/role/page', { params }),
 
   // 角色详情
-  get: (id: number) => request.get<RoleInfo>('api/system/permission/role/get', { params: { id } }),
+  get: (id: number) => request.get<RoleInfo>('api/admin/system/role/get', { params: { id } }),
 
   // 新增角色
-  add: (data: RoleAddFormData) => request.post('api/system/permission/role/add', data),
+  add: (data: RoleAddFormData) => request.post('api/admin/system/role/add', data),
 
   // 更新角色
-  update: (data: RoleUpdateFormData) => request.put('api/system/permission/role/update', data),
+  update: (data: RoleUpdateFormData) => request.put('api/admin/system/role/update', data),
 
   // 删除角色
-  delete: (id: number) => request.delete('api/system/permission/role/delete', { params: { id } }),
+  delete: (id: number) => request.delete('api/admin/system/role/delete', { params: { id } }),
 
   // 更新角色状态
   updateStatus: (id: number, status: number) =>
-    request.put('api/system/permission/role/update-status', { id, status }),
+    request.put('api/admin/system/role/update-status', { id, status }),
 
   // 分配菜单权限
   assignMenus: (roleId: number, menuIds: number[]) =>
-    request.post('api/system/permission/role/assign-menus', menuIds, { params: { roleId } }),
+    request.post('api/admin/system/role/assign-menus', menuIds, { params: { roleId } }),
 }

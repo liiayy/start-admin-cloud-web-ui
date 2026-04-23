@@ -57,26 +57,26 @@ export interface MenuUpdateFormData {
 
 const apiMenu = {
   // 获取全量菜单树（管理用）
-  tree: () => request.get<MenuTreeNode[]>('api/system/permission/menu/tree'),
+  tree: () => request.get<MenuTreeNode[]>('api/admin/system/menu/tree'),
 
   // 获取当前用户菜单树（路由用）
-  userTree: () => request.get<MenuTreeNode[]>('api/system/permission/menu/user-tree'),
+  userTree: () => request.get<MenuTreeNode[]>('api/admin/system/menu/user-tree'),
 
   // 菜单详情
-  get: (id: number) => request.get<MenuTreeNode>('api/system/permission/menu/get', { params: { id } }),
+  get: (id: number) => request.get<MenuTreeNode>('api/admin/system/menu/get', { params: { id } }),
 
   // 新增菜单
-  add: (data: MenuAddFormData) => request.post('api/system/permission/menu/add', data),
+  add: (data: MenuAddFormData) => request.post('api/admin/system/menu/add', data),
 
   // 更新菜单
-  update: (data: MenuUpdateFormData) => request.put('api/system/permission/menu/update', data),
+  update: (data: MenuUpdateFormData) => request.put('api/admin/system/menu/update', data),
 
   // 删除菜单
-  delete: (id: number) => request.delete('api/system/permission/menu/delete', { params: { id } }),
+  delete: (id: number) => request.delete('api/admin/system/menu/delete', { params: { id } }),
 
   // 根据角色获取菜单
   listByRole: (roleIds: number[]) =>
-    request.get<number[]>('api/system/permission/menu/list-by-role', { params: { roleIds: roleIds.join(',') } }),
+    request.get<number[]>('api/admin/system/menu/list-by-role', { params: { roleIds: roleIds.join(',') } }),
 }
 
 export default apiMenu

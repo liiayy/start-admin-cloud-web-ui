@@ -38,22 +38,22 @@ export interface DictDataPageParam {
 
 export default {
   /** 根据类型获取字典数据列表 */
-  listByType: (dictType: string) => request.get<DictDataInfo[]>('api/system/system/dict-data/list-by-type', { params: { dictType } }),
+  listByType: (dictType: string) => request.get<DictDataInfo[]>('api/admin/system/dict-data/list-by-type', { params: { dictType } }),
   /** 根据类型列表批量获取字典数据 */
-  listByTypes: (dictTypes: string[]) => request.get<Record<string, DictDataInfo[]>>('api/system/system/dict-data/list-by-types', { params: { dictTypes: dictTypes.join(',') } }),
+  listByTypes: (dictTypes: string[]) => request.get<Record<string, DictDataInfo[]>>('api/admin/system/dict-data/list-by-types', { params: { dictTypes: dictTypes.join(',') } }),
 
   /** 字典数据分页 */
-  page: (params: DictDataPageParam) => request.get<PageResult<DictDataInfo>>('api/system/system/dict-data/page', { params }),
+  page: (params: DictDataPageParam) => request.get<PageResult<DictDataInfo>>('api/admin/system/dict-data/page', { params }),
 
   /** 字典数据详情 */
-  get: (id: number) => request.get<DictDataInfo>('api/system/system/dict-data/get', { params: { id } }),
+  get: (id: number) => request.get<DictDataInfo>('api/admin/system/dict-data/get', { params: { id } }),
 
   /** 新增字典数据 */
-  add: (data: DictDataFormData) => request.post('api/system/system/dict-data/add', data),
+  add: (data: DictDataFormData) => request.post('api/admin/system/dict-data/add', data),
 
   /** 更新字典数据 */
-  update: (id: number, data: DictDataFormData) => request.put('api/system/system/dict-data/update', data, { params: { id } }),
+  update: (id: number, data: DictDataFormData) => request.put('api/admin/system/dict-data/update', data, { params: { id } }),
 
   /** 删除字典数据 */
-  delete: (id: number) => request.delete('api/system/system/dict-data/delete', { params: { id } }),
+  delete: (id: number) => request.delete('api/admin/system/dict-data/delete', { params: { id } }),
 }

@@ -33,24 +33,24 @@ export interface DeptFormData {
 
 export default {
   // 部门列表
-  list: () => request.get<DeptInfo[]>('api/system/organization/dept/list'),
+  list: () => request.get<DeptInfo[]>('api/admin/system/dept/list'),
 
   // 部门树
-  tree: () => request.get<DeptTreeNode[]>('api/system/organization/dept/tree'),
+  tree: () => request.get<DeptTreeNode[]>('api/admin/system/dept/tree'),
 
   // 部门详情
-  getById: (id: number) => request.get<DeptInfo>(`api/system/organization/dept/${id}`),
+  getById: (id: number) => request.get<DeptInfo>(`api/admin/system/dept/${id}`),
 
   // 新增部门
-  add: (data: DeptFormData) => request.post('api/system/organization/dept/add', data),
+  add: (data: DeptFormData) => request.post('api/admin/system/dept/add', data),
 
   // 更新部门
-  update: (id: number, data: DeptFormData) => request.put(`api/system/organization/dept/${id}`, data),
+  update: (id: number, data: DeptFormData) => request.put(`api/admin/system/dept/${id}`, data),
 
   // 删除部门
-  delete: (id: number) => request.delete(`api/system/organization/dept/${id}`),
+  delete: (id: number) => request.delete(`api/admin/system/dept/${id}`),
 
   // 更新部门状态
   updateStatus: (id: number, status: number) =>
-    request.put('api/system/organization/dept/update-status', null, { params: { id, status } }),
+    request.put('api/admin/system/dept/update-status', null, { params: { id, status } }),
 }

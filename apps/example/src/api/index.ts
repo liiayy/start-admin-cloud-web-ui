@@ -44,7 +44,7 @@ const HTTP_STATUS = {
 } as const
 
 const api = axios.create({
-  baseURL: (import.meta.env.DEV && import.meta.env.VITE_ENABLE_PROXY) ? '/proxy/' : import.meta.env.VITE_APP_API_BASEURL,
+  baseURL: (import.meta.env.DEV && import.meta.env.VITE_ENABLE_PROXY) ? '/' : import.meta.env.VITE_APP_API_BASEURL,
   timeout: 1000 * 60,
   responseType: 'json',
 })

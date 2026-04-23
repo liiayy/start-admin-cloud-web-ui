@@ -10,10 +10,10 @@ export default {
   login: (data: {
     username: string
     password: string
-  }) => api.post('api/system/auth/login', data),
+  }) => api.post('api/admin/system/auth/login', data),
 
   // 获取权限 (对应后端的 get-info)
-  permission: () => api.get('api/system/auth/get-info'),
+  permission: () => api.get('api/admin/system/auth/get-info'),
 
   // 修改密码
   passwordEdit: (data: {

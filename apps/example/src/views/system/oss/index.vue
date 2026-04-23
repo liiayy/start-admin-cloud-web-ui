@@ -108,8 +108,6 @@ function getFullUrl(url: string) {
 
 <template>
   <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
-    <FaPageHeader title="文件管理" description="集成策略模式的多平台文件管理系统" />
-
     <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
       <FaSearchBar :show-toggle="false">
         <template #default>

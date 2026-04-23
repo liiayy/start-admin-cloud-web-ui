@@ -25,10 +25,9 @@ export default defineConfig(({ mode, command }) => {
       host: true,
       port: 9000,
       proxy: {
-        '/proxy': {
+        '/api': {
           target: env.VITE_APP_API_BASEURL,
           changeOrigin: command === 'serve' && env.VITE_ENABLE_PROXY,
-          rewrite: path => path.replace(/\/proxy/, ''),
         },
       },
     },
