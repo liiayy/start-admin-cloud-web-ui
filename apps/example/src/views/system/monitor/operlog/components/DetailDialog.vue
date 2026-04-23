@@ -1,8 +1,4 @@
 <script setup lang="ts">
-const props = defineProps<{
-  // 字典配置已标准化，内部自动加载
-}>()
-
 const visible = ref(false)
 const formData = ref<any>({})
 

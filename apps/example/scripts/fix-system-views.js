@@ -29,8 +29,8 @@ files.forEach((file) => {
 
   // 2. Fix imports
   content = content.replace(/import \{ toast \} from 'vue-sonner'\n?/g, '')
-  content = content.replace(/import \{ useDict \} from '@\/hooks\/useDict\.ts'/g, "import { useDict } from '@/composables/useDict.ts'")
-  content = content.replace(/import \{ useTable \} from '@\/hooks\/useTable\.ts'/g, "import { useTable } from '@/composables/useTable.ts'")
+  content = content.replace(/import \{ useDict \} from '@\/hooks\/useDict\.ts'/g, 'import { useDict } from \'@/composables/useDict.ts\'')
+  content = content.replace(/import \{ useTable \} from '@\/hooks\/useTable\.ts'/g, 'import { useTable } from \'@/composables/useTable.ts\'')
   content = content.replace(/import \{ useFaModal \} from '@\/ui\/components\/FaModal'\n?/g, '')
   content = content.replace(/import \{ useUserStore \} from '@\/store\/modules\/user\.ts'\n?/g, '')
   content = content.replace(/import \{ useSettingsStore \} from '@\/store\/modules\/settings\.ts'\n?/g, '')

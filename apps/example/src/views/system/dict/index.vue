@@ -79,8 +79,6 @@ const {
   searchParams,
   getList,
   handleSearch,
-  handleCurrentChange,
-  handleSizeChange,
 } = useTable({
   api: apiDictData.page,
   defaultParams: { dictType: '', label: '' as string | undefined },
@@ -130,7 +128,7 @@ onMounted(() => {
     <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
       <div class="flex gap-4" :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }">
         <!-- 左：字典类型列表 -->
-        <div class="shrink-0 w-[380px] flex flex-col pt-3 pr-3 border-r">
+        <div class="pr-3 pt-3 border-r flex shrink-0 flex-col w-[380px]">
           <div class="text-sm text-gray-600 font-semibold mb-2">
             字典类型
           </div>
@@ -174,7 +172,7 @@ onMounted(() => {
         </div>
 
         <!-- 右：字典数据 -->
-        <div class="flex-1 min-w-0 flex flex-col pt-3">
+        <div class="pt-3 flex flex-1 flex-col min-w-0">
           <!-- 搜索栏 -->
           <FaSearchBar :show-toggle="false">
             <template #default>
@@ -207,7 +205,7 @@ onMounted(() => {
           </div>
 
           <!-- 未选择时的空状态 -->
-          <div v-if="!selectedType" class="flex-1 flex items-center justify-center text-gray-400">
+          <div v-if="!selectedType" class="text-gray-400 flex flex-1 items-center justify-center">
             请在左侧选择一个字典类型
           </div>
 
@@ -227,7 +225,7 @@ onMounted(() => {
                   <ElTag v-if="row.colorType" :type="row.colorType" effect="light">
                     {{ row.colorType }}
                   </ElTag>
-                  <span v-else class="text-gray-400 text-xs">-</span>
+                  <span v-else class="text-xs text-gray-400">-</span>
                 </template>
               </ElTableColumn>
               <ElTableColumn prop="remark" label="备注" min-width="150" show-overflow-tooltip />

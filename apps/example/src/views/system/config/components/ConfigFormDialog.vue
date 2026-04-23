@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ConfigAddFormData, ConfigInfo, ConfigUpdateFormData } from '@/api/modules/system/config/config.ts'
+import type { ConfigFormData, ConfigInfo } from '@/api/modules/system/config/config.ts'
 import apiConfig from '@/api/modules/system/config/config.ts'
 
 const emit = defineEmits<{
@@ -14,7 +14,7 @@ const formLoading = ref(false)
 const isEdit = ref(false)
 const formRef = ref()
 
-const formData = reactive<ConfigAddFormData & { id?: number }>({
+const formData = reactive<ConfigFormData & { id?: number }>({
   id: undefined,
   name: '',
   configKey: '',
@@ -79,17 +79,17 @@ async function handleSubmit() {
     delete submitData.id
 
     if (isEdit.value && id) {
-      await apiConfig.update(id, submitData as ConfigUpdateFormData)
+      await apiConfig.update(id, submitData as ConfigFormData)
       faToast.success('更新成功')
     }
     else {
-      await apiConfig.add(submitData as ConfigAddFormData)
+      await apiConfig.add(submitData as ConfigFormData)
       faToast.success('新增成功')
     }
     visible.value = false
     emit('success')
   }
-  catch (err) {
+  catch {
     // 错误已由拦截器处理
   }
   finally {

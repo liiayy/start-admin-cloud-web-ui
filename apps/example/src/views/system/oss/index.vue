@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { OssInfo } from '@/api/modules/system/oss.ts'
+import { filesize } from 'filesize'
 import apiOss from '@/api/modules/system/oss.ts'
 import { useTable } from '@/composables/useTable.ts'
-import { filesize } from 'filesize'
 import OssConfigModal from './components/OssConfigModal.vue'
 import OssUploadModal from './components/OssUploadModal.vue'
 
@@ -65,7 +65,8 @@ async function handleCopy(row: OssInfo) {
   try {
     await navigator.clipboard.writeText(url)
     faToast.success('链接已复制到剪贴板')
-  } catch (err) {
+  }
+  catch {
     faToast.error('复制失败，请手动复制')
   }
 }
@@ -73,7 +74,7 @@ async function handleCopy(row: OssInfo) {
 function handleDownload(row: OssInfo) {
   const url = getFullUrl(row.url)
   const downloadUrl = url.includes('?') ? `${url}&download=1` : `${url}?download=1`
-  
+
   // 创建隐藏的 a 标签触发下载
   const link = document.createElement('a')
   link.href = downloadUrl
@@ -90,8 +91,12 @@ function isImage(suffix: string) {
 
 /** 获取完整 URL */
 function getFullUrl(url: string) {
-  if (!url) return ''
-  if (url.startsWith('http')) return url
+  if (!url) {
+    return ''
+  }
+  if (url.startsWith('http')) {
+    return url
+  }
   // 根据环境决定拼接方式
   // 开发环境下，如果是相对路径且需要走网关，拼接环境变量中的地址
   const baseUrl = import.meta.env.VITE_APP_API_BASEURL || ''
@@ -104,7 +109,7 @@ function getFullUrl(url: string) {
 <template>
   <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="文件管理" description="集成策略模式的多平台文件管理系统" />
-    
+
     <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
       <FaSearchBar :show-toggle="false">
         <template #default>
@@ -134,7 +139,7 @@ function getFullUrl(url: string) {
 
       <div class="flex-center-between gap-2">
         <div class="flex gap-2">
-          <FaButton variant="outline" v-auth="'system:oss:config'" @click="handleConfig">
+          <FaButton v-auth="'system:oss:config'" variant="outline" @click="handleConfig">
             <FaIcon name="i-ri:settings-4-line" />
             配置管理
           </FaButton>
@@ -149,9 +154,9 @@ function getFullUrl(url: string) {
         <ElTableColumn label="预览" width="100" align="center">
           <template #default="{ row }">
             <div v-if="isImage(row.fileSuffix)" class="flex-center h-12">
-              <ElImage :src="getFullUrl(row.url)" :preview-src-list="[getFullUrl(row.url)]" preview-teleported class="w-10 h-10 rounded border shadow-sm" fit="cover" />
+              <ElImage :src="getFullUrl(row.url)" :preview-src-list="[getFullUrl(row.url)]" preview-teleported class="border rounded h-10 w-10 shadow-sm" fit="cover" />
             </div>
-            <div v-else class="flex-center h-12 text-gray-400">
+            <div v-else class="text-gray-400 flex-center h-12">
               <FaIcon name="i-ri:file-line" class="text-2xl" />
             </div>
           </template>
@@ -159,7 +164,9 @@ function getFullUrl(url: string) {
         <ElTableColumn prop="originalName" label="原文件名" min-width="200" show-overflow-tooltip />
         <ElTableColumn prop="fileSuffix" label="后缀" width="100" align="center">
           <template #default="{ row }">
-             <ElTag size="small">{{ row.fileSuffix }}</ElTag>
+            <ElTag size="small">
+              {{ row.fileSuffix }}
+            </ElTag>
           </template>
         </ElTableColumn>
         <ElTableColumn label="大小" width="100" align="center">
@@ -202,6 +209,6 @@ function getFullUrl(url: string) {
     <!-- 配置弹窗 -->
     <OssConfigModal ref="ossConfigModalRef" />
     <!-- 上传弹窗 -->
-    <OssUploadModal ref="ossUploadModalRef" @success="getList" />
+    <OssUploadModal ref="ossUploadModalRef" @success="handleUploadSuccess" />
   </div>
 </template>

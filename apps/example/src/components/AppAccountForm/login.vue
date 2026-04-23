@@ -58,16 +58,18 @@ const form = useForm({
 })
 
 async function getCaptcha() {
-  if (!captchaEnabled.value)
+  if (!captchaEnabled.value) {
     return
+  }
   const res = await apiAuth.getCaptcha()
   captchaImg.value = res.img
   form.setFieldValue('uuid', res.uuid)
 }
 
 watch(captchaEnabled, (val) => {
-  if (val)
+  if (val) {
     getCaptcha()
+  }
 }, { immediate: true })
 
 const onSubmit = form.handleSubmit((values) => {
@@ -153,7 +155,7 @@ function testAccount(account: string) {
                   </template>
                 </FaInput>
               </FormControl>
-              <div class="cursor-pointer shrink-0 h-9 w-28 overflow-hidden rounded-md border" @click="getCaptcha">
+              <div class="border rounded-md shrink-0 h-9 w-28 cursor-pointer overflow-hidden" @click="getCaptcha">
                 <img v-if="captchaImg" :src="captchaImg" class="h-full w-full object-cover">
               </div>
             </div>

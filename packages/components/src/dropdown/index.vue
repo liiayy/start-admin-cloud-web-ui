@@ -43,11 +43,15 @@ interface MenuItem {
   variant?: 'default' | 'destructive'
   disabled?: boolean
   handle?: () => void
+  hidden?: boolean
+  vAuth?: string | string[]
 }
 
 interface MenuSubItem {
   label: string
   items: (MenuItem | MenuSubItem)[][]
+  hidden?: boolean
+  vAuth?: string | string[]
 }
 
 const dir = useTextDirection({
@@ -79,22 +83,24 @@ function handleItemClick(item: { handle?: () => void }) {
       </template>
       <Option.define v-slot="{ items: its }">
         <template v-for="(item, index) in its" :key="index">
-          <DropdownMenuGroup>
+          <DropdownMenuGroup v-if="item.some(v => !v.hidden)">
             <template v-for="(v, i) in item" :key="i">
-              <DropdownMenuItem v-if="!('items' in v)" :variant="v.variant" :disabled="v.disabled" @click="handleItemClick(v)">
-                <div v-if="hasIcon(its)" class="flex-center size-4">
-                  <FaIcon v-if="v.icon" :name="v.icon" class="size-4" />
-                </div>
-                {{ v.label }}
-              </DropdownMenuItem>
-              <DropdownMenuSub v-else>
-                <DropdownMenuSubTrigger :inset="hasIcon(its)">
+              <template v-if="!v.hidden">
+                <DropdownMenuItem v-if="!('items' in v)" :variant="v.variant" :disabled="v.disabled" @click="handleItemClick(v)">
+                  <div v-if="hasIcon(its)" class="flex-center size-4">
+                    <FaIcon v-if="v.icon" :name="v.icon" class="size-4" />
+                  </div>
                   {{ v.label }}
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent>
-                  <Option.reuse :items="v.items" />
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
+                </DropdownMenuItem>
+                <DropdownMenuSub v-else>
+                  <DropdownMenuSubTrigger :inset="hasIcon(its)">
+                    {{ v.label }}
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <Option.reuse :items="v.items" />
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              </template>
             </template>
           </DropdownMenuGroup>
           <DropdownMenuSeparator v-if="item.length > 0 && index !== its.length - 1" />

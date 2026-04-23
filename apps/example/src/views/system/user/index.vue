@@ -29,7 +29,9 @@ async function loadDeptTree() {
 
 // 树过滤逻辑
 function filterDeptNode(value: string, data: DeptTreeNode) {
-  if (!value) { return true }
+  if (!value) {
+    return true
+  }
   return data.name.includes(value)
 }
 
@@ -47,8 +49,6 @@ const {
   getList,
   handleSearch,
   handleReset,
-  handleCurrentChange,
-  handleSizeChange,
 } = useTable({
   api: apiUser.page,
   defaultParams: {
@@ -118,7 +118,7 @@ onMounted(() => {
     <FaPageMain :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto overflow-x-hidden': tableAutoHeight }">
       <div class="flex gap-4" :class="{ 'flex-1 overflow-auto overflow-x-hidden': tableAutoHeight }">
         <!-- 左：部门树 -->
-        <div class="p-3 border rounded-lg shrink-0 w-[240px] flex flex-col">
+        <div class="p-3 border rounded-lg flex shrink-0 flex-col w-[240px]">
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门组织
           </div>
@@ -143,7 +143,7 @@ onMounted(() => {
         </div>
 
         <!-- 右：用户列表 -->
-        <div class="flex-1 min-w-0 flex flex-col">
+        <div class="flex flex-1 flex-col min-w-0">
           <FaSearchBar :show-toggle="false">
             <template #default>
               <div class="flex flex-wrap gap-3 items-center">

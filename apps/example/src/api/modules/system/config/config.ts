@@ -8,6 +8,7 @@ export interface ConfigInfo {
   configKey: string
   configValue: string
   builtin: string
+  isPublic: string
   remark: string
   createTime: string
 }
@@ -18,6 +19,7 @@ export interface ConfigFormData {
   configKey: string
   configValue: string
   builtin: string
+  isPublic: string
   remark: string
 }
 

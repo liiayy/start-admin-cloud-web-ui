@@ -1,10 +1,9 @@
 <script setup lang="ts">
-const visible = ref(false)
-const fileList = ref<any[]>([])
-
 const emits = defineEmits<{
   success: []
 }>()
+const visible = ref(false)
+const fileList = ref<any[]>([])
 
 function open() {
   visible.value = true
@@ -28,7 +27,9 @@ const isUploading = computed(() => fileList.value.some(file => file.status === '
 // 计算总进度 (取平均值)
 const uploadPercent = computed(() => {
   const uploadingFiles = fileList.value.filter(file => file.status === 'uploading')
-  if (uploadingFiles.length === 0) return 0
+  if (uploadingFiles.length === 0) {
+    return 0
+  }
   const totalProgress = uploadingFiles.reduce((acc, file) => acc + (file.progress || 0), 0)
   return Math.round(totalProgress / uploadingFiles.length)
 })
@@ -47,16 +48,16 @@ defineExpose({ open })
       <!-- 显眼的进度条展示 -->
       <Transition name="fade">
         <div v-if="isUploading" class="mb-4">
-          <div class="flex justify-between text-xs text-primary mb-1 font-medium">
+          <div class="text-xs text-primary font-medium mb-1 flex justify-between">
             <span>正在上传并同步到云端...</span>
             <span>{{ uploadPercent }}%</span>
           </div>
-          <div class="h-2 w-full bg-primary/10 rounded-full overflow-hidden">
-            <div 
-              class="h-full bg-primary transition-all duration-300 ease-out relative"
+          <div class="rounded-full bg-primary/10 h-2 w-full overflow-hidden">
+            <div
+              class="bg-primary h-full transition-all duration-300 ease-out relative"
               :style="{ width: `${uploadPercent}%` }"
             >
-              <div class="absolute inset-0 bg-white/20 animate-[pulse_1.5s_infinite]" />
+              <div class="bg-white/20 inset-0 absolute animate-[pulse_1.5s_infinite]" />
             </div>
           </div>
         </div>
@@ -71,10 +72,12 @@ defineExpose({ open })
         @on-success="handleSuccess"
       >
         <template #default>
-          <div class="flex flex-col items-center justify-center py-8" :class="{ 'opacity-50 pointer-events-none': isUploading }">
+          <div class="py-8 flex flex-col items-center justify-center" :class="{ 'opacity-50 pointer-events-none': isUploading }">
             <FaIcon name="i-ri:upload-cloud-2-line" class="text-4xl text-gray-400 mb-4" />
-            <div class="text-lg font-medium mb-1">点击或拖拽文件到此处上传</div>
-            <div class="text-sm text-gray-400 text-center px-4">
+            <div class="text-lg font-medium mb-1">
+              点击或拖拽文件到此处上传
+            </div>
+            <div class="text-sm text-gray-400 px-4 text-center">
               支持上传图片、文档等各类文件，单文件不超过 20MB
             </div>
           </div>
@@ -85,10 +88,13 @@ defineExpose({ open })
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+ .fade-leave-active {
   transition: opacity 0.3s, transform 0.3s;
 }
-.fade-enter-from, .fade-leave-to {
+
+.fade-enter-from,
+ .fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }

@@ -21,8 +21,6 @@ const {
   getList,
   handleSearch,
   handleReset,
-  handleCurrentChange,
-  handleSizeChange,
 } = useTable({
   api: apiConfig.page,
   defaultParams: {

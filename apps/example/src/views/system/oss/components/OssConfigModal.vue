@@ -38,7 +38,8 @@ async function getList() {
   loading.value = true
   try {
     list.value = await apiOss.configList()
-  } finally {
+  }
+  finally {
     loading.value = false
   }
 }
@@ -100,7 +101,8 @@ async function handleSubmit() {
     faToast.success('保存成功')
     formVisible.value = false
     getList()
-  } finally {
+  }
+  finally {
     formLoading.value = false
   }
 }
@@ -118,10 +120,11 @@ async function handleTest() {
   try {
     await apiOss.configTest(formData)
     faToast.success('测试连接成功，上传正常')
-  } catch (e: any) {
-    console.log( e)
   }
- finally {
+  catch (e: any) {
+    console.error(e)
+  }
+  finally {
     testLoading.value = false
   }
 }
@@ -136,7 +139,7 @@ async function handleTest() {
       </FaButton>
     </div>
 
-    <ElTable v-loading="loading" :data="list" border stripe>
+    <ElTable v-loading="loading" :data="list" stripe border>
       <ElTableColumn prop="configKey" label="配置标识" width="120" />
       <ElTableColumn prop="bucketName" label="桶名称" width="120" />
       <ElTableColumn prop="endpoint" label="端点/根目录" min-width="150" show-overflow-tooltip />
@@ -228,7 +231,7 @@ async function handleTest() {
             </ElFormItem>
           </ElCol>
           <ElCol :span="6">
-             <ElFormItem label="状态">
+            <ElFormItem label="状态">
               <ElSwitch v-model="formData.status" :active-value="0" :inactive-value="1" />
             </ElFormItem>
           </ElCol>
@@ -243,7 +246,7 @@ async function handleTest() {
         </ElFormItem>
       </ElForm>
       <template #footer>
-        <div class="flex justify-end gap-2">
+        <div class="flex gap-2 justify-end">
           <FaButton variant="outline" @click="formVisible = false">
             取消
           </FaButton>

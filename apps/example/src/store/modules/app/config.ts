@@ -14,7 +14,6 @@ export const useConfigStore = defineStore('config', {
      * 获取单个配置值（优先从缓存获取）
      */
     async getConfig(key: string) {
-      console.log('[ConfigStore] apiConfig methods:', Object.keys(apiConfig))
       if (this.configValues[key] !== undefined) {
         return this.configValues[key]
       }
@@ -26,7 +25,9 @@ export const useConfigStore = defineStore('config', {
      * 批量获取配置值（自动去重、自动合并请求）
      */
     async getConfigs(keys: string[]): Promise<Record<string, any>> {
-      if (!keys.length) { return {} }
+      if (!keys.length) {
+        return {}
+      }
 
       const results: Record<string, any> = {}
       const missingKeys: string[] = []
@@ -56,7 +57,6 @@ export const useConfigStore = defineStore('config', {
         // 创建一个新的 Promise 来执行批量获取
         const fetchPromise = (async () => {
           try {
-            console.log('[ConfigStore] Fetching configs:', keysToFetch)
             if (typeof apiConfig.listValues !== 'function') {
               console.error('[ConfigStore] CRITICAL: apiConfig.listValues is missing! apiConfig contains:', Object.keys(apiConfig))
               throw new Error('apiConfig.listValues is not a function')
@@ -110,9 +110,15 @@ export const useConfigStore = defineStore('config', {
      * 解析配置值（尝试转为布尔或数字）
      */
     parseValue(val: any): any {
-      if (val === 'Y' || val === 'true' || val === true) { return true }
-      if (val === 'N' || val === 'false' || val === false) { return false }
-      if (!isNaN(Number(val)) && val !== '' && typeof val === 'string') { return Number(val) }
+      if (val === 'Y' || val === 'true' || val === true) {
+        return true
+      }
+      if (val === 'N' || val === 'false' || val === false) {
+        return false
+      }
+      if (!Number.isNaN(Number(val)) && val !== '' && typeof val === 'string') {
+        return Number(val)
+      }
       return val
     },
   },

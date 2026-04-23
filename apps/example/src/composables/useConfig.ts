@@ -1,4 +1,4 @@
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useConfigStore } from '@/store/modules/app/config'
 
 /**
@@ -28,7 +28,7 @@ export function useConfig(...keys: string[]) {
     // 初始化为当前缓存中的值（可能为 undefined）
     const initialValue = configStore.configValues[key]
     result[camelKey] = ref<any>(initialValue ?? null)
-    
+
     // 给结果对象附加原始 Key 映射，方便后续更新
     result[`__meta_${camelKey}`] = key
   })
@@ -36,10 +36,12 @@ export function useConfig(...keys: string[]) {
   // 2. 批量拉取数据
   onMounted(async () => {
     const configData = await configStore.getConfigs(keys)
-    
+
     // 更新响应式数据
     Object.keys(result).forEach((camelKey) => {
-      if (camelKey.startsWith('__meta_')) { return }
+      if (camelKey.startsWith('__meta_')) {
+        return
+      }
       const originalKey = result[`__meta_${camelKey}`]
       result[camelKey].value = configData[originalKey]
     })

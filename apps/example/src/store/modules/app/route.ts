@@ -2,7 +2,6 @@ import type { RouteRecordMainRaw } from '@fantastic-admin/types'
 import type { RouteRecordRaw, RouterMatcher } from 'vue-router'
 import { cloneDeep } from 'es-toolkit'
 import { createRouterMatcher } from 'vue-router'
-import apiApp from '@/api/modules/app'
 import apiMenu from '@/api/modules/system/permission/menu' // [MIGRATED]
 import { systemRoutes as systemRoutesRaw } from '@/router/routes'
 
@@ -163,7 +162,7 @@ export const useAppRouteStore = defineStore(
     async function generateRoutesAtBack() {
       // 1. 获取当前用户路由树（已按权限过滤）
       const res = await apiMenu.userTree()
-      
+
       // 2. 将后端菜单树包装成框架要求的 RouteRecordMainRaw 结构
       const transformedData = (res || []).map((menu: any) => {
         if (menu.type === 1) {
@@ -208,7 +207,7 @@ export const useAppRouteStore = defineStore(
 
       // 3. 格式化并排序
       routesRaw.value = sortAsyncRoutes(formatBackRoutes(transformedData) as any)
-      
+
       // 4. 创建路由匹配器
       const routes: RouteRecordRaw[] = []
       routesRaw.value.forEach((route) => {

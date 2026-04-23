@@ -70,7 +70,7 @@ function getOptionValue(itemValue: string) {
       :key="item.id"
       :label="item.label"
       :value="getOptionValue(item.value)"
-      :disabled="item.status === '1'"
+      :disabled="item.status === 1"
     />
   </el-select>
 </template>

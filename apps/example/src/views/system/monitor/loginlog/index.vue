@@ -19,8 +19,6 @@ const {
   getList,
   handleSearch,
   handleReset,
-  handleCurrentChange,
-  handleSizeChange,
   handleSelectionChange,
 } = useTable({
   api: apiLoginLog.list,

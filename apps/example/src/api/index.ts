@@ -1,5 +1,5 @@
-import axios from 'axios'
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 /**
  * 后端统一 API 响应格式
@@ -120,6 +120,15 @@ api.interceptors.response.use(
       if (config.showSuccessToast && msg) {
         faToast.success('操作成功', { description: msg })
       }
+      // 自动映射分页字段 (records -> list, totalRow -> total)
+      if (data && typeof data === 'object') {
+        if (Array.isArray(data.records) && data.list === undefined) {
+          data.list = data.records
+        }
+        if (typeof data.totalRow === 'number' && data.total === undefined) {
+          data.total = data.totalRow
+        }
+      }
       return data
     }
 
@@ -156,16 +165,16 @@ api.interceptors.response.use(
 
 export const request = {
   get: <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> =>
-    api.get(url, config),
+    api.get(url, config) as unknown as Promise<T>,
 
   post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
-    api.post(url, data, config),
+    api.post(url, data, config) as unknown as Promise<T>,
 
   put: <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> =>
-    api.put(url, data, config),
+    api.put(url, data, config) as unknown as Promise<T>,
 
   delete: <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> =>
-    api.delete(url, config),
+    api.delete(url, config) as unknown as Promise<T>,
 
   raw: {
     get: <T = any>(url: string, config?: AxiosRequestConfig): Promise<ResponseDTO<T>> =>

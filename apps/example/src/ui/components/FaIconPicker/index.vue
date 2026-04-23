@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useVModel } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
+import { useVModel } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 
 defineOptions({
   name: 'FaIconPicker',
@@ -71,7 +71,7 @@ async function fetchIcons() {
       icons.value = list.map(name => `i-${prefix}:${name}`)
     }
   }
-  catch (e) {
+  catch {
     icons.value = []
   }
   finally {
@@ -91,6 +91,8 @@ watch([currentCollection, searchName], () => {
   fetchIcons()
 }, { immediate: true })
 
+const visible = ref(false)
+
 function handleSelect(icon: string) {
   // 保持项目标准的 i- 前缀格式
   value.value = icon
@@ -100,12 +102,10 @@ function handleSelect(icon: string) {
 function handleClear() {
   value.value = ''
 }
-
-const visible = ref(false)
 </script>
 
 <template>
-  <div class="relative w-full">
+  <div class="w-full relative">
     <ElPopover
       v-model:visible="visible"
       placement="bottom-start"
@@ -122,42 +122,42 @@ const visible = ref(false)
           class="cursor-pointer"
         >
           <template #prefix>
-            <div v-if="value" class="flex items-center justify-center p-1">
+            <div v-if="value" class="p-1 flex items-center justify-center">
               <FaIcon :name="value.replace(/^i-/, '')" class="size-4" />
             </div>
-            <div v-else class="flex items-center justify-center p-1 opacity-50">
+            <div v-else class="p-1 opacity-50 flex items-center justify-center">
               <FaIcon name="ep:search" class="size-4" />
             </div>
           </template>
           <template #suffix>
-            <div v-if="value && !disabled" class="cursor-pointer opacity-50 hover:opacity-100" @click.stop="handleClear">
+            <div v-if="value && !disabled" class="opacity-50 cursor-pointer hover:opacity-100" @click.stop="handleClear">
               <FaIcon name="ep:circle-close" class="size-4" />
             </div>
           </template>
         </ElInput>
       </template>
 
-      <div class="flex h-[500px] flex-col bg-white dark:bg-zinc-900">
+      <div class="bg-white flex flex-col h-[500px] dark:bg-zinc-900">
         <!-- 搜索栏 -->
-        <div class="border-b px-4 py-3">
+        <div class="px-4 py-3 border-b">
           <ElInput
             v-model="searchName"
             placeholder="搜索图标名称..."
             clearable
           >
             <template #prefix>
-              <FaIcon name="ep:search" class="size-4 opacity-50" />
+              <FaIcon name="ep:search" class="opacity-50 size-4" />
             </template>
           </ElInput>
         </div>
 
         <div class="flex flex-1 overflow-hidden">
           <!-- 左侧边栏 -->
-          <div class="w-32 flex flex-col gap-1 overflow-y-auto border-r bg-zinc-50/50 p-2 dark:bg-zinc-950/20">
+          <div class="p-2 border-r bg-zinc-50/50 flex flex-col gap-1 w-32 overflow-y-auto dark:bg-zinc-950/20">
             <div
               v-for="item in collections"
               :key="item.prefix"
-              class="cursor-pointer rounded-md px-3 py-2 text-xs transition-colors"
+              class="text-xs px-3 py-2 rounded-md cursor-pointer transition-colors"
               :class="[
                 currentCollection === item.prefix
                   ? 'bg-primary/10 text-primary font-bold'
@@ -170,13 +170,13 @@ const visible = ref(false)
           </div>
 
           <!-- 右侧内容区 -->
-          <div class="relative flex-1 flex flex-col">
-            <div v-loading="loading" class="flex-1 overflow-y-auto p-3">
-              <div v-if="icons.length > 0" class="grid grid-cols-6 gap-2">
+          <div class="flex flex-1 flex-col relative">
+            <div v-loading="loading" class="p-3 flex-1 overflow-y-auto">
+              <div v-if="icons.length > 0" class="gap-2 grid grid-cols-6">
                 <div
                   v-for="icon in pagedIcons"
                   :key="icon"
-                  class="flex aspect-square cursor-pointer items-center justify-center rounded border border-transparent transition-all hover:border-primary hover:bg-primary/5 group"
+                  class="group border border-transparent rounded flex aspect-square cursor-pointer transition-all items-center justify-center hover:border-primary hover:bg-primary/5"
                   :class="{ 'border-primary bg-primary/5': icon === value }"
                   :title="icon"
                   @click="handleSelect(icon)"
@@ -184,16 +184,16 @@ const visible = ref(false)
                   <Icon :icon="icon.replace(/^i-/, '')" class="size-6 transition-transform group-hover:scale-110" />
                 </div>
               </div>
-              <div v-else-if="!loading" class="flex h-full flex-col items-center justify-center gap-2 text-zinc-400">
-                <div class="i-tdesign:image-error size-12 opacity-20" />
+              <div v-else-if="!loading" class="text-zinc-400 flex flex-col gap-2 h-full items-center justify-center">
+                <div class="i-tdesign:image-error opacity-20 size-12" />
                 <span class="text-xs">未找到相关图标</span>
               </div>
             </div>
 
             <!-- 分页 -->
-            <div v-if="totalPages > 1" class="flex items-center justify-between border-t px-3 py-2">
+            <div v-if="totalPages > 1" class="px-3 py-2 border-t flex items-center justify-between">
               <span class="text-[10px] text-zinc-400">共 {{ icons.length }} 个</span>
-              <div class="flex items-center gap-1">
+              <div class="flex gap-1 items-center">
                 <button
                   :disabled="currentPage === 1"
                   type="button"

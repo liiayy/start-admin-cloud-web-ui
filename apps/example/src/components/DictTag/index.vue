@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
 import type { DictDataInfo } from '@/api/modules/system/dict/dictData.ts'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useDictStore } from '@/store/modules/app/dict'
 
 const props = defineProps<{
@@ -20,7 +20,7 @@ const finalOptions = computed(() => {
   return props.options || innerOptions.value
 })
 
-const loadDictData = async () => {
+async function loadDictData() {
   if (props.type && !props.options) {
     const res = await dictStore.getDicts([props.type])
     innerOptions.value = res[props.type] || []
@@ -45,7 +45,7 @@ const values = computed(() => {
 })
 
 // 根据值获取对应的字典项
-const getDictItem = (val: any) => {
+function getDictItem(val: any) {
   return finalOptions.value.find(item => String(item.value) === String(val))
 }
 </script>
@@ -64,12 +64,12 @@ const getDictItem = (val: any) => {
         >
           {{ getDictItem(val)?.label }}
         </el-tag>
-        <span v-else class="text-gray-400 text-sm">
+        <span v-else class="text-sm text-gray-400">
           {{ val }}
         </span>
       </template>
     </template>
-    <span v-else-if="placeholder" class="text-gray-400 text-sm italic">
+    <span v-else-if="placeholder" class="text-sm text-gray-400 italic">
       {{ placeholder }}
     </span>
   </div>

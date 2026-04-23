@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
 import type { DictDataInfo } from '@/api/modules/system/dict/dictData.ts'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useDictStore } from '@/store/modules/app/dict'
 
 const props = defineProps<{
@@ -16,7 +16,7 @@ const emit = defineEmits(['update:modelValue', 'change'])
 const dictStore = useDictStore()
 const options = ref<DictDataInfo[]>([])
 
-const loadDictData = async () => {
+async function loadDictData() {
   if (props.type) {
     const res = await dictStore.getDicts([props.type])
     options.value = res[props.type] || []
@@ -35,7 +35,7 @@ const val = computed({
   },
 })
 
-const getOptionValue = (itemValue: string) => {
+function getOptionValue(itemValue: string) {
   return props.valueType === 'number' ? Number(itemValue) : itemValue
 }
 </script>
@@ -47,7 +47,7 @@ const getOptionValue = (itemValue: string) => {
         v-for="item in options"
         :key="item.id"
         :value="getOptionValue(item.value)"
-        :disabled="item.status === '1'"
+        :disabled="item.status === 1"
       >
         {{ item.label }}
       </el-radio-button>
@@ -57,7 +57,7 @@ const getOptionValue = (itemValue: string) => {
         v-for="item in options"
         :key="item.id"
         :value="getOptionValue(item.value)"
-        :disabled="item.status === '1'"
+        :disabled="item.status === 1"
       >
         {{ item.label }}
       </el-radio>
