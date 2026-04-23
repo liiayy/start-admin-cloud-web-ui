@@ -60,6 +60,16 @@ function handleDelete(row: OssInfo) {
   })
 }
 
+async function handleCopy(row: OssInfo) {
+  const url = getFullUrl(row.url)
+  try {
+    await navigator.clipboard.writeText(url)
+    faToast.success('链接已复制到剪贴板')
+  } catch (err) {
+    faToast.error('复制失败，请手动复制')
+  }
+}
+
 function handleDownload(row: OssInfo) {
   const url = getFullUrl(row.url)
   const downloadUrl = url.includes('?') ? `${url}&download=1` : `${url}?download=1`
@@ -166,10 +176,13 @@ function getFullUrl(url: string) {
         <ElTableColumn label="操作" width="140" align="center" fixed="right">
           <template #default="{ row }">
             <div class="flex-center gap-2">
-              <FaButton variant="outline" size="icon-sm" @click="handleDownload(row)">
+              <FaButton variant="outline" size="icon-sm" title="复制链接" @click="handleCopy(row)">
+                <FaIcon name="i-ri:file-copy-line" />
+              </FaButton>
+              <FaButton variant="outline" size="icon-sm" title="下载" @click="handleDownload(row)">
                 <FaIcon name="i-ri:download-2-line" />
               </FaButton>
-              <FaButton v-auth="'system:oss:delete'" variant="outline" size="icon-sm" class="text-red-500" @click="handleDelete(row)">
+              <FaButton v-auth="'system:oss:delete'" variant="outline" size="icon-sm" class="text-red-500" title="删除" @click="handleDelete(row)">
                 <FaIcon name="i-ri:delete-bin-line" />
               </FaButton>
             </div>

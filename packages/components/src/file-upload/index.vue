@@ -154,6 +154,13 @@ function uploadFile(file: File, index?: number) {
     },
   })
     .then(async (response) => {
+      // 如果后端返回了业务错误信息
+      if (response.data && response.data.code && response.data.code !== 200) {
+        toast.error(response.data.msg || '上传失败')
+        fileList.value[currentFileIndex].status = 'error'
+        return
+      }
+
       const url = await props.afterUpload?.(response.data)
       if (url) {
         fileList.value[currentFileIndex].url = url
@@ -161,7 +168,9 @@ function uploadFile(file: File, index?: number) {
       emits('onSuccess', response.data, file)
       fileList.value[currentFileIndex].status = 'success'
     })
-    .catch(() => {
+    .catch((error) => {
+      const msg = error.response?.data?.msg || error.message || '上传异常'
+      toast.error(msg)
       fileList.value[currentFileIndex].status = 'error'
     })
 }

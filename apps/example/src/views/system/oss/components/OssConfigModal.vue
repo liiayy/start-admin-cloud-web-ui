@@ -213,18 +213,13 @@ async function handleTest() {
           <ElInput v-model="formData.endpoint" :placeholder="formData.service === 'local' ? '本地存储根路径，如 f:/upload' : '例如 oss-cn-hangzhou.aliyuncs.com'" />
         </ElFormItem>
 
-        <ElRow :gutter="20">
-          <ElCol :span="12">
-            <ElFormItem label="展示域名" prop="domain">
-              <ElInput v-model="formData.domain" placeholder="https://cdn.example.com" />
-            </ElFormItem>
-          </ElCol>
-          <ElCol :span="12">
-            <ElFormItem label="路径前缀" prop="prefix">
-              <ElInput v-model="formData.prefix" placeholder="如 upload/" />
-            </ElFormItem>
-          </ElCol>
-        </ElRow>
+        <ElFormItem label="展示域名" prop="domain">
+          <ElInput v-model="formData.domain" placeholder="例如: https://cdn.example.com" />
+        </ElFormItem>
+
+        <ElFormItem label="路径前缀" prop="prefix">
+          <ElInput v-model="formData.prefix" placeholder="例如: upload/" />
+        </ElFormItem>
 
         <ElRow :gutter="20">
           <ElCol :span="12">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const visible = ref(false)
+const fileList = ref<any[]>([])
 
 const emits = defineEmits<{
   success: []
@@ -7,6 +8,7 @@ const emits = defineEmits<{
 
 function open() {
   visible.value = true
+  fileList.value = [] // 每次打开清空上次状态
 }
 
 const accountStore = useAppAccountStore()
@@ -15,8 +17,23 @@ const uploadHeaders = computed(() => ({
   Token: accountStore.token,
 }))
 
+// 修复：防止双斜杠产生
+const baseUrl = import.meta.env.VITE_APP_API_BASEURL || ''
+const uploadAction = baseUrl.endsWith('/')
+  ? `${baseUrl}api/system/resource/oss/upload`
+  : `${baseUrl}/api/system/resource/oss/upload`
+
+// 计算当前是否正在上传
+const isUploading = computed(() => fileList.value.some(file => file.status === 'uploading'))
+// 计算总进度 (取平均值)
+const uploadPercent = computed(() => {
+  const uploadingFiles = fileList.value.filter(file => file.status === 'uploading')
+  if (uploadingFiles.length === 0) return 0
+  const totalProgress = uploadingFiles.reduce((acc, file) => acc + (file.progress || 0), 0)
+  return Math.round(totalProgress / uploadingFiles.length)
+})
+
 function handleSuccess() {
-  // 不立即关闭，让用户看到上传成功的状态
   faToast.success('上传资源成功')
   emits('success')
 }
@@ -27,18 +44,38 @@ defineExpose({ open })
 <template>
   <FaModal v-model="visible" title="上传资源" confirm-button-text="完成" class="max-w-xl">
     <div class="p-2">
+      <!-- 显眼的进度条展示 -->
+      <Transition name="fade">
+        <div v-if="isUploading" class="mb-4">
+          <div class="flex justify-between text-xs text-primary mb-1 font-medium">
+            <span>正在上传并同步到云端...</span>
+            <span>{{ uploadPercent }}%</span>
+          </div>
+          <div class="h-2 w-full bg-primary/10 rounded-full overflow-hidden">
+            <div 
+              class="h-full bg-primary transition-all duration-300 ease-out relative"
+              :style="{ width: `${uploadPercent}%` }"
+            >
+              <div class="absolute inset-0 bg-white/20 animate-[pulse_1.5s_infinite]" />
+            </div>
+          </div>
+        </div>
+      </Transition>
+
       <FaFileUpload
-        action="/proxy/api/system/resource/oss/upload"
+        v-model="fileList"
+        :action="uploadAction"
         :headers="uploadHeaders"
         :after-upload="(res) => res.data.url"
+        :size="20 * 1024 * 1024"
         @on-success="handleSuccess"
       >
         <template #default>
-          <div class="flex flex-col items-center justify-center py-8">
+          <div class="flex flex-col items-center justify-center py-8" :class="{ 'opacity-50 pointer-events-none': isUploading }">
             <FaIcon name="i-ri:upload-cloud-2-line" class="text-4xl text-gray-400 mb-4" />
             <div class="text-lg font-medium mb-1">点击或拖拽文件到此处上传</div>
             <div class="text-sm text-gray-400 text-center px-4">
-              支持上传图片、文档等各类文件，单张不超过 10MB
+              支持上传图片、文档等各类文件，单文件不超过 20MB
             </div>
           </div>
         </template>
@@ -46,3 +83,13 @@ defineExpose({ open })
     </div>
   </FaModal>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+</style>

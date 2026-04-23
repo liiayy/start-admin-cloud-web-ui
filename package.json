@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "tsx scripts/cli.ts --mode=dev",
+    "dev2": "pnpm -F @fantastic-admin/example dev",
     "build": "tsx scripts/cli.ts --mode=build",
     "serve": "tsx scripts/cli.ts --mode=serve",
     "lint": "run-s lint:tsc lint:eslint lint:stylelint",
