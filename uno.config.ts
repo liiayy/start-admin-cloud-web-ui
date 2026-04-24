@@ -89,6 +89,13 @@ button:not(:disabled),
 [role="button"]:not(:disabled) {
   cursor: pointer;
 }
+
+.el-table {
+  --el-table-border-color: oklch(var(--border));
+  --el-table-header-bg-color: oklch(var(--muted));
+  --el-table-row-hover-bg-color: oklch(var(--accent));
+  --el-table-current-row-bg-color: oklch(var(--accent));
+}
 `
           },
         },
