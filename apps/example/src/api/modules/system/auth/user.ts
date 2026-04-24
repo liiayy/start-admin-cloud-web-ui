@@ -86,4 +86,16 @@ export default {
   // 分配角色
   assignRole: (userId: number, roleIds: number[]) =>
     request.post('api/admin/system/user/assign-role', { userId, roleIds }),
+
+  // 导出用户
+  exportUser: (params: UserPageParam) =>
+    request.post('api/admin/system/user/export', params, { responseType: 'blob', skipResponseHandler: true }),
+
+  // 导入用户
+  importUser: (data: FormData) =>
+    request.post('api/admin/system/user/import', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+
+  // 导入模板
+  importTemplate: () =>
+    request.post('api/admin/system/user/import-template', {}, { responseType: 'blob', skipResponseHandler: true }),
 }

@@ -6,9 +6,11 @@ import apiDept from '@/api/modules/system/organization/dept.ts'
 import { useTable } from '@/composables/useTable.ts'
 import { SecurityConstants } from '@/constants/SecurityConstants.ts'
 
+import { downloadFile } from '@/utils/index.ts'
 import AssignRoleDialog from './components/AssignRoleDialog.vue'
 import ResetPwdDialog from './components/ResetPwdDialog.vue'
 import UserFormDialog from './components/UserFormDialog.vue'
+import UserImportDialog from './components/UserImportDialog.vue'
 
 defineOptions({ name: 'SystemUser' })
 
@@ -68,6 +70,7 @@ function handleDeptNodeClick(data: DeptTreeNode) {
 const userFormDialogRef = ref<InstanceType<typeof UserFormDialog>>()
 const assignRoleDialogRef = ref<InstanceType<typeof AssignRoleDialog>>()
 const resetPwdDialogRef = ref<InstanceType<typeof ResetPwdDialog>>()
+const userImportDialogRef = ref<InstanceType<typeof UserImportDialog>>()
 
 function handleAdd() {
   userFormDialogRef.value?.openAdd(searchParams.value.deptId)
@@ -105,6 +108,21 @@ async function handleStatusChange(row: UserInfo) {
     await getList()
   }
   catch {}
+}
+
+async function handleExport() {
+  try {
+    const data = await apiUser.exportUser(searchParams.value)
+    downloadFile(data, `用户数据_${Date.now()}.xlsx`)
+    faToast.success('导出成功')
+  }
+  catch (error) {
+    console.error('导出失败', error)
+  }
+}
+
+function handleImportUser() {
+  userImportDialogRef.value?.open()
 }
 
 onMounted(() => {
@@ -170,7 +188,16 @@ onMounted(() => {
           <div class="my-4 border-t border-t-dashed" />
 
           <div class="flex-center-between gap-2">
-            <div class="flex gap-2" />
+            <div class="flex gap-2">
+              <FaButton v-auth="'system:user:import'" variant="outline" @click="handleImportUser">
+                <FaIcon name="i-ri:upload-line" />
+                导入
+              </FaButton>
+              <FaButton v-auth="'system:user:export'" variant="outline" @click="handleExport">
+                <FaIcon name="i-ri:download-line" />
+                导出
+              </FaButton>
+            </div>
             <FaButton v-auth="'system:user:add'" @click="handleAdd">
               <FaIcon name="i-ri:add-line" />
               新增用户
@@ -240,5 +267,6 @@ onMounted(() => {
     <UserFormDialog ref="userFormDialogRef" :dept-tree="deptTree" @success="getList" />
     <AssignRoleDialog ref="assignRoleDialogRef" @success="getList" />
     <ResetPwdDialog ref="resetPwdDialogRef" />
+    <UserImportDialog ref="userImportDialogRef" @success="getList" />
   </div>
 </template>
