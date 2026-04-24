@@ -40,8 +40,8 @@ async function handleUpload() {
     formData.append('file', fileList.value[0].raw)
     formData.append('updateSupport', String(updateSupport.value))
 
-    const result = await apiUser.importUser(formData)
-    faToast.success('导入成功', { description: String(result) })
+    await apiUser.importUser(formData)
+    faToast.success('导入成功')
     visible.value = false
     emit('success')
   }
