@@ -138,7 +138,7 @@ export const useAppRouteStore = defineStore(
             title: menu.name,
             icon: menu.icon ? menu.icon.replace(/^i-/, '') : '',
             auth: menu.permission ? [menu.permission] : [],
-            cache: menu.keepAlive,
+            keepAlive: menu.keepAlive,
             menu: menu.visible,
             sort: menu.sort,
           },
