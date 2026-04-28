@@ -1,4 +1,5 @@
 import apiUser from '@/api/modules/system/auth/auth'
+import { useWebSocket } from '@/composables/useWebSocket'
 import router from '@/router'
 
 export const useAppAccountStore = defineStore('appAccount', () => {
@@ -35,6 +36,10 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     account.value = res.username
     token.value = res.tokenValue
     avatar.value = res.avatar ?? ''
+
+    // 登录成功后建立 WebSocket 连接
+    const { connect } = useWebSocket()
+    connect()
   }
 
   // 手动登出
@@ -72,6 +77,10 @@ export const useAppAccountStore = defineStore('appAccount', () => {
 
   // 登出后清除状态
   function logoutCleanStatus() {
+    // 断开 WebSocket 连接
+    const { disconnect } = useWebSocket()
+    disconnect()
+
     localStorage.removeItem('account')
     localStorage.removeItem('avatar')
     account.value = ''
@@ -87,6 +96,10 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   async function getPermissions() {
     const res = await apiUser.getInfo()
     permissions.value = [...(res.permissions ?? [])]
+
+    // 页面刷新或重新获取权限时建立 WebSocket 连接
+    const { connect } = useWebSocket()
+    connect()
   }
 
   // 修改密码

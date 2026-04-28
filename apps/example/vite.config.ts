@@ -28,6 +28,7 @@ export default defineConfig(({ mode, command }) => {
         '/api': {
           target: env.VITE_APP_API_BASEURL,
           changeOrigin: command === 'serve' && env.VITE_ENABLE_PROXY,
+          ws: true, // 支持 WebSocket 升级请求
         },
       },
     },

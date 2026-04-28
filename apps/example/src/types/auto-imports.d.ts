@@ -98,6 +98,7 @@ declare global {
   const useSlots: typeof import('vue').useSlots
   const useTable: typeof import('../composables/useTable').useTable
   const useTemplateRef: typeof import('vue').useTemplateRef
+  const useWebSocket: typeof import('../composables/useWebSocket').useWebSocket
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
   const watchPostEffect: typeof import('vue').watchPostEffect
