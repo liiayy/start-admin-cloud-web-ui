@@ -45,7 +45,8 @@ export const useAppAccountStore = defineStore('appAccount', () => {
       type: 'info',
       title: data?.title || '系统通知',
       data: {
-        message: data?.content || '您有一条新的系统公告'
+        message: data?.content || '您有一条新的系统公告',
+        id: data?.id
       },
       timestamp: Date.now(),
       read: false
@@ -157,7 +158,8 @@ export const useAppAccountStore = defineStore('appAccount', () => {
           type: 'info',
           title: item.title || '系统通知',
           data: {
-            message: item.content || '您有一条未读的系统公告'
+            message: item.content || '您有一条未读的系统公告',
+            id: item.id
           },
           timestamp: item.createTime ? new Date(item.createTime).getTime() : Date.now(),
           read: false
