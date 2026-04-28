@@ -1,5 +1,7 @@
 import apiUser from '@/api/modules/system/auth/auth'
 import { useWebSocket } from '@/composables/useWebSocket'
+import apiNotice from '@/api/modules/system/notice'
+import { useAppNotificationStore } from './notification'
 import router from '@/router'
 
 export const useAppAccountStore = defineStore('appAccount', () => {
@@ -32,6 +34,31 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     else {
       alert(data?.message || '您的账号已被管理员强制下线！')
       requestLogout()
+    }
+  })
+
+  // 监听系统通知公告
+  onMessage('system_notice', (data) => {
+    const notificationStore = useAppNotificationStore()
+    // data 是后端广播过来的 NoticeVO
+    notificationStore.addMessage({
+      type: 'info',
+      title: data?.title || '系统通知',
+      data: {
+        message: data?.content || '您有一条新的系统公告'
+      },
+      timestamp: Date.now(),
+      read: false
+    })
+
+    if (typeof window !== 'undefined' && 'ElNotification' in window) {
+      // @ts-ignore
+      window.ElNotification({
+        title: data?.title || '系统公告',
+        message: data?.content || '您收到一条新的系统公告，请注意查阅。',
+        type: 'info',
+        duration: 0 // 不自动关闭
+      })
     }
   })
 
@@ -119,6 +146,26 @@ export const useAppAccountStore = defineStore('appAccount', () => {
 
     // 页面刷新或重新获取权限时建立 WebSocket 连接
     connect()
+
+    // 获取未读公告同步至消息面板
+    try {
+      const unread = await apiNotice.getUnread()
+      const notificationStore = useAppNotificationStore()
+      notificationStore.clearAll() // 清理过期的假数据
+      unread.forEach((item: any) => {
+        notificationStore.addMessage({
+          type: 'info',
+          title: item.title || '系统通知',
+          data: {
+            message: item.content || '您有一条未读的系统公告'
+          },
+          timestamp: item.createTime ? new Date(item.createTime).getTime() : Date.now(),
+          read: false
+        })
+      })
+    } catch (e) {
+      console.error('Failed to fetch unread notices', e)
+    }
   }
 
   // 修改密码
