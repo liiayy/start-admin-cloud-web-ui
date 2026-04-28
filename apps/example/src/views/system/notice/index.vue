@@ -52,12 +52,15 @@ function handleDelete(row: NoticeVO) {
 
 // 推送发布公告
 function handlePublish(row: NoticeVO) {
+  const isTargeted = row.targetType === 1
   useFaModal().confirm({
-    title: '广播提示',
-    content: `确定要全员广播推送通知「${row.title}」吗？`,
+    title: isTargeted ? '定向推送提示' : '广播提示',
+    content: isTargeted
+      ? `确定要定向推送通知「${row.title}」给指定范围内的用户吗？`
+      : `确定要全员广播推送通知「${row.title}」吗？`,
     onConfirm: async () => {
       await apiNotice.publish(row.id)
-      faToast.success('推送广播成功')
+      faToast.success(isTargeted ? '定向推送成功' : '广播推送成功')
       await getList()
     },
   })
@@ -74,7 +77,7 @@ function handlePublish(row: NoticeVO) {
             <FaLabel label="公告标题">
               <FaInput v-model="searchParams.title" placeholder="请输入标题" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
-            
+
             <FaLabel label="公告类型">
               <ElSelect v-model="searchParams.type" placeholder="请选择" clearable class="w-36">
                 <ElOption label="通知" :value="1" />
@@ -123,7 +126,7 @@ function handlePublish(row: NoticeVO) {
       >
         <ElTableColumn type="index" label="序号" width="60" align="center" />
         <ElTableColumn prop="title" label="公告标题" min-width="200" show-overflow-tooltip />
-        
+
         <ElTableColumn prop="type" label="公告类型" width="100" align="center">
           <template #default="{ row }">
             <ElTag :type="row.type === 1 ? 'primary' : 'success'">
@@ -140,8 +143,16 @@ function handlePublish(row: NoticeVO) {
           </template>
         </ElTableColumn>
 
+        <ElTableColumn prop="targetType" label="发布范围" width="100" align="center">
+          <template #default="{ row }">
+            <ElTag :type="row.targetType === 1 ? 'warning' : 'info'">
+              {{ row.targetType === 1 ? '指定' : '全部' }}
+            </ElTag>
+          </template>
+        </ElTableColumn>
+
         <ElTableColumn prop="creator" label="创建人" width="120" align="center" />
-        
+
         <ElTableColumn prop="createTime" label="创建时间" width="180" align="center" />
 
         <!-- 操作 -->

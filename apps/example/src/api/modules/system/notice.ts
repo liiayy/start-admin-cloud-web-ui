@@ -9,6 +9,10 @@ export interface NoticeVO {
   creator?: string
   createTime?: string
   isRead?: boolean
+  targetType?: number
+  targetDepts?: string
+  targetRoles?: string
+  targetPosts?: string
 }
 
 export interface NoticePageParams {
