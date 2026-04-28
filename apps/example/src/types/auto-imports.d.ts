@@ -73,6 +73,7 @@ declare global {
   const useAppKeepAliveStore: typeof import('../store/modules/app/keepAlive').useAppKeepAliveStore
   const useAppMenu: typeof import('../composables/app/menu').useAppMenu
   const useAppMenuStore: typeof import('../store/modules/app/menu').useAppMenuStore
+  const useAppNotificationStore: typeof import('../store/modules/app/notification').useAppNotificationStore
   const useAppPage: typeof import('../composables/app/page').useAppPage
   const useAppRouteStore: typeof import('../store/modules/app/route').useAppRouteStore
   const useAppSettingsStore: typeof import('../store/modules/app/settings').useAppSettingsStore
@@ -109,6 +110,9 @@ declare global {
   // @ts-ignore
   export type { Component, Slot, Slots, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, ShallowRef, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { WebSocketMessage } from '../store/modules/app/notification'
+  import('../store/modules/app/notification')
   // @ts-ignore
   export type { UseTableOptions } from '../composables/useTable'
   import('../composables/useTable')

@@ -62,6 +62,7 @@ declare module 'vue' {
     FaToast: typeof import('@fantastic-admin/components')['FaToast']
     FaTooltip: typeof import('@fantastic-admin/components')['FaTooltip']
     FaTrend: typeof import('@fantastic-admin/components')['FaTrend']
+    NotificationCenter: typeof import('./../components/NotificationCenter/index.vue')['default']
   }
 }
 
@@ -117,4 +118,5 @@ declare global {
   const FaToast: typeof import('@fantastic-admin/components')['FaToast']
   const FaTooltip: typeof import('@fantastic-admin/components')['FaTooltip']
   const FaTrend: typeof import('@fantastic-admin/components')['FaTrend']
+  const NotificationCenter: typeof import('./../components/NotificationCenter/index.vue')['default']
 }

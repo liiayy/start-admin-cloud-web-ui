@@ -13,6 +13,28 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   const account = ref(localStorage.getItem('account') ?? '')
   const avatar = ref(localStorage.getItem('avatar') ?? '')
 
+  // 获取 WebSocket 实例
+  const { connect, disconnect, onMessage } = useWebSocket()
+
+  // 监听强制下线消息
+  onMessage('force_logout', (data) => {
+    if (typeof window !== 'undefined' && 'ElMessageBox' in window) {
+      // @ts-ignore
+      window.ElMessageBox.alert(data?.message || '您的账号已被管理员强制下线！', '下线通知', {
+        confirmButtonText: '重新登录',
+        type: 'warning',
+        showClose: false,
+        callback: () => {
+          requestLogout()
+        },
+      })
+    }
+    else {
+      alert(data?.message || '您的账号已被管理员强制下线！')
+      requestLogout()
+    }
+  })
+
   // 权限信息
   const permissions = ref<string[]>([])
 
@@ -38,7 +60,6 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     avatar.value = res.avatar ?? ''
 
     // 登录成功后建立 WebSocket 连接
-    const { connect } = useWebSocket()
     connect()
   }
 
@@ -78,7 +99,6 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   // 登出后清除状态
   function logoutCleanStatus() {
     // 断开 WebSocket 连接
-    const { disconnect } = useWebSocket()
     disconnect()
 
     localStorage.removeItem('account')
@@ -98,7 +118,6 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     permissions.value = [...(res.permissions ?? [])]
 
     // 页面刷新或重新获取权限时建立 WebSocket 连接
-    const { connect } = useWebSocket()
     connect()
   }
 
