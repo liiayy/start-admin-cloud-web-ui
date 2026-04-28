@@ -13,6 +13,12 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
+const { sys_notice_type, sys_notice_status, sys_notice_target_type } = useDict(
+  'sys_notice_type',
+  'sys_notice_status',
+  'sys_notice_target_type',
+)
+
 const visible = ref(false)
 const dialogTitle = ref('')
 const formLoading = ref(false)
@@ -153,11 +159,12 @@ async function handleSubmit() {
 
       <ElFormItem label="公告类型" prop="type">
         <ElRadioGroup v-model="formData.type">
-          <ElRadio :value="1">
-            通知
-          </ElRadio>
-          <ElRadio :value="2">
-            公告
+          <ElRadio
+            v-for="item in sys_notice_type"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.label }}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
@@ -173,22 +180,24 @@ async function handleSubmit() {
 
       <ElFormItem label="公告状态">
         <ElRadioGroup v-model="formData.status">
-          <ElRadio :value="0">
-            正常
-          </ElRadio>
-          <ElRadio :value="1">
-            关闭
+          <ElRadio
+            v-for="item in sys_notice_status"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.label }}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>
 
       <ElFormItem label="发布范围">
         <ElRadioGroup v-model="formData.targetType">
-          <ElRadio :value="0">
-            全部
-          </ElRadio>
-          <ElRadio :value="1">
-            指定范围
+          <ElRadio
+            v-for="item in sys_notice_target_type"
+            :key="item.value"
+            :value="Number(item.value)"
+          >
+            {{ item.label }}
           </ElRadio>
         </ElRadioGroup>
       </ElFormItem>

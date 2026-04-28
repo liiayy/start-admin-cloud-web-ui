@@ -6,6 +6,12 @@ import NoticeFormDialog from './components/NoticeFormDialog.vue'
 
 defineOptions({ name: 'SystemNotice' })
 
+const { sys_notice_type, sys_notice_status, sys_notice_target_type } = useDict(
+  'sys_notice_type',
+  'sys_notice_status',
+  'sys_notice_target_type',
+)
+
 // 表格自适应高度
 const tableAutoHeight = ref(true)
 
@@ -80,15 +86,23 @@ function handlePublish(row: NoticeVO) {
 
             <FaLabel label="公告类型">
               <ElSelect v-model="searchParams.type" placeholder="请选择" clearable class="w-36">
-                <ElOption label="通知" :value="1" />
-                <ElOption label="公告" :value="2" />
+                <ElOption
+                  v-for="item in sys_notice_type"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="Number(item.value)"
+                />
               </ElSelect>
             </FaLabel>
 
             <FaLabel label="状态">
               <ElSelect v-model="searchParams.status" placeholder="请选择" clearable class="w-36">
-                <ElOption label="正常" :value="0" />
-                <ElOption label="关闭" :value="1" />
+                <ElOption
+                  v-for="item in sys_notice_status"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="Number(item.value)"
+                />
               </ElSelect>
             </FaLabel>
 
@@ -129,25 +143,19 @@ function handlePublish(row: NoticeVO) {
 
         <ElTableColumn prop="type" label="公告类型" width="100" align="center">
           <template #default="{ row }">
-            <ElTag :type="row.type === 1 ? 'primary' : 'success'">
-              {{ row.type === 1 ? '通知' : '公告' }}
-            </ElTag>
+            <DictTag :options="sys_notice_type" :value="row.type" />
           </template>
         </ElTableColumn>
 
         <ElTableColumn prop="status" label="状态" width="100" align="center">
           <template #default="{ row }">
-            <ElTag :type="row.status === 0 ? 'success' : 'info'">
-              {{ row.status === 0 ? '正常' : '关闭' }}
-            </ElTag>
+            <DictTag :options="sys_notice_status" :value="row.status" />
           </template>
         </ElTableColumn>
 
         <ElTableColumn prop="targetType" label="发布范围" width="100" align="center">
           <template #default="{ row }">
-            <ElTag :type="row.targetType === 1 ? 'warning' : 'info'">
-              {{ row.targetType === 1 ? '指定' : '全部' }}
-            </ElTag>
+            <DictTag :options="sys_notice_target_type" :value="row.targetType" />
           </template>
         </ElTableColumn>
 
