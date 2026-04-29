@@ -81,6 +81,7 @@ api.interceptors.request.use(
 // 处理错误信息的逻辑
 function handleBusinessError(code: number, msg: string) {
   switch (code) {
+    case 20007:
     case HTTP_STATUS.UNAUTHORIZED:
       faToast.error('身份验证失败', { description: '请重新登录' })
       useAppAccountStore().requestLogout()
