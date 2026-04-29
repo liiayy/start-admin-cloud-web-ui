@@ -14,5 +14,5 @@ export default {
   getInfo: () => request.get('api/admin/system/auth/get-info'),
 
   // 修改密码
-  passwordEdit: (data: { password: string, newPassword: string }) => request.put('api/admin/system/user/update-password', data),
+  passwordEdit: (data: { password: string, newPassword: string }) => request.put('api/admin/system/user/update-password', { oldPassword: data.password, newPassword: data.newPassword }),
 }

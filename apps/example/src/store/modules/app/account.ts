@@ -14,6 +14,7 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   const token = ref(localStorage.getItem('token') ?? '')
   const account = ref(localStorage.getItem('account') ?? '')
   const avatar = ref(localStorage.getItem('avatar') ?? '')
+  const email = ref(localStorage.getItem('email') ?? '')
 
   // 获取 WebSocket 实例
   const { connect, disconnect, onMessage } = useWebSocket()
@@ -83,9 +84,11 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     localStorage.setItem('account', res.username)
     localStorage.setItem('token', res.tokenValue)
     localStorage.setItem('avatar', res.avatar ?? '')
+    localStorage.setItem('email', res.email ?? '')
     account.value = res.username
     token.value = res.tokenValue
     avatar.value = res.avatar ?? ''
+    email.value = res.email ?? ''
 
     // 登录成功后建立 WebSocket 连接
     connect()
@@ -131,8 +134,10 @@ export const useAppAccountStore = defineStore('appAccount', () => {
 
     localStorage.removeItem('account')
     localStorage.removeItem('avatar')
+    localStorage.removeItem('email')
     account.value = ''
     avatar.value = ''
+    email.value = ''
     permissions.value = []
     appSettingsStore.updateSettings({}, true)
     appTabbarStore.clean()
@@ -144,6 +149,11 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   async function getPermissions() {
     const res = await apiUser.getInfo()
     permissions.value = [...(res.permissions ?? [])]
+
+    if (res.email) {
+      email.value = res.email
+      localStorage.setItem('email', res.email)
+    }
 
     // 页面刷新或重新获取权限时建立 WebSocket 连接
     connect()
@@ -201,6 +211,7 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     token,
     account,
     avatar,
+    email,
     permissions,
     isLogin,
     login,
