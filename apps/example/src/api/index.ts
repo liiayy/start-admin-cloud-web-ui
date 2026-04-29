@@ -43,6 +43,19 @@ const HTTP_STATUS = {
   VALIDATION_FAILED: 601, // 参数校验失败
 } as const
 
+/**
+ * 通用业务错误码 (保持与后端 CommonErrorCode.java 一致)
+ */
+const COMMON_ERROR_CODE = {
+  PARAM_VALIDATION_FAILED: 10001001,
+  DATA_NOT_EXISTS: 10001002,
+  DATA_ALREADY_EXISTS: 10001003,
+  OPERATION_NOT_ALLOWED: 10001004,
+  PERMISSION_DENIED: 10001005,
+  OPERATION_TOO_FREQUENT: 10001006,
+  UNAUTHORIZED: 10001007,
+} as const
+
 const api = axios.create({
   baseURL: (import.meta.env.DEV && import.meta.env.VITE_ENABLE_PROXY) ? '/' : import.meta.env.VITE_APP_API_BASEURL,
   timeout: 1000 * 60,
@@ -81,19 +94,18 @@ api.interceptors.request.use(
 // 处理错误信息的逻辑
 function handleBusinessError(code: number, msg: string) {
   switch (code) {
-    case 20007:
-    case HTTP_STATUS.UNAUTHORIZED:
+    case COMMON_ERROR_CODE.UNAUTHORIZED:
       faToast.error('身份验证失败', { description: '请重新登录' })
       useAppAccountStore().requestLogout()
       break
-    case HTTP_STATUS.VALIDATION_FAILED:
+    case COMMON_ERROR_CODE.PARAM_VALIDATION_FAILED:
       faToast.warning('数据格式错误', { description: msg })
       break
-    case HTTP_STATUS.BUSINESS_FAIL:
-      faToast.warning('温馨提示', { description: msg })
-      break
-    case HTTP_STATUS.FORBIDDEN:
+    case COMMON_ERROR_CODE.PERMISSION_DENIED:
       faToast.error('禁止访问', { description: '您没有该操作权限' })
+      break
+    case COMMON_ERROR_CODE.OPERATION_TOO_FREQUENT:
+      faToast.warning('温馨提示', { description: msg })
       break
     default:
       faToast.error('警告', { description: msg || `未知错误(${code})` })
