@@ -104,6 +104,15 @@ export const useAppAccountStore = defineStore('appAccount', () => {
     localStorage.setItem('token', token.value)
   }
 
+  if (typeof window !== 'undefined') {
+    window.addEventListener('storage', (event) => {
+      const storagePrefix = import.meta.env.VITE_APP_STORAGE_PREFIX || ''
+      if (event.key === `${storagePrefix}token` && !event.newValue) {
+        requestLogout()
+      }
+    })
+  }
+
   return {
     token,
     account,

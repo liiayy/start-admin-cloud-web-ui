@@ -111,7 +111,7 @@ function testAccount(account: string) {
       <FaTabs
         v-model="type" :list="[
           { label: '账号密码登录', value: 'default' },
-          { label: '扫码登录', value: 'qrcode' },
+          // { label: '扫码登录', value: 'qrcode' },
         ]" class="inline-flex"
       />
     </div>
@@ -176,19 +176,19 @@ function testAccount(account: string) {
               </FormItem>
             </FormField>
           </div>
-          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onResetPassword', form.values.username)">
-            忘记密码了?
-          </FaButton>
+<!--          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onResetPassword', form.values.username)">-->
+<!--            忘记密码了?-->
+<!--          </FaButton>-->
         </div>
         <FaButton :loading="loading" size="lg" class="w-full" type="submit">
           登录
         </FaButton>
-        <div class="text-sm mt-4 flex-center gap-2">
-          <span class="text-secondary-foreground op-50">还没有帐号?</span>
-          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onRegister', form.values.username)">
-            注册新帐号
-          </FaButton>
-        </div>
+<!--        <div class="text-sm mt-4 flex-center gap-2">-->
+<!--          <span class="text-secondary-foreground op-50">还没有帐号?</span>-->
+<!--          <FaButton variant="link" class="p-0 h-auto" type="button" @click="emits('onRegister', form.values.username)">-->
+<!--            注册新帐号-->
+<!--          </FaButton>-->
+<!--        </div>-->
       </form>
       <div class="mt-4 text-center -mb-4">
         <FaDivider>演示账号一键登录</FaDivider>

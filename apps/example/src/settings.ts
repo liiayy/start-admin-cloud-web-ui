@@ -10,7 +10,7 @@ export default setSettings({
     copyright: {
       enable: true,
       dates: '2020-present',
-      company: 'Fantastic-admin',
+      company: 'Start-Admin',
       website: 'https://fantastic-admin.hurui.me',
     },
   },
