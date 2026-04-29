@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import BasicSettings from '@/components/AppAccountForm/basic-settings.vue'
 import EditPassword from '@/components/AppAccountForm/edit-password.vue'
 
 const active = ref(0)
 const tabs = ref([
   {
     title: '基本设置',
-    description: '账号的基本信息，头像、昵称等',
+    description: '账号的基本信息，昵称、性别等',
   },
   {
     title: '安全设置',
@@ -26,10 +27,8 @@ const tabs = ref([
         </div>
       </div>
     </div>
-    <div class="p-10 pt-20 flex-col-center min-h-full md:(ms-40 pt-10)">
-      <div v-if="active === 0">
-        请开发者自行扩展
-      </div>
+    <div class="p-10 pt-20 flex-col-stretch min-h-full md:(ms-40 pt-10)">
+      <BasicSettings v-if="active === 0" />
       <EditPassword v-if="active === 1" />
     </div>
   </div>

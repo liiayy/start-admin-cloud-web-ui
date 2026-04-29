@@ -49,6 +49,14 @@ export interface UserUpdateFormData {
   remark: string
 }
 
+/** 个人资料更新请求 */
+export interface UserProfileUpdateFormData {
+  nickname: string
+  mobile: string
+  email: string
+  sex: number
+}
+
 /** 用户分页查询参数 */
 export interface UserPageParam {
   pageNum?: number
@@ -98,4 +106,10 @@ export default {
   // 导入模板
   importTemplate: () =>
     request.post('api/admin/system/user/import-template', {}, { responseType: 'blob', skipResponseHandler: true }),
+
+  // 获取个人资料
+  getProfile: () => request.get<UserInfo>('api/admin/system/user/profile'),
+
+  // 更新个人资料
+  updateProfile: (data: UserProfileUpdateFormData) => request.put('api/admin/system/user/profile', data),
 }
