@@ -15,8 +15,8 @@ const form = useForm({
   validationSchema: toTypedSchema(
     z.object({
       nickname: z.string().min(1, '请输入昵称'),
-      mobile: z.string().regex(/^1[3-9]\d{9}$/, '手机号格式不正确').optional().or(z.literal('')),
-      email: z.string().email('邮箱格式不正确').optional().or(z.literal('')),
+      mobile: z.string().regex(/^1[3-9]\d{9}$/, '手机号格式不正确').or(z.literal('')),
+      email: z.string().email('邮箱格式不正确').or(z.literal('')),
       sex: z.number().int().min(0).max(2),
     }),
   ),
