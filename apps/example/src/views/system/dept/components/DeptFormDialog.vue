@@ -147,7 +147,7 @@ async function handleSubmit() {
           :props="{ checkStrictly: true, value: 'value', label: 'label', children: 'children' }"
           placeholder="顶级部门"
           clearable
-          style="width: 100%;"
+          class="w-full"
           @change="handleParentChange"
         />
       </ElFormItem>

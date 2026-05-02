@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useAppNotificationStore } from '@/store/modules/app/notification'
-import { useWebSocket } from '@/composables/useWebSocket'
 import dayjs from 'dayjs'
 import apiNotice from '@/api/modules/system/notice'
+import { useWebSocket } from '@/composables/useWebSocket'
+import { useAppNotificationStore } from '@/store/modules/app/notification'
 
 defineOptions({
   name: 'NotificationCenter',
@@ -18,7 +18,7 @@ onMounted(() => {
 
     // 触发通知提示框 (可选，利用 Element Plus 的 ElNotification)
     if (typeof window !== 'undefined' && 'ElNotification' in window) {
-      // @ts-ignore
+      // @ts-expect-error: ElNotification is global
       ElNotification({
         title: raw.title || '新消息',
         message: data?.message || '',
@@ -37,7 +37,9 @@ onMounted(() => {
  * 格式化时间
  */
 function formatTime(timestamp?: number) {
-  if (!timestamp) return ''
+  if (!timestamp) {
+    return ''
+  }
   return dayjs(timestamp).format('MM-DD HH:mm')
 }
 
@@ -49,7 +51,8 @@ async function handleMarkAsRead(index: number, item: any) {
   if (item.data?.id) {
     try {
       await apiNotice.markRead(item.data.id)
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to mark notice as read', e)
     }
   }
@@ -64,7 +67,8 @@ async function handleMarkAllAsRead() {
   for (const item of unreadItems) {
     try {
       await apiNotice.markRead(item.data!.id)
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to mark notice as read', e)
     }
   }
@@ -80,7 +84,8 @@ async function handleClearAll() {
   for (const item of unreadItems) {
     try {
       await apiNotice.markRead(item.data!.id)
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to mark notice as read', e)
     }
   }
@@ -96,7 +101,7 @@ async function handleClearAll() {
       popper-class="notification-popover"
     >
       <template #reference>
-        <div class="flex items-center justify-center cursor-pointer">
+        <div class="flex cursor-pointer items-center justify-center">
           <el-badge
             :value="notificationStore.unreadCount"
             :max="99"
@@ -112,8 +117,8 @@ async function handleClearAll() {
 
       <div class="popover-content flex flex-col max-h-96">
         <!-- 头部 -->
-        <div class="flex items-center justify-between pb-2 mb-2 border-b border-b-[oklch(var(--border))]">
-          <span class="text-sm font-bold text-foreground">通知中心 ({{ notificationStore.unreadCount }})</span>
+        <div class="mb-2 pb-2 border-b border-b-[oklch(var(--border))] flex items-center justify-between">
+          <span class="text-sm text-foreground font-bold">通知中心 ({{ notificationStore.unreadCount }})</span>
           <div class="flex gap-2">
             <el-button
               v-if="notificationStore.messages.length > 0"
@@ -137,25 +142,25 @@ async function handleClearAll() {
         </div>
 
         <!-- 列表 -->
-        <div class="message-list flex-1 overflow-y-auto py-1 pr-1">
+        <div class="message-list py-1 pr-1 flex-1 overflow-y-auto">
           <template v-if="notificationStore.messages.length > 0">
             <div
               v-for="(item, index) in notificationStore.messages"
               :key="index"
-              class="message-item p-2 mb-1 rounded transition-colors cursor-pointer hover:bg-[oklch(var(--accent)/0.1)] relative flex flex-col gap-1"
-              :class="{ 'unread': !item.read }"
+              class="message-item mb-1 p-2 rounded flex flex-col gap-1 cursor-pointer transition-colors relative hover:bg-[oklch(var(--accent)/0.1)]"
+              :class="{ unread: !item.read }"
               @click="handleMarkAsRead(index, item)"
             >
               <!-- 未读状态指示红点 -->
-              <div v-if="!item.read" class="absolute size-2 rounded-full bg-destructive right-2 top-3" />
+              <div v-if="!item.read" class="rounded-full bg-destructive size-2 right-2 top-3 absolute" />
 
-              <div class="message-title text-sm font-semibold text-foreground pr-4 truncate">
+              <div class="message-title text-sm text-foreground font-semibold pr-4 truncate">
                 {{ item.title || '通知' }}
               </div>
               <div class="message-body text-xs text-muted-foreground break-all">
                 {{ item.data?.message || '' }}
               </div>
-              <div class="message-time text-[10px] text-muted-foreground/60 text-right mt-1">
+              <div class="message-time text-[10px] text-muted-foreground/60 mt-1 text-right">
                 {{ formatTime(item.timestamp) }}
               </div>
             </div>
@@ -183,6 +188,7 @@ async function handleClearAll() {
 .unread .message-title {
   color: oklch(var(--primary));
 }
+
 .badge-item :deep(.el-badge__content) {
   transform: scale(0.75) translate(22px, -5px);
 }

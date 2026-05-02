@@ -8,7 +8,7 @@ defineOptions({
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div class="flex gap-1 items-center">
     <Tools mode="right-side" />
     <NotificationCenter />
     <Component :is="useSlots('toolbar-end')" />

@@ -117,7 +117,7 @@ async function handleSubmit() {
           :props="{ label: 'name', value: 'id', children: 'children' } as any"
           placeholder="请选择所属部门"
           check-strictly
-          style="width: 100%;"
+          class="w-full"
         />
       </ElFormItem>
       <ElFormItem label="岗位编码" prop="code">

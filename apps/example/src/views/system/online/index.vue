@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { OnlineUserDetail } from '@/api/modules/system/monitor/websocket'
-import apiWs from '@/api/modules/system/monitor/websocket'
 import dayjs from 'dayjs'
+import apiWs from '@/api/modules/system/monitor/websocket'
 
 defineOptions({ name: 'SystemOnline' })
 
@@ -66,7 +66,9 @@ function handleKickout(row: OnlineUserDetail) {
 
 // 格式化日期时间
 function formatTime(timeStr?: string) {
-  if (!timeStr) return '-'
+  if (!timeStr) {
+    return '-'
+  }
   return dayjs(timeStr).format('YYYY-MM-DD HH:mm:ss')
 }
 
@@ -79,9 +81,9 @@ onMounted(() => {
   <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 顶部统计面板 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 shrink-0">
-        <div class="p-4 rounded-lg border bg-[oklch(var(--accent)/0.1)] flex items-center gap-4">
-          <div class="p-3 rounded-full bg-primary/10 text-primary">
+      <div class="mb-6 shrink-0 gap-4 grid grid-cols-1 md:grid-cols-2">
+        <div class="p-4 border rounded-lg bg-[oklch(var(--accent)/0.1)] flex gap-4 items-center">
+          <div class="text-primary p-3 rounded-full bg-primary/10">
             <FaIcon name="i-ri:user-shared-2-line" class="size-6" />
           </div>
           <div>
@@ -94,8 +96,8 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="p-4 rounded-lg border bg-[oklch(var(--accent)/0.1)] flex items-center gap-4">
-          <div class="p-3 rounded-full bg-primary/10 text-primary">
+        <div class="p-4 border rounded-lg bg-[oklch(var(--accent)/0.1)] flex gap-4 items-center">
+          <div class="text-primary p-3 rounded-full bg-primary/10">
             <FaIcon name="i-ri:links-line" class="size-6" />
           </div>
           <div>
@@ -137,9 +139,8 @@ onMounted(() => {
       <ElTable
         v-loading="loading"
         :data="filteredUsers"
-        stripe
-        border
-        highlight-current-row
+
+        stripe highlight-current-row border
         class="flex-1"
         :height="tableAutoHeight ? '100%' : undefined"
       >
@@ -178,4 +179,3 @@ onMounted(() => {
     </FaPageMain>
   </div>
 </template>
-

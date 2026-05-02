@@ -1,8 +1,8 @@
 import apiUser from '@/api/modules/system/auth/auth'
-import { useWebSocket } from '@/composables/useWebSocket'
 import apiNotice from '@/api/modules/system/notice'
-import { useAppNotificationStore } from './notification'
+import { useWebSocket } from '@/composables/useWebSocket'
 import router from '@/router'
+import { useAppNotificationStore } from './notification'
 
 export const useAppAccountStore = defineStore('appAccount', () => {
   const appSettingsStore = useAppSettingsStore()
@@ -22,7 +22,7 @@ export const useAppAccountStore = defineStore('appAccount', () => {
   // 监听强制下线消息
   onMessage('force_logout', (data) => {
     if (typeof window !== 'undefined' && 'ElMessageBox' in window) {
-      // @ts-ignore
+      // @ts-expect-error: ElMessageBox is global
       window.ElMessageBox.alert(data?.message || '您的账号已被管理员强制下线！', '下线通知', {
         confirmButtonText: '重新登录',
         type: 'warning',
@@ -33,7 +33,7 @@ export const useAppAccountStore = defineStore('appAccount', () => {
       })
     }
     else {
-      alert(data?.message || '您的账号已被管理员强制下线！')
+      console.error(data?.message || '您的账号已被管理员强制下线！')
       requestLogout()
     }
   })
@@ -47,19 +47,19 @@ export const useAppAccountStore = defineStore('appAccount', () => {
       title: data?.title || '系统通知',
       data: {
         message: data?.content || '您有一条新的系统公告',
-        id: data?.id
+        id: data?.id,
       },
       timestamp: Date.now(),
-      read: false
+      read: false,
     })
 
     if (typeof window !== 'undefined' && 'ElNotification' in window) {
-      // @ts-ignore
+      // @ts-expect-error: ElNotification is global
       window.ElNotification({
         title: data?.title || '系统公告',
         message: data?.content || '您收到一条新的系统公告，请注意查阅。',
         type: 'info',
-        duration: 0 // 不自动关闭
+        duration: 0, // 不自动关闭
       })
     }
   })
@@ -169,13 +169,14 @@ export const useAppAccountStore = defineStore('appAccount', () => {
           title: item.title || '系统通知',
           data: {
             message: item.content || '您有一条未读的系统公告',
-            id: item.id
+            id: item.id,
           },
           timestamp: item.createTime ? new Date(item.createTime).getTime() : Date.now(),
-          read: false
+          read: false,
         })
       })
-    } catch (e) {
+    }
+    catch (e) {
       console.error('Failed to fetch unread notices', e)
     }
   }

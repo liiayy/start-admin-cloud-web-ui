@@ -125,7 +125,7 @@ function scheduleReconnect() {
   }
 
   const delay = getReconnectDelay()
-  console.log(`[WebSocket] 将在 ${delay}ms 后尝试第 ${reconnectCount + 1} 次重连...`)
+  console.warn(`[WebSocket] 将在 ${delay}ms 后尝试第 ${reconnectCount + 1} 次重连...`)
 
   reconnectTimer = setTimeout(() => {
     reconnectCount++
@@ -192,7 +192,7 @@ function doConnect() {
       reconnectCount = 0
       cancelReconnect()
       startHeartbeat()
-      console.log('[WebSocket] 连接已建立')
+      console.warn('[WebSocket] 连接已建立')
     }
 
     ws.onmessage = handleMessage
@@ -201,7 +201,7 @@ function doConnect() {
       status.value = 'disconnected'
       stopHeartbeat()
       ws = null
-      console.log(`[WebSocket] 连接关闭: code=${event.code}, reason=${event.reason}`)
+      console.warn(`[WebSocket] 连接关闭: code=${event.code}, reason=${event.reason}`)
 
       // 非手动关闭时自动重连
       if (!manualClose) {
