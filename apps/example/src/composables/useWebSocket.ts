@@ -76,6 +76,9 @@ function buildWsUrl(): string {
 
   // 生产环境直接连接网关
   const baseUrl = import.meta.env.VITE_APP_API_BASEURL as string
+  if (baseUrl === '/') {
+    return `${protocol}//${window.location.host}/api/admin/system/websocket?token=${encodeURIComponent(token)}`
+  }
   const wsBase = baseUrl
     .replace(/^https?:\/\//, '') // 去掉 http(s)://
     .replace(/\/$/, '') // 去掉末尾斜杠
