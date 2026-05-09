@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/TypeScript-5.x-3178c6.svg" alt="TypeScript">
   <img src="https://img.shields.io/badge/Pinia-2.x-ffd859.svg" alt="Pinia">
   <img src="https://img.shields.io/badge/Element%20Plus-2.x-409eff.svg" alt="Element Plus">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+  <img src="https://img.shields.io/badge/License-Apache--2.0-blue.svg" alt="License">
 </p>
 
 ---
@@ -117,4 +117,4 @@ pnpm run lint
 
 ## 📄 许可证
 
-本项目基于 [MIT License](LICENSE) 开源协议发布。
+本项目基于 [Apache-2.0 License](LICENSE) 开源协议发布。
