@@ -72,8 +72,8 @@ const assignRoleDialogRef = ref<InstanceType<typeof AssignRoleDialog>>()
 const resetPwdDialogRef = ref<InstanceType<typeof ResetPwdDialog>>()
 const userImportDialogRef = ref<InstanceType<typeof UserImportDialog>>()
 
-function handleAdd() {
-  userFormDialogRef.value?.openAdd(searchParams.value.deptId)
+function handleCreate() {
+  userFormDialogRef.value?.openCreate(searchParams.value.deptId)
 }
 
 function handleEdit(row: UserInfo) {
@@ -198,7 +198,7 @@ onMounted(() => {
                 导出
               </FaButton>
             </div>
-            <FaButton v-auth="'system:user:add'" @click="handleAdd">
+            <FaButton v-auth="'system:user:create'" @click="handleCreate">
               <FaIcon name="i-ri:add-line" />
               新增用户
             </FaButton>

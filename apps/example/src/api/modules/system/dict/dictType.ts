@@ -39,7 +39,7 @@ export default {
   get: (id: number) => request.get<DictTypeInfo>('api/admin/system/dict-type/get', { params: { id } }),
 
   /** 新增字典类型 */
-  add: (data: DictTypeFormData) => request.post('api/admin/system/dict-type/add', data),
+  create: (data: DictTypeFormData) => request.post('api/admin/system/dict-type/create', data),
 
   /** 更新字典类型 */
   update: (id: number, data: DictTypeFormData) => request.put('api/admin/system/dict-type/update', data, { params: { id } }),

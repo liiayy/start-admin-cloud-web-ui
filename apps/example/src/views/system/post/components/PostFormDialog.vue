@@ -39,7 +39,7 @@ const formRules = {
 // === 暴露出的供外部调用的方法 ===
 
 /** 打开新增弹窗 */
-function openAdd(deptId: number | null) {
+function openCreate(deptId: number | null) {
   isEdit.value = false
   editId.value = undefined
   dialogTitle.value = '新增岗位'
@@ -81,7 +81,7 @@ async function openEdit(row: PostInfo) {
 }
 
 defineExpose({
-  openAdd,
+  openCreate,
   openEdit,
 })
 
@@ -95,7 +95,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiPost.add(formData)
+      await apiPost.create(formData)
       faToast.success('新增成功')
     }
     visible.value = false

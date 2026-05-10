@@ -48,7 +48,7 @@ const filteredTypeList = computed(() => {
 })
 
 function handleAddType() {
-  typeDialogRef.value?.openAdd()
+  typeDialogRef.value?.openCreate()
 }
 
 function handleEditType(row: DictTypeInfo) {
@@ -98,7 +98,7 @@ function handleAddData() {
   if (!selectedType.value) {
     return faToast.warning('请先选择左侧字典类型')
   }
-  dataDialogRef.value?.openAdd(selectedType.value.type)
+  dataDialogRef.value?.openCreate(selectedType.value.type)
 }
 
 function handleEditData(row: DictDataInfo) {
@@ -137,7 +137,7 @@ onMounted(() => {
                 <FaIcon name="i-ri:search-line" />
               </template>
             </FaInput>
-            <FaButton v-auth="'system:dict:add'" size="icon-sm" title="新增类型" @click="handleAddType">
+            <FaButton v-auth="'system:dict:create'" size="icon-sm" title="新增类型" @click="handleAddType">
               <FaIcon name="i-ri:add-line" />
             </FaButton>
             <FaButton variant="outline" size="icon-sm" title="刷新列表" @click="searchKeyword = ''; getTypeList(true)">
@@ -197,7 +197,7 @@ onMounted(() => {
 
           <div class="flex-center-between gap-2">
             <div class="flex gap-2" />
-            <FaButton v-auth="'system:dict:add'" :disabled="!selectedType" @click="handleAddData">
+            <FaButton v-auth="'system:dict:create'" :disabled="!selectedType" @click="handleAddData">
               <FaIcon name="i-ri:add-line" />
               新增字典数据
             </FaButton>

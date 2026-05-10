@@ -84,7 +84,7 @@ function resetForm() {
   }
 }
 
-async function openAdd() {
+async function openCreate() {
   isEdit.value = false
   dialogTitle.value = '新增公告'
   resetForm()
@@ -116,7 +116,7 @@ async function openEdit(row: NoticeVO) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -138,7 +138,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiNotice.add(formData)
+      await apiNotice.create(formData)
       faToast.success('新增成功')
     }
     visible.value = false

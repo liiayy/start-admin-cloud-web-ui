@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
-import type { RoleAddFormData, RoleInfo, RoleUpdateFormData } from '@/api/modules/system/permission/role.ts'
+import type { RoleCreateFormData, RoleInfo, RoleUpdateFormData } from '@/api/modules/system/permission/role.ts'
 import apiRole from '@/api/modules/system/permission/role.ts'
 
 defineProps<{
@@ -18,7 +18,7 @@ const isEdit = ref(false)
 const formRef = ref()
 const deptTreeRef = ref()
 
-const formData = reactive<RoleAddFormData & { id?: number }>({
+const formData = reactive<RoleCreateFormData & { id?: number }>({
   id: undefined,
   name: '',
   code: '',
@@ -26,6 +26,7 @@ const formData = reactive<RoleAddFormData & { id?: number }>({
   status: 0,
   dataScope: 1,
   dataScopeDeptIds: '',
+  type: 0,
   remark: '',
 })
 
@@ -51,6 +52,7 @@ function resetForm() {
     status: 0,
     dataScope: 1,
     dataScopeDeptIds: '',
+    type: 0,
     remark: '',
   })
   if (deptTreeRef.value) {
@@ -61,7 +63,7 @@ function resetForm() {
   }
 }
 
-function openAdd() {
+function openCreate() {
   isEdit.value = false
   dialogTitle.value = '新增角色'
   resetForm()
@@ -80,6 +82,7 @@ async function openEdit(row: RoleInfo) {
     status: row.status,
     dataScope: row.dataScope || 1,
     dataScopeDeptIds: row.dataScopeDeptIds || '',
+    type: row.type ?? 0,
     remark: row.remark || '',
   })
 
@@ -95,7 +98,7 @@ async function openEdit(row: RoleInfo) {
   }
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -116,13 +119,14 @@ async function handleSubmit() {
         status: formData.status,
         dataScope: formData.dataScope,
         dataScopeDeptIds: deptIds,
+        type: formData.type,
         remark: formData.remark,
       }
       await apiRole.update(data)
       faToast.success('更新成功')
     }
     else {
-      const data: RoleAddFormData = {
+      const data: RoleCreateFormData = {
         name: formData.name,
         code: formData.code,
         sort: formData.sort,
@@ -131,7 +135,7 @@ async function handleSubmit() {
         dataScopeDeptIds: deptIds,
         remark: formData.remark,
       }
-      await apiRole.add(data)
+      await apiRole.create(data)
       faToast.success('新增成功')
     }
     visible.value = false

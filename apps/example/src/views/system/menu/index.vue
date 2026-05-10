@@ -47,8 +47,8 @@ async function getTree() {
 // === 弹窗 ===
 const menuFormDialogRef = ref<InstanceType<typeof MenuFormDialog>>()
 
-function handleAdd(parentId = 0, type = 2) {
-  menuFormDialogRef.value?.openAdd(parentId, type)
+function handleCreate(parentId = 0, type = 2) {
+  menuFormDialogRef.value?.openCreate(parentId, type)
 }
 
 function handleEdit(row: MenuTreeNode) {
@@ -104,11 +104,11 @@ onMounted(() => {
       <div class="flex-center-between gap-2">
         <div class="flex gap-2" />
         <div class="flex gap-2">
-          <FaButton v-auth="'system:menu:add'" @click="handleAdd(0, 1)">
+          <FaButton v-auth="'system:menu:create'" @click="handleCreate(0, 1)">
             <FaIcon name="i-ri:folder-add-line" />
             新增目录
           </FaButton>
-          <FaButton v-auth="'system:menu:add'" @click="handleAdd(0, 2)">
+          <FaButton v-auth="'system:menu:create'" @click="handleCreate(0, 2)">
             <FaIcon name="i-ri:menu-add-line" />
             新增菜单
           </FaButton>
@@ -158,7 +158,7 @@ onMounted(() => {
               <FaDropdown
                 :items="[
                   [
-                    { label: '新增下级', icon: 'i-ri:add-line', hidden: row.type === 3, vAuth: 'system:menu:add', handle: () => handleAdd(row.id, row.type === 1 ? 2 : 3) },
+                    { label: '新增下级', icon: 'i-ri:add-line', hidden: row.type === 3, vAuth: 'system:menu:create', handle: () => handleCreate(row.id, row.type === 1 ? 2 : 3) },
                   ],
                   [
                     { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:menu:delete', handle: () => handleDelete(row) },

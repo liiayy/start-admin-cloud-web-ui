@@ -51,7 +51,7 @@ function open() {
 
 defineExpose({ open })
 
-function handleAdd() {
+function handleCreate() {
   Object.assign(formData, {
     id: undefined,
     configKey: '',
@@ -133,7 +133,7 @@ async function handleTest() {
 <template>
   <FaModal v-model="visible" title="存储配置管理" class="max-w-4xl!">
     <div class="mb-4 flex justify-end">
-      <FaButton @click="handleAdd">
+      <FaButton @click="handleCreate">
         <FaIcon name="i-ri:add-line" />
         新增配置
       </FaButton>

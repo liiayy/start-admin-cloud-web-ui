@@ -55,8 +55,8 @@ const dataScopeMap: Record<number, string> = {
 const formDialogRef = ref<InstanceType<typeof RoleFormDialog>>()
 const permDialogRef = ref<InstanceType<typeof AssignPermDialog>>()
 
-function handleAdd() {
-  formDialogRef.value?.openAdd()
+function handleCreate() {
+  formDialogRef.value?.openCreate()
 }
 
 function handleEdit(row: RoleInfo) {
@@ -127,7 +127,7 @@ onMounted(() => {
 
       <div class="flex-center-between gap-2">
         <div class="flex gap-2" />
-        <FaButton v-auth="'system:role:add'" @click="handleAdd">
+        <FaButton v-auth="'system:role:create'" @click="handleCreate">
           <FaIcon name="i-ri:add-line" />
           新增角色
         </FaButton>

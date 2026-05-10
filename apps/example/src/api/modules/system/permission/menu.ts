@@ -21,7 +21,7 @@ export interface MenuTreeNode {
 }
 
 /** 菜单新增请求参数 */
-export interface MenuAddFormData {
+export interface MenuCreateFormData {
   name: string
   permission: string
   type: number
@@ -66,7 +66,7 @@ const apiMenu = {
   get: (id: number) => request.get<MenuTreeNode>('api/admin/system/menu/get', { params: { id } }),
 
   // 新增菜单
-  add: (data: MenuAddFormData) => request.post('api/admin/system/menu/add', data),
+  create: (data: MenuCreateFormData) => request.post('api/admin/system/menu/create', data),
 
   // 更新菜单
   update: (data: MenuUpdateFormData) => request.put('api/admin/system/menu/update', data),

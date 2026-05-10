@@ -49,7 +49,7 @@ export default {
   get: (id: number) => request.get<DictDataInfo>('api/admin/system/dict-data/get', { params: { id } }),
 
   /** 新增字典数据 */
-  add: (data: DictDataFormData) => request.post('api/admin/system/dict-data/add', data),
+  create: (data: DictDataFormData) => request.post('api/admin/system/dict-data/create', data),
 
   /** 更新字典数据 */
   update: (id: number, data: DictDataFormData) => request.put('api/admin/system/dict-data/update', data, { params: { id } }),

@@ -42,8 +42,8 @@ async function getTree() {
 // === 弹窗控制 ===
 const deptFormDialogRef = ref<InstanceType<typeof DeptFormDialog>>()
 
-function handleAdd(parentId = 0) {
-  deptFormDialogRef.value?.openAdd(parentId)
+function handleCreate(parentId = 0) {
+  deptFormDialogRef.value?.openCreate(parentId)
 }
 
 function handleEdit(row: any) {
@@ -109,7 +109,7 @@ onMounted(() => {
 
       <div class="flex-center-between gap-2">
         <div class="flex gap-2" />
-        <FaButton v-auth="'system:dept:add'" @click="handleAdd(0)">
+        <FaButton v-auth="'system:dept:create'" @click="handleCreate(0)">
           <FaIcon name="i-ri:add-line" />
           新增部门
         </FaButton>
@@ -151,7 +151,7 @@ onMounted(() => {
               <FaDropdown
                 :items="[
                   [
-                    { label: '新增下级', icon: 'i-ri:add-line', vAuth: 'system:dept:add', handle: () => handleAdd(row.id) },
+                    { label: '新增下级', icon: 'i-ri:add-line', vAuth: 'system:dept:create', handle: () => handleCreate(row.id) },
                   ],
                   [
                     { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'system:dept:delete', handle: () => handleDelete(row) },

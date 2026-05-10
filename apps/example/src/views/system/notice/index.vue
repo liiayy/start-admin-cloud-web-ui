@@ -35,8 +35,8 @@ const {
 
 const formDialogRef = ref<InstanceType<typeof NoticeFormDialog>>()
 
-function handleAdd() {
-  formDialogRef.value?.openAdd()
+function handleCreate() {
+  formDialogRef.value?.openCreate()
 }
 
 function handleEdit(row: NoticeVO) {
@@ -122,7 +122,7 @@ function handlePublish(row: NoticeVO) {
 
       <div class="flex-center-between gap-2">
         <div class="flex gap-2" />
-        <FaButton v-auth="'system:notice:add'" @click="handleAdd">
+        <FaButton v-auth="'system:notice:create'" @click="handleCreate">
           <FaIcon name="i-ri:add-line" />
           新增通知公告
         </FaButton>

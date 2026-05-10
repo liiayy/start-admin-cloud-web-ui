@@ -74,7 +74,7 @@ function handleParentChange(value: any) {
   formData.parentId = value && value.length > 0 ? (value[value.length - 1] as number) : 0
 }
 
-function openAdd(parentId = 0) {
+function openCreate(parentId = 0) {
   isEdit.value = false
   editId.value = undefined
   dialogTitle.value = '新增部门'
@@ -114,7 +114,7 @@ function openEdit(row: any) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -125,7 +125,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiDept.add(formData)
+      await apiDept.create(formData)
       faToast.success('新增成功')
     }
     visible.value = false

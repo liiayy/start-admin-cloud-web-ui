@@ -65,8 +65,8 @@ function handleDeptNodeClick(data: DeptTreeNode) {
 // === 弹窗控制 ===
 const postFormDialogRef = ref<InstanceType<typeof PostFormDialog>>()
 
-function handleAdd() {
-  postFormDialogRef.value?.openAdd(searchParams.value.deptId)
+function handleCreate() {
+  postFormDialogRef.value?.openCreate(searchParams.value.deptId)
 }
 
 function handleEdit(row: PostInfo) {
@@ -173,7 +173,7 @@ onMounted(() => {
 
           <div class="flex-center-between gap-2">
             <div class="flex gap-2" />
-            <FaButton v-auth="'system:post:add'" @click="handleAdd">
+            <FaButton v-auth="'system:post:create'" @click="handleCreate">
               <FaIcon name="i-ri:add-line" />
               新增岗位
             </FaButton>

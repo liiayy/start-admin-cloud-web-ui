@@ -22,7 +22,7 @@ export interface UserInfo {
 }
 
 /** 用户新增请求 */
-export interface UserAddFormData {
+export interface UserCreateFormData {
   username: string
   password: string
   nickname: string
@@ -75,7 +75,7 @@ export default {
   get: (id: number) => request.get<UserInfo>('api/admin/system/user/get', { params: { id } }),
 
   // 新增用户
-  create: (data: UserAddFormData) => request.post('api/admin/system/user/create', data),
+  create: (data: UserCreateFormData) => request.post('api/admin/system/user/create', data),
 
   // 更新用户
   update: (data: UserUpdateFormData) => request.put('api/admin/system/user/update', data),

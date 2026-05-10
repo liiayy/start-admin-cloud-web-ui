@@ -25,7 +25,7 @@ const formRules = {
   type: [{ required: true, message: '请输入字典类型', trigger: 'blur' }],
 }
 
-function openAdd() {
+function openCreate() {
   isEdit.value = false
   dialogTitle.value = '新增字典类型'
   Object.assign(formData, { id: undefined, name: '', type: '', status: 0, remark: '' })
@@ -51,7 +51,7 @@ function openEdit(row: DictTypeInfo) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -62,7 +62,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiDictType.add(formData)
+      await apiDictType.create(formData)
       faToast.success('新增成功')
     }
     visible.value = false

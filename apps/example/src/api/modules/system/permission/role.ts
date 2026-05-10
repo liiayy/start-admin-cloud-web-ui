@@ -16,13 +16,14 @@ export interface RoleInfo {
 }
 
 /** 角色新增请求参数 */
-export interface RoleAddFormData {
+export interface RoleCreateFormData {
   name: string
   code: string
   sort: number
   status: number
   dataScope: number
   dataScopeDeptIds: string
+  type: number
   remark: string
 }
 
@@ -55,7 +56,7 @@ export default {
   get: (id: number) => request.get<RoleInfo>('api/admin/system/role/get', { params: { id } }),
 
   // 新增角色
-  add: (data: RoleAddFormData) => request.post('api/admin/system/role/add', data),
+  create: (data: RoleCreateFormData) => request.post('api/admin/system/role/create', data),
 
   // 更新角色
   update: (data: RoleUpdateFormData) => request.put('api/admin/system/role/update', data),

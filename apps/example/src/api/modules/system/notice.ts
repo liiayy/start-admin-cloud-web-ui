@@ -31,7 +31,7 @@ export default {
   get: (id: number) => request.get<NoticeVO>(`api/admin/system/notice/${id}`),
 
   // 新增
-  add: (data: Partial<NoticeVO>) => request.post('api/admin/system/notice', data),
+  create: (data: Partial<NoticeVO>) => request.post('api/admin/system/notice', data),
 
   // 修改
   update: (data: Partial<NoticeVO>) => request.put('api/admin/system/notice', data),

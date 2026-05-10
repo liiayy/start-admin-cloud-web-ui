@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UserAddFormData, UserInfo } from '@/api/modules/system/auth/user.ts'
+import type { UserCreateFormData, UserInfo } from '@/api/modules/system/auth/user.ts'
 import type { DeptTreeNode } from '@/api/modules/system/organization/dept.ts'
 import type { PostInfo } from '@/api/modules/system/organization/post.ts'
 import apiUser from '@/api/modules/system/auth/user.ts'
@@ -23,7 +23,7 @@ const formRef = ref()
 const postListAll = ref<PostInfo[]>([])
 const editId = ref<number>()
 
-const formData = reactive<UserAddFormData & { id?: number, postIds?: number[] }>({
+const formData = reactive<UserCreateFormData & { id?: number, postIds?: number[] }>({
   id: undefined,
   username: '',
   password: '',
@@ -72,7 +72,7 @@ async function loadPostList() {
   }
 }
 
-async function openAdd(deptId: number | null) {
+async function openCreate(deptId: number | null) {
   isEdit.value = false
   editId.value = undefined
   dialogTitle.value = '新增用户'
@@ -110,7 +110,7 @@ async function openEdit(row: UserInfo) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -121,7 +121,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiUser.create(formData as UserAddFormData)
+      await apiUser.create(formData as UserCreateFormData)
       faToast.success('新增成功')
     }
     visible.value = false

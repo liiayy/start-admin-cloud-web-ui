@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MenuAddFormData, MenuTreeNode, MenuUpdateFormData } from '@/api/modules/system/permission/menu.ts'
+import type { MenuCreateFormData, MenuTreeNode, MenuUpdateFormData } from '@/api/modules/system/permission/menu.ts'
 
 import apiMenu from '@/api/modules/system/permission/menu.ts'
 import FaIconPicker from '@/ui/components/FaIconPicker/index.vue'
@@ -18,7 +18,7 @@ const formLoading = ref(false)
 const isEdit = ref(false)
 const formRef = ref()
 
-const formData = reactive<MenuAddFormData & { id?: number }>({
+const formData = reactive<MenuCreateFormData & { id?: number }>({
   id: undefined,
   name: '',
   permission: '',
@@ -102,7 +102,7 @@ function resetForm() {
   }
 }
 
-function openAdd(parentId = 0, type = 2) {
+function openCreate(parentId = 0, type = 2) {
   isEdit.value = false
   dialogTitle.value = '新增菜单'
   resetForm()
@@ -134,7 +134,7 @@ function openEdit(row: MenuTreeNode) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -145,7 +145,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiMenu.add(formData as MenuAddFormData)
+      await apiMenu.create(formData as MenuCreateFormData)
       faToast.success('新增成功')
     }
     visible.value = false
@@ -199,7 +199,7 @@ async function handleSubmit() {
         <template v-if="formData.type === 3">
           <ElCol :span="12">
             <ElFormItem label="权限标识">
-              <FaInput v-model="formData.permission" placeholder="如 system:user:add" />
+              <FaInput v-model="formData.permission" placeholder="如 system:user:create" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">

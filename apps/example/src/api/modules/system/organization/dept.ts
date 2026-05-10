@@ -42,7 +42,7 @@ export default {
   getById: (id: number) => request.get<DeptInfo>(`api/admin/system/dept/${id}`),
 
   // 新增部门
-  add: (data: DeptFormData) => request.post('api/admin/system/dept/add', data),
+  create: (data: DeptFormData) => request.post('api/admin/system/dept/create', data),
 
   // 更新部门
   update: (id: number, data: DeptFormData) => request.put(`api/admin/system/dept/${id}`, data),

@@ -32,8 +32,8 @@ const {
 // === 弹窗控制 ===
 const configFormDialogRef = ref<InstanceType<typeof ConfigFormDialog>>()
 
-function handleAdd() {
-  configFormDialogRef.value?.openAdd()
+function handleCreate() {
+  configFormDialogRef.value?.openCreate()
 }
 
 function handleEdit(row: ConfigInfo) {
@@ -94,7 +94,7 @@ function handleDelete(row: ConfigInfo) {
 
       <div class="flex-center-between gap-2">
         <div class="flex gap-2" />
-        <FaButton v-auth="'system:config:add'" @click="handleAdd">
+        <FaButton v-auth="'system:config:create'" @click="handleCreate">
           <FaIcon name="i-ri:add-line" />
           新增参数
         </FaButton>

@@ -45,7 +45,7 @@ function resetForm() {
   }
 }
 
-function openAdd() {
+function openCreate() {
   isEdit.value = false
   dialogTitle.value = '新增参数'
   resetForm()
@@ -68,7 +68,7 @@ function openEdit(row: ConfigInfo) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -83,7 +83,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiConfig.add(submitData as ConfigFormData)
+      await apiConfig.create(submitData as ConfigFormData)
       faToast.success('新增成功')
     }
     visible.value = false

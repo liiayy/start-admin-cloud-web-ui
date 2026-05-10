@@ -44,7 +44,7 @@ export default {
   getById: (id: number) => request.get<PostInfo>(`api/admin/system/post/${id}`),
 
   // 新增岗位
-  add: (data: PostFormData) => request.post('api/admin/system/post/add', data),
+  create: (data: PostFormData) => request.post('api/admin/system/post/create', data),
 
   // 更新岗位
   update: (id: number, data: PostFormData) => request.put(`api/admin/system/post/${id}`, data),

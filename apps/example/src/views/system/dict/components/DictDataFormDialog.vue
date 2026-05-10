@@ -38,7 +38,7 @@ const formRules = {
   value: [{ required: true, message: '请输入字典键值', trigger: 'blur' }],
 }
 
-function openAdd(dictType: string) {
+function openCreate(dictType: string) {
   isEdit.value = false
   dialogTitle.value = '新增字典数据'
   Object.assign(formData, {
@@ -78,7 +78,7 @@ function openEdit(row: DictDataInfo) {
   visible.value = true
 }
 
-defineExpose({ openAdd, openEdit })
+defineExpose({ openCreate, openEdit })
 
 async function handleSubmit() {
   await formRef.value?.validate()
@@ -89,7 +89,7 @@ async function handleSubmit() {
       faToast.success('更新成功')
     }
     else {
-      await apiDictData.add(formData)
+      await apiDictData.create(formData)
       faToast.success('新增成功')
     }
     visible.value = false

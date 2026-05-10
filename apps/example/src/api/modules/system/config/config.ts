@@ -45,7 +45,7 @@ const configApi = {
   listValues: (configKeys: string[]) => request.get<Record<string, string>>('api/admin/system/config/list-values', { params: { configKeys } }),
 
   /** 新增系统参数 */
-  add: (data: ConfigFormData) => request.post('api/admin/system/config/add', data),
+  create: (data: ConfigFormData) => request.post('api/admin/system/config/create', data),
 
   /** 更新系统参数 */
   update: (id: number, data: ConfigFormData) => request.put('api/admin/system/config/update', data, { params: { id } }),
