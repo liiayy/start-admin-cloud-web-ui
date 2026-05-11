@@ -39,7 +39,11 @@ const formData = reactive<UserCreateFormData & { id?: number, postIds?: number[]
 })
 
 const formRules = {
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 4, max: 20, message: '用户名长度必须在 4 到 20 个字符之间', trigger: 'blur' },
+    { pattern: /^\w+$/, message: '用户名只能包含字母、数字和下划线', trigger: 'blur' },
+  ],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
   nickname: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
   deptId: [{ required: true, message: '请选择所属部门', trigger: 'change' }],
@@ -134,7 +138,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <FaModal v-model="visible" :title="dialogTitle" class="max-w-2xl">
+  <FaModal v-model="visible" :title="dialogTitle" class="max-w-2xl!">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="80px">
       <ElRow :gutter="20">
         <ElCol :span="12">
