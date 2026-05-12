@@ -143,17 +143,17 @@ async function handleSubmit() {
       <ElRow :gutter="20">
         <ElCol :span="12">
           <ElFormItem label="用户名" prop="username">
-            <FaInput v-model="formData.username" placeholder="请输入用户名" :disabled="isEdit" />
+            <ElInput v-model="formData.username" placeholder="请输入用户名" :disabled="isEdit" />
           </ElFormItem>
         </ElCol>
         <ElCol v-if="!isEdit" :span="12">
           <ElFormItem label="密码" prop="password">
-            <FaInput v-model="formData.password" placeholder="请输入密码" type="password" show-password />
+            <ElInput v-model="formData.password" placeholder="请输入密码" type="password" show-password />
           </ElFormItem>
         </ElCol>
         <ElCol :span="isEdit ? 24 : 12">
           <ElFormItem label="昵称" prop="nickname">
-            <FaInput v-model="formData.nickname" placeholder="请输入昵称" />
+            <ElInput v-model="formData.nickname" placeholder="请输入昵称" />
           </ElFormItem>
         </ElCol>
       </ElRow>
@@ -187,12 +187,12 @@ async function handleSubmit() {
       <ElRow :gutter="20">
         <ElCol :span="12">
           <ElFormItem label="手机号码" prop="mobile">
-            <FaInput v-model="formData.mobile" placeholder="请输入手机号码" />
+            <ElInput v-model="formData.mobile" placeholder="请输入手机号码" />
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="邮箱" prop="email">
-            <FaInput v-model="formData.email" placeholder="请输入邮箱" />
+            <ElInput v-model="formData.email" placeholder="请输入邮箱" />
           </ElFormItem>
         </ElCol>
       </ElRow>
@@ -211,7 +211,7 @@ async function handleSubmit() {
       <ElRow :gutter="20">
         <ElCol :span="24">
           <ElFormItem label="备注">
-            <FaTextarea v-model="formData.remark" :rows="2" placeholder="请输入备注" />
+            <ElInput v-model="formData.remark" type="textarea" :rows="2" placeholder="请输入备注" />
           </ElFormItem>
         </ElCol>
       </ElRow>

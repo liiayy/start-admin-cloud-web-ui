@@ -216,7 +216,7 @@ onMounted(() => {
             </ElTableColumn>
             <ElTableColumn label="状态" width="100" align="center">
               <template #default="{ row }">
-                <FaSwitch v-auth="'system:user:update'" :model-value="row.status === 0" @update:model-value="handleStatusChange(row)" />
+                <ElSwitch v-auth="'system:user:update'" :model-value="row.status === 0" @change="handleStatusChange(row)" />
               </template>
             </ElTableColumn>
             <ElTableColumn label="创建时间" width="170" align="center">

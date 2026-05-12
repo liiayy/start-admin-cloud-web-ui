@@ -154,7 +154,7 @@ async function handleSubmit() {
   <FaModal v-model="visible" :title="dialogTitle" class="max-w-lg">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="100px">
       <ElFormItem label="公告标题" prop="title">
-        <FaInput v-model="formData.title" placeholder="请输入公告标题" />
+        <ElInput v-model="formData.title" placeholder="请输入公告标题" />
       </ElFormItem>
 
       <ElFormItem label="公告类型" prop="type">
@@ -170,8 +170,9 @@ async function handleSubmit() {
       </ElFormItem>
 
       <ElFormItem label="公告内容" prop="content">
-        <FaTextarea
+        <ElInput
           v-model="formData.content"
+          type="textarea"
           :rows="6"
           placeholder="请输入通告主体内容（支持极简纯文本）"
         />

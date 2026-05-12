@@ -181,7 +181,7 @@ async function handleTest() {
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="配置名称" prop="configKey">
-              <FaInput v-model="formData.configKey" placeholder="如: aliyun, minio" :disabled="!!formData.id" />
+              <ElInput v-model="formData.configKey" placeholder="如: aliyun, minio" :disabled="!!formData.id" />
             </ElFormItem>
           </ElCol>
         </ElRow>
@@ -189,12 +189,12 @@ async function handleTest() {
         <ElRow v-if="formData.service !== 'local'" :gutter="20">
           <ElCol :span="12">
             <ElFormItem label="桶名称" prop="bucketName">
-              <FaInput v-model="formData.bucketName" placeholder="Bucket Name" />
+              <ElInput v-model="formData.bucketName" placeholder="Bucket Name" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="区域(Region)" prop="region">
-              <FaInput v-model="formData.region" placeholder="cn-hangzhou" />
+              <ElInput v-model="formData.region" placeholder="cn-hangzhou" />
             </ElFormItem>
           </ElCol>
         </ElRow>
@@ -202,26 +202,26 @@ async function handleTest() {
         <ElRow v-if="formData.service !== 'local'" :gutter="20">
           <ElCol :span="12">
             <ElFormItem label="AccessKey" prop="accessKey">
-              <FaInput v-model="formData.accessKey" placeholder="Access Key" />
+              <ElInput v-model="formData.accessKey" placeholder="Access Key" />
             </ElFormItem>
           </ElCol>
           <ElCol :span="12">
             <ElFormItem label="SecretKey" prop="secretKey">
-              <FaInput v-model="formData.secretKey" placeholder="Secret Key" type="password" show-password />
+              <ElInput v-model="formData.secretKey" placeholder="Secret Key" type="password" show-password />
             </ElFormItem>
           </ElCol>
         </ElRow>
 
         <ElFormItem label="端点(Endpoint)" prop="endpoint">
-          <FaInput v-model="formData.endpoint" :placeholder="formData.service === 'local' ? '本地存储根路径，如 f:/upload' : '例如 oss-cn-hangzhou.aliyuncs.com'" />
+          <ElInput v-model="formData.endpoint" :placeholder="formData.service === 'local' ? '本地存储根路径，如 f:/upload' : '例如 oss-cn-hangzhou.aliyuncs.com'" />
         </ElFormItem>
 
         <ElFormItem label="展示域名" prop="domain">
-          <FaInput v-model="formData.domain" placeholder="例如: https://cdn.example.com" />
+          <ElInput v-model="formData.domain" placeholder="例如: https://cdn.example.com" />
         </ElFormItem>
 
         <ElFormItem label="路径前缀" prop="prefix">
-          <FaInput v-model="formData.prefix" placeholder="例如: upload/" />
+          <ElInput v-model="formData.prefix" placeholder="例如: upload/" />
         </ElFormItem>
 
         <ElRow :gutter="20">
@@ -232,17 +232,17 @@ async function handleTest() {
           </ElCol>
           <ElCol :span="6">
             <ElFormItem label="状态">
-              <FaSwitch :model-value="formData.status === 0" @update:model-value="val => formData.status = val ? 0 : 1" />
+              <ElSwitch v-model="formData.status" :active-value="0" :inactive-value="1" />
             </ElFormItem>
           </ElCol>
           <ElCol v-if="formData.service !== 'local'" :span="6">
             <ElFormItem label="HTTPS">
-              <FaSwitch v-model="formData.isHttps" />
+              <ElSwitch v-model="formData.isHttps" />
             </ElFormItem>
           </ElCol>
         </ElRow>
         <ElFormItem label="备注">
-          <FaTextarea v-model="formData.remark" :rows="2" />
+          <ElInput v-model="formData.remark" type="textarea" :rows="2" />
         </ElFormItem>
       </ElForm>
       <template #footer>
