@@ -138,40 +138,42 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <FaModal v-model="visible" :title="dialogTitle" class="max-w-lg">
-    <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="100px">
-      <ElFormItem label="上级部门">
-        <ElCascader
-          :model-value="getParentCascaderValue()"
-          :options="cascaderOptions"
-          :props="{ checkStrictly: true, value: 'value', label: 'label', children: 'children' }"
-          placeholder="顶级部门"
-          clearable
-          class="w-full"
-          @change="handleParentChange"
-        />
-      </ElFormItem>
-      <ElFormItem label="部门名称" prop="name">
-        <FaInput v-model="formData.name" placeholder="请输入部门名称" />
-      </ElFormItem>
-      <ElFormItem label="显示顺序" prop="sort">
-        <FaNumberField v-model="formData.sort" :min="0" />
-      </ElFormItem>
-      <ElFormItem label="负责人">
-        <FaInput v-model="formData.leaderUserId" placeholder="请输入负责人" />
-      </ElFormItem>
-      <ElFormItem label="联系电话">
-        <FaInput v-model="formData.phone" placeholder="请输入联系电话" />
-      </ElFormItem>
-      <ElFormItem label="邮箱">
-        <FaInput v-model="formData.email" placeholder="请输入邮箱" />
-      </ElFormItem>
-      <ElFormItem label="状态">
-        <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
-      </ElFormItem>
-      <ElFormItem label="备注">
-        <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
-      </ElFormItem>
+  <FaModal v-model="visible" :title="dialogTitle" class="max-w-2xl!">
+    <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="80px">
+      <div class="gap-x-4 grid grid-cols-2">
+        <ElFormItem label="上级部门" class="col-span-2">
+          <ElCascader
+            :model-value="getParentCascaderValue()"
+            :options="cascaderOptions"
+            :props="{ checkStrictly: true, value: 'value', label: 'label', children: 'children' }"
+            placeholder="顶级部门"
+            clearable
+            class="w-full"
+            @change="handleParentChange"
+          />
+        </ElFormItem>
+        <ElFormItem label="部门名称" prop="name">
+          <FaInput v-model="formData.name" placeholder="请输入部门名称" />
+        </ElFormItem>
+        <ElFormItem label="显示顺序" prop="sort">
+          <FaNumberField v-model="formData.sort" :min="0" />
+        </ElFormItem>
+        <ElFormItem label="负责人">
+          <FaInput v-model="formData.leaderUserId" placeholder="请输入负责人" />
+        </ElFormItem>
+        <ElFormItem label="联系电话">
+          <FaInput v-model="formData.phone" placeholder="请输入联系电话" />
+        </ElFormItem>
+        <ElFormItem label="邮箱">
+          <FaInput v-model="formData.email" placeholder="请输入邮箱" />
+        </ElFormItem>
+        <ElFormItem label="状态">
+          <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
+        </ElFormItem>
+        <ElFormItem label="备注" class="col-span-2">
+          <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
+        </ElFormItem>
+      </div>
     </ElForm>
     <template #footer>
       <FaButton variant="outline" @click="visible = false">

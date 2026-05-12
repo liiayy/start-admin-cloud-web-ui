@@ -108,33 +108,35 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <FaModal v-model="visible" :title="dialogTitle" class="max-w-lg">
-    <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="100px">
-      <ElFormItem label="所属部门" prop="deptId">
-        <ElTreeSelect
-          v-model="formData.deptId"
-          :data="deptTree"
-          :props="{ label: 'name', value: 'id', children: 'children' } as any"
-          placeholder="请选择所属部门"
-          check-strictly
-          class="w-full"
-        />
-      </ElFormItem>
-      <ElFormItem label="岗位编码" prop="code">
-        <FaInput v-model="formData.code" placeholder="请输入岗位编码" :disabled="isEdit" />
-      </ElFormItem>
-      <ElFormItem label="岗位名称" prop="name">
-        <FaInput v-model="formData.name" placeholder="请输入岗位名称" />
-      </ElFormItem>
-      <ElFormItem label="显示顺序" prop="sort">
-        <FaNumberField v-model="formData.sort" :min="0" />
-      </ElFormItem>
-      <ElFormItem label="状态">
-        <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
-      </ElFormItem>
-      <ElFormItem label="备注">
-        <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
-      </ElFormItem>
+  <FaModal v-model="visible" :title="dialogTitle" class="max-w-2xl!">
+    <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="80px">
+      <div class="gap-x-4 grid grid-cols-2">
+        <ElFormItem label="所属部门" prop="deptId" class="col-span-2">
+          <ElTreeSelect
+            v-model="formData.deptId"
+            :data="deptTree"
+            :props="{ label: 'name', value: 'id', children: 'children' } as any"
+            placeholder="请选择所属部门"
+            check-strictly
+            class="w-full"
+          />
+        </ElFormItem>
+        <ElFormItem label="岗位编码" prop="code">
+          <FaInput v-model="formData.code" placeholder="请输入岗位编码" :disabled="isEdit" />
+        </ElFormItem>
+        <ElFormItem label="岗位名称" prop="name">
+          <FaInput v-model="formData.name" placeholder="请输入岗位名称" />
+        </ElFormItem>
+        <ElFormItem label="显示顺序" prop="sort">
+          <FaNumberField v-model="formData.sort" :min="0" />
+        </ElFormItem>
+        <ElFormItem label="状态">
+          <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
+        </ElFormItem>
+        <ElFormItem label="备注" class="col-span-2">
+          <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
+        </ElFormItem>
+      </div>
     </ElForm>
     <template #footer>
       <FaButton variant="outline" @click="visible = false">

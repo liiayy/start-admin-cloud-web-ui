@@ -176,7 +176,7 @@ onMounted(() => {
             <FaButton v-auth="'system:post:create'" @click="handleCreate">
               <FaIcon name="i-ri:add-line" />
               新增岗位
-            </FaIcon>
+            </FaButton>
           </div>
 
           <!-- 表格 -->
