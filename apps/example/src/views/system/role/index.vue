@@ -140,7 +140,7 @@ onMounted(() => {
         <ElTableColumn prop="sort" label="排序" width="80" align="center" />
         <ElTableColumn label="状态" width="100" align="center">
           <template #default="{ row }">
-            <ElSwitch v-auth="'system:role:update'" :model-value="row.status === 0" @change="handleStatusChange(row)" />
+            <FaSwitch v-auth="'system:role:update'" :model-value="row.status === 0" @update:model-value="handleStatusChange(row)" />
           </template>
         </ElTableColumn>
         <ElTableColumn label="数据范围" width="130" align="center">

@@ -134,7 +134,7 @@ onMounted(() => {
         <ElTableColumn prop="email" label="邮箱" width="180" />
         <ElTableColumn label="状态" width="100" align="center">
           <template #default="{ row }">
-            <ElSwitch v-auth="'system:dept:update'" :model-value="row.status === 0" @change="handleStatusChange(row)" />
+            <FaSwitch v-auth="'system:dept:update'" :model-value="row.status === 0" @update:model-value="handleStatusChange(row)" />
           </template>
         </ElTableColumn>
         <ElTableColumn label="创建时间" width="180" align="center">

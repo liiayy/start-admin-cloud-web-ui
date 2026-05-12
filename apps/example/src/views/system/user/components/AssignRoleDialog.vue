@@ -52,7 +52,7 @@ async function handleSubmit() {
   <FaModal v-model="visible" :title="dialogTitle" class="max-w-lg">
     <ElForm label-width="80px">
       <ElFormItem label="当前用户">
-        <ElInput :model-value="targetUserName" disabled />
+        <FaInput :model-value="targetUserName" disabled />
       </ElFormItem>
       <ElFormItem label="选择角色">
         <ElSelect v-model="selectedRoleIds" multiple placeholder="请选择角色" class="w-full">

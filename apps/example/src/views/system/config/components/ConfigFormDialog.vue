@@ -102,13 +102,13 @@ async function handleSubmit() {
   <FaModal v-model="visible" :title="dialogTitle" class="max-w-xl">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="100px">
       <ElFormItem label="参数名称" prop="name">
-        <ElInput v-model="formData.name" placeholder="请输入参数名称" />
+        <FaInput v-model="formData.name" placeholder="请输入参数名称" />
       </ElFormItem>
       <ElFormItem label="参数键名" prop="configKey">
-        <ElInput v-model="formData.configKey" placeholder="请输入参数键名" :disabled="isEdit" />
+        <FaInput v-model="formData.configKey" placeholder="请输入参数键名" :disabled="isEdit" />
       </ElFormItem>
       <ElFormItem label="参数键值" prop="configValue">
-        <ElInput v-model="formData.configValue" placeholder="请输入参数键值" type="textarea" :rows="4" />
+        <FaTextarea v-model="formData.configValue" placeholder="请输入参数键值" :rows="4" />
       </ElFormItem>
       <ElFormItem label="系统内置">
         <DictRadio v-model="formData.builtin" type="sys_yes_no" />
@@ -125,7 +125,7 @@ async function handleSubmit() {
         <DictRadio v-model="formData.isPublic" type="sys_yes_no" />
       </ElFormItem>
       <ElFormItem label="备注">
-        <ElInput v-model="formData.remark" type="textarea" :rows="2" placeholder="请输入备注" />
+        <FaTextarea v-model="formData.remark" :rows="2" placeholder="请输入备注" />
       </ElFormItem>
     </ElForm>
     <template #footer>

@@ -107,19 +107,19 @@ async function handleSubmit() {
       <ElRow :gutter="16">
         <ElCol :span="12">
           <ElFormItem label="字典标签" prop="label">
-            <ElInput v-model="formData.label" placeholder="请输入字典标签" />
+            <FaInput v-model="formData.label" placeholder="请输入字典标签" />
           </ElFormItem>
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="字典键值" prop="value">
-            <ElInput v-model="formData.value" placeholder="请输入字典键值" />
+            <FaInput v-model="formData.value" placeholder="请输入字典键值" />
           </ElFormItem>
         </ElCol>
       </ElRow>
       <ElRow :gutter="16">
         <ElCol :span="12">
           <ElFormItem label="排序">
-            <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" class="w-full" />
+            <FaNumberField v-model="formData.sort" :min="0" class="w-full" />
           </ElFormItem>
         </ElCol>
         <ElFormItem label="状态">
@@ -151,12 +151,12 @@ async function handleSubmit() {
         </ElCol>
         <ElCol :span="12">
           <ElFormItem label="CSS 样式">
-            <ElInput v-model="formData.cssClass" placeholder="自定义 CSS 类名" />
+            <FaInput v-model="formData.cssClass" placeholder="自定义 CSS 类名" />
           </ElFormItem>
         </ElCol>
       </ElRow>
       <ElFormItem label="备注">
-        <ElInput v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
       </ElFormItem>
     </ElForm>
     <template #footer>

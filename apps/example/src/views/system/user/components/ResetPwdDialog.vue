@@ -47,7 +47,7 @@ async function handleSubmit() {
   <FaModal v-model="visible" :title="`重置密码 - ${targetUserName}`" class="max-w-sm">
     <ElForm ref="formRef" :model="formData" :rules="formRules" label-width="80px">
       <ElFormItem label="新密码" prop="password">
-        <ElInput v-model="formData.password" placeholder="请输入新密码" type="password" show-password />
+        <FaInput v-model="formData.password" placeholder="请输入新密码" type="password" show-password />
       </ElFormItem>
     </ElForm>
     <template #footer>

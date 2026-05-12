@@ -152,25 +152,25 @@ async function handleSubmit() {
         />
       </ElFormItem>
       <ElFormItem label="部门名称" prop="name">
-        <ElInput v-model="formData.name" placeholder="请输入部门名称" />
+        <FaInput v-model="formData.name" placeholder="请输入部门名称" />
       </ElFormItem>
       <ElFormItem label="显示顺序" prop="sort">
-        <ElInputNumber v-model="formData.sort" :min="0" controls-position="right" />
+        <FaNumberField v-model="formData.sort" :min="0" />
       </ElFormItem>
       <ElFormItem label="负责人">
-        <ElInput v-model="formData.leaderUserId" placeholder="请输入负责人" />
+        <FaInput v-model="formData.leaderUserId" placeholder="请输入负责人" />
       </ElFormItem>
       <ElFormItem label="联系电话">
-        <ElInput v-model="formData.phone" placeholder="请输入联系电话" />
+        <FaInput v-model="formData.phone" placeholder="请输入联系电话" />
       </ElFormItem>
       <ElFormItem label="邮箱">
-        <ElInput v-model="formData.email" placeholder="请输入邮箱" />
+        <FaInput v-model="formData.email" placeholder="请输入邮箱" />
       </ElFormItem>
       <ElFormItem label="状态">
         <DictRadio v-model="formData.status" type="sys_status" value-type="number" />
       </ElFormItem>
       <ElFormItem label="备注">
-        <ElInput v-model="formData.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <FaTextarea v-model="formData.remark" :rows="3" placeholder="请输入备注" />
       </ElFormItem>
     </ElForm>
     <template #footer>
