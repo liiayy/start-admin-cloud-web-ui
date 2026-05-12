@@ -103,11 +103,11 @@ onMounted(() => {
             <FaLabel label="处理状态">
               <DictSelect v-model="searchParams.handleStatus" type="sys_error_log_status" value-type="number" placeholder="请选择" clearable class="w-36" @change="handleSearch" />
             </FaLabel>
-            <FaButton @click="handleSearch" size="sm">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset" size="sm">
+            <FaButton variant="outline" size="sm" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

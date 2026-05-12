@@ -119,7 +119,6 @@ async function handleSubmit() {
         status: formData.status,
         dataScope: formData.dataScope,
         dataScopeDeptIds: deptIds,
-        type: formData.type,
         remark: formData.remark,
       }
       await apiRole.update(data)
@@ -133,6 +132,7 @@ async function handleSubmit() {
         status: formData.status,
         dataScope: formData.dataScope,
         dataScopeDeptIds: deptIds,
+        type: formData.type,
         remark: formData.remark,
       }
       await apiRole.create(data)
