@@ -95,19 +95,19 @@ onMounted(() => {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="模块名称">
-              <FaInput v-model="searchParams.moduleName" placeholder="请输入模块名" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.moduleName" placeholder="请输入模块名" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="异常类型">
-              <FaInput v-model="searchParams.errorType" placeholder="请输入异常类名" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.errorType" placeholder="请输入异常类名" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="处理状态">
               <DictSelect v-model="searchParams.handleStatus" type="sys_error_log_status" value-type="number" placeholder="请选择" clearable class="w-36" @change="handleSearch" />
             </FaLabel>
-            <FaButton @click="handleSearch">
+            <FaButton @click="handleSearch" size="sm">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton variant="outline" @click="handleReset" size="sm">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

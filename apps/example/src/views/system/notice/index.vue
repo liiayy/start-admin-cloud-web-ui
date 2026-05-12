@@ -81,7 +81,7 @@ function handlePublish(row: NoticeVO) {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="公告标题">
-              <FaInput v-model="searchParams.title" placeholder="请输入标题" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.title" placeholder="请输入标题" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
 
             <FaLabel label="公告类型">
@@ -106,11 +106,11 @@ function handlePublish(row: NoticeVO) {
               </ElSelect>
             </FaLabel>
 
-            <FaButton @click="handleSearch">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

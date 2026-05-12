@@ -61,7 +61,7 @@ function handleDelete(row: ConfigInfo) {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="参数名称">
-              <FaInput
+              <el-input
                 v-model="searchParams.name"
                 placeholder="请输入参数名称"
                 clearable
@@ -70,7 +70,7 @@ function handleDelete(row: ConfigInfo) {
               />
             </FaLabel>
             <FaLabel label="参数键名">
-              <FaInput
+              <el-input
                 v-model="searchParams.configKey"
                 placeholder="请输入参数键名"
                 clearable
@@ -78,11 +78,11 @@ function handleDelete(row: ConfigInfo) {
                 @keyup.enter="handleSearch"
               />
             </FaLabel>
-            <FaButton @click="handleSearch">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

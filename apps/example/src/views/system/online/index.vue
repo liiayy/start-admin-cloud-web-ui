@@ -116,16 +116,16 @@ onMounted(() => {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="用户名">
-              <FaInput v-model="searchParams.username" placeholder="请输入用户名" clearable class="w-48" />
+              <el-input v-model="searchParams.username" placeholder="请输入用户名" clearable class="w-48" />
             </FaLabel>
             <FaLabel label="用户昵称">
-              <FaInput v-model="searchParams.nickname" placeholder="请输入用户昵称" clearable class="w-48" />
+              <el-input v-model="searchParams.nickname" placeholder="请输入用户昵称" clearable class="w-48" />
             </FaLabel>
-            <FaButton @click="getList">
+            <FaButton size="sm" @click="getList">
               <FaIcon name="i-ri:refresh-line" />
               刷新
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:delete-bin-line" />
               重置
             </FaButton>

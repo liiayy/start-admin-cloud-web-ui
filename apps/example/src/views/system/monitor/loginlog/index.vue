@@ -67,19 +67,19 @@ onMounted(() => {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="用户账号">
-              <FaInput v-model="searchParams.username" placeholder="请输入用户账号" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.username" placeholder="请输入用户账号" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="登录地址">
-              <FaInput v-model="searchParams.loginIp" placeholder="请输入登录地址" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.loginIp" placeholder="请输入登录地址" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="状态">
               <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="请选择" clearable class="w-36" />
             </FaLabel>
-            <FaButton @click="handleSearch">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

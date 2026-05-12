@@ -113,19 +113,19 @@ function getFullUrl(url: string) {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="名称">
-              <FaInput v-model="searchParams.originalName" placeholder="原始文件名" clearable class="w-44" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.originalName" placeholder="原始文件名" clearable class="w-44" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="后缀">
-              <FaInput v-model="searchParams.fileSuffix" placeholder="如: jpg" clearable class="w-32" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.fileSuffix" placeholder="如: jpg" clearable class="w-32" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="平台">
               <DictSelect v-model="searchParams.service" type="sys_oss_service" placeholder="存储平台" clearable class="w-44" @change="handleSearch" />
             </FaLabel>
-            <FaButton @click="handleSearch">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

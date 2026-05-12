@@ -114,11 +114,11 @@ onMounted(() => {
           <div class="text-sm text-gray-600 font-semibold mb-2">
             部门列表
           </div>
-          <FaInput v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
-            <template #start>
+          <el-input v-model="searchDeptName" placeholder="过滤部门..." clearable class="mb-3">
+            <template #prefix>
               <FaIcon name="i-ri:search-line" />
             </template>
-          </FaInput>
+          </el-input>
           <div class="flex-1 overflow-auto">
             <ElTree
               ref="deptTreeRef"
@@ -141,7 +141,7 @@ onMounted(() => {
             <template #default>
               <div class="flex flex-wrap gap-3 items-center">
                 <FaLabel label="岗位名称">
-                  <FaInput v-model="searchParams.name" placeholder="请输入岗位名称" clearable class="w-44" @keyup.enter="handleSearch" />
+                  <el-input v-model="searchParams.name" placeholder="请输入岗位名称" clearable class="w-44" @keyup.enter="handleSearch" />
                 </FaLabel>
                 <FaLabel label="所在部门">
                   <ElTreeSelect
@@ -157,11 +157,11 @@ onMounted(() => {
                 <FaLabel label="状态">
                   <DictSelect v-model="searchParams.status" type="sys_status" value-type="number" placeholder="请选择" clearable class="w-32" />
                 </FaLabel>
-                <FaButton @click="handleSearch">
+                <FaButton size="sm" @click="handleSearch">
                   <FaIcon name="i-ri:search-line" />
                   搜索
                 </FaButton>
-                <FaButton variant="outline" @click="handleReset">
+                <FaButton size="sm" variant="outline" @click="handleReset">
                   <FaIcon name="i-ri:refresh-line" />
                   重置
                 </FaButton>
@@ -176,7 +176,7 @@ onMounted(() => {
             <FaButton v-auth="'system:post:create'" @click="handleCreate">
               <FaIcon name="i-ri:add-line" />
               新增岗位
-            </FaButton>
+            </FaIcon>
           </div>
 
           <!-- 表格 -->
@@ -218,7 +218,6 @@ onMounted(() => {
             </ElTableColumn>
           </ElTable>
 
-          <!-- 分页 -->
           <FaPagination
             v-model:page="pagination.pageNum"
             v-model:size="pagination.pageSize"

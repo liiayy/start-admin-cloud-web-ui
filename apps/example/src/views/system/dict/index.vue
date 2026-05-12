@@ -132,11 +132,11 @@ onMounted(() => {
             字典类型
           </div>
           <div class="mb-3 flex gap-2">
-            <FaInput v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable class="flex-1">
-              <template #start>
+            <el-input v-model="searchKeyword" placeholder="搜索字典名称/类型..." clearable class="flex-1">
+              <template #prefix>
                 <FaIcon name="i-ri:search-line" />
               </template>
-            </FaInput>
+            </el-input>
             <FaButton v-auth="'system:dict:create'" size="icon-sm" title="新增类型" @click="handleAddType">
               <FaIcon name="i-ri:add-line" />
             </FaButton>
@@ -177,7 +177,7 @@ onMounted(() => {
             <template #default>
               <div class="flex flex-wrap gap-3 items-center">
                 <FaLabel label="字典标签">
-                  <FaInput
+                  <el-input
                     v-model="searchParams.label"
                     placeholder="请输入字典标签"
                     clearable
@@ -185,7 +185,7 @@ onMounted(() => {
                     @keyup.enter="handleSearch"
                   />
                 </FaLabel>
-                <FaButton @click="handleSearch">
+                <FaButton size="sm" @click="handleSearch">
                   <FaIcon name="i-ri:search-line" />
                   搜索
                 </FaButton>

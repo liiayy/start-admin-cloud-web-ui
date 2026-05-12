@@ -75,10 +75,10 @@ onMounted(() => {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="系统模块">
-              <FaInput v-model="searchParams.title" placeholder="请输入系统模块" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.title" placeholder="请输入系统模块" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="操作人员">
-              <FaInput v-model="searchParams.operName" placeholder="请输入操作人员" clearable class="w-48" @keyup.enter="handleSearch" />
+              <el-input v-model="searchParams.operName" placeholder="请输入操作人员" clearable class="w-48" @keyup.enter="handleSearch" />
             </FaLabel>
             <FaLabel label="业务类型">
               <DictSelect v-model="searchParams.businessType" type="sys_oper_type" value-type="number" placeholder="请选择" clearable class="w-36" />
@@ -86,11 +86,11 @@ onMounted(() => {
             <FaLabel label="操作状态">
               <DictSelect v-model="searchParams.status" type="sys_common_status" value-type="number" placeholder="请选择" clearable class="w-36" />
             </FaLabel>
-            <FaButton @click="handleSearch">
+            <FaButton size="sm" @click="handleSearch">
               <FaIcon name="i-ri:search-line" />
               搜索
             </FaButton>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>

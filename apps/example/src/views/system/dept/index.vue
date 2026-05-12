@@ -90,14 +90,14 @@ onMounted(() => {
         <template #default>
           <div class="flex flex-wrap gap-3 items-center">
             <FaLabel label="部门名称">
-              <FaInput
+              <el-input
                 v-model="searchName"
                 placeholder="请输入部门名称"
                 clearable
                 class="w-60"
               />
             </FaLabel>
-            <FaButton variant="outline" @click="handleReset">
+            <FaButton size="sm" variant="outline" @click="handleReset">
               <FaIcon name="i-ri:refresh-line" />
               重置
             </FaButton>
