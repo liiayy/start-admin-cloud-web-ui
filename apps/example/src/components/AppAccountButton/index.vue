@@ -33,7 +33,7 @@ const profileModal = useFaModal().create({
   footer: false,
   closeOnClickOverlay: false,
   closeOnPressEscape: false,
-  class: 'h-[500px] sm:max-w-xl overflow-hidden',
+  class: 'h-[500px] sm:max-w-4xl overflow-hidden',
   contentClass: 'min-h-full p-0 flex',
   content: () => h(Profile),
 })
