@@ -31,7 +31,6 @@ const {
       v-model:page="pagination.pageNum"
       v-model:size="pagination.pageSize"
       :total="total"
-      size="small"
       @page-change="getList"
       @size-change="getList"
     />

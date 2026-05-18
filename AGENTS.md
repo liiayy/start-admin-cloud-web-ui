@@ -7,7 +7,7 @@ Fantastic-admin 是一个基于 Vue 3 的后台管理框架。
 ## 技术栈
 
 - **框架**: Vue 3.6 + TypeScript + Vite 8
-- **UI 组件**: Element Plus（默认，可替换） + Reka UI + UnoCSS（原子化 CSS）
+- **UI 组件**: Element Plus（默认） + Reka UI + UnoCSS（原子化 CSS）
 - **状态管理**: Pinia + pinia-plugin-persistedstate
 - **路由**: Vue Router 5
 - **包管理器**: pnpm（必须使用 pnpm，禁止使用 npm/yarn）
