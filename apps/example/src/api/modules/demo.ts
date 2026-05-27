@@ -35,4 +35,13 @@ export default {
   pushBroadcast: (title: string, message: string) => request.post<void>('api/admin/demo/feature/push/broadcast', null, { params: { title, message } }),
   pushToUser: (userId: number, title: string, message: string) => request.post<void>('api/admin/demo/feature/push/user', null, { params: { userId, title, message } }),
   getDictSystemDemo: (sex?: number, status?: string) => request.get<any>('api/admin/demo/feature/dict-system-demo', { params: { sex, status } }),
+  uploadDemoFile: (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    return request.post<any>('api/admin/demo/feature/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  },
 }

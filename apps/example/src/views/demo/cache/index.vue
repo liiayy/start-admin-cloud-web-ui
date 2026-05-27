@@ -270,10 +270,10 @@ async function fetchDictSystemDemo() {
   )
   try {
     const res = await apiDemo.getDictSystemDemo(demoForm.value.sex, demoForm.value.status)
-    backendDictResult.value = res.data
+    backendDictResult.value = res
     addLog(
       '字典与系统参数',
-      `后端响应成功！翻译结果 -> 默认性别Label: "${res.data.sexLabel}"，指定状态Name: "${res.data.statusName}"，手动翻译性别: "${res.data.manualSexLabel}"。系统参数 -> 验证码开关: ${res.data.captchaEnabled}，默认密码: "${res.data.defaultPassword}"`,
+      `后端响应成功！翻译结果 -> 默认性别Label: "${res.sexLabel}"，指定状态Name: "${res.statusName}"，手动翻译性别: "${res.manualSexLabel}"。系统参数 -> 验证码开关: ${res.captchaEnabled}，默认密码: "${res.defaultPassword}"`,
       'success',
     )
   }
@@ -286,6 +286,52 @@ async function fetchDictSystemDemo() {
   }
   finally {
     dictLoading.value = false
+  }
+}
+
+// 8. 文件上传演示
+const uploadFile = ref<File | null>(null)
+const uploadLoading = ref(false)
+const uploadResult = ref<any>(null)
+const { uploadMaxSizeMB: uiUploadMaxSize } = useConfig('sys.upload.maxSizeMB')
+
+function handleFileChange(event: Event) {
+  const target = event.target as HTMLInputElement
+  if (target.files && target.files.length > 0) {
+    uploadFile.value = target.files[0]
+  }
+}
+
+async function triggerUpload() {
+  if (!uploadFile.value) {
+    faToast.warning('请先选择一个文件！')
+    return
+  }
+  uploadLoading.value = true
+  addLog(
+    '文件上传',
+    `开始上传文件: "${uploadFile.value.name}"，大小: ${(uploadFile.value.size / 1024 / 1024).toFixed(2)} MB (系统配置最大限制: ${uiUploadMaxSize.value || 10} MB)...`,
+    'info',
+  )
+  try {
+    const res = await apiDemo.uploadDemoFile(uploadFile.value)
+    uploadResult.value = res
+    addLog(
+      '文件上传',
+      `文件上传成功！元数据 -> 文件名: "${res.fileName}"，大小: ${res.fileSizeFriendly}，类型: "${res.contentType}"，临时预览地址: "${res.url}"`,
+      'success',
+    )
+    faToast.success('文件上传成功！')
+  }
+  catch (err: any) {
+    addLog(
+      '文件上传',
+      `文件上传失败: ${err.msg || err.message || '超出系统文件上传最大限制'}`,
+      'error',
+    )
+  }
+  finally {
+    uploadLoading.value = false
   }
 }
 </script>
@@ -557,6 +603,67 @@ async function fetchDictSystemDemo() {
                         </div>
                         <div>默认密码: <span class="font-bold font-mono">{{ backendDictResult.defaultPassword }}</span></div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ElCard>
+
+            <!-- 8. 文件上传限制校验演示 -->
+            <ElCard shadow="never" class="border md:col-span-2">
+              <template #header>
+                <div class="flex gap-2 items-center">
+                  <FaIcon name="i-ri:upload-cloud-2-line" class="text-lg text-orange-500" />
+                  <span class="font-bold">文件上传限制校验演示 (MultipartFile & Config)</span>
+                </div>
+              </template>
+              <div class="space-y-4">
+                <div class="text-xs text-gray-500">
+                  演示文件上传并结合系统参数大小校验。后端通过 <code>ConfigUtils</code> 动态读取系统参数 <code>sys.upload.maxSizeMB</code>（当前：<el-tag size="small" type="warning">
+                    {{ uiUploadMaxSize || 10 }} MB
+                  </el-tag>）。若上传文件超出该限制，后端会自动抛出自定义业务异常。
+                </div>
+
+                <div class="flex flex-wrap gap-4 items-center">
+                  <div class="inline-block relative overflow-hidden">
+                    <input
+                      id="demo-file-uploader"
+                      type="file"
+                      class="opacity-0 h-full w-full cursor-pointer left-0 top-0 absolute"
+                      @change="handleFileChange"
+                    >
+                    <FaButton variant="outline">
+                      <FaIcon name="i-ri:file-add-line" />
+                      {{ uploadFile ? '重新选择文件' : '选择文件' }}
+                    </FaButton>
+                  </div>
+                  <div class="text-xs text-gray-600">
+                    <span v-if="uploadFile">已选文件: <strong class="text-blue-600">{{ uploadFile.name }}</strong> ({{ (uploadFile.size / 1024 / 1024).toFixed(2) }} MB)</span>
+                    <span v-else class="text-gray-400">未选择任何文件</span>
+                  </div>
+                  <FaButton
+                    :loading="uploadLoading"
+                    :disabled="!uploadFile"
+                    type="primary"
+                    class="ml-auto bg-orange-500 hover:bg-orange-600"
+                    @click="triggerUpload"
+                  >
+                    <FaIcon name="i-ri:upload-line" />
+                    立即上传测试
+                  </FaButton>
+                </div>
+
+                <!-- 结果展示 -->
+                <div v-if="uploadResult" class="text-xs text-gray-700 p-3 border border-orange-200 rounded bg-orange-50 space-y-1.5">
+                  <div class="text-orange-800 font-bold">
+                    后端模拟上传成功响应数据:
+                  </div>
+                  <div class="font-mono gap-y-1 grid grid-cols-2">
+                    <div>文件名: <span class="text-gray-900 font-bold">{{ uploadResult.fileName }}</span></div>
+                    <div>文件大小: <span class="text-gray-900 font-bold">{{ uploadResult.fileSizeFriendly }} ({{ uploadResult.fileSize }} bytes)</span></div>
+                    <div>Content-Type: <span class="text-gray-900 font-bold">{{ uploadResult.contentType }}</span></div>
+                    <div class="col-span-2">
+                      模拟临时访问URL: <a :href="uploadResult.url" target="_blank" class="text-blue-600 font-bold underline">{{ uploadResult.url }}</a>
                     </div>
                   </div>
                 </div>
