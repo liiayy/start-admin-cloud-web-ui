@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { DictDataInfo } from '@/api/modules/system/dict/dictData.ts'
+import type { DictType } from '@/types/dict'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDictStore } from '@/store/modules/app/dict'
 
 const props = defineProps<{
-  type?: string // 字典类型，传入此项将自动加载数据
+  type?: DictType // 字典类型，传入此项将自动加载数据
   options?: DictDataInfo[] // 字典选项数组 (可选，若不传则根据 type 加载)
   value?: string | number | boolean // 当前绑定值，支持逗号分隔的多值
   placeholder?: string // 找不到时的占位内容

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { DictDataInfo } from '@/api/modules/system/dict/dictData.ts'
+import type { DictType } from '@/types/dict'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDictStore } from '@/store/modules/app/dict'
 
 const props = defineProps<{
   modelValue?: any
-  type: string // 字典类型，如 'sys_user_sex'
+  type: DictType // 字典类型，如 'sys_user_sex'
   valueType?: 'string' | 'number' // 值类型，默认为 string
   placeholder?: string
   multiple?: boolean
