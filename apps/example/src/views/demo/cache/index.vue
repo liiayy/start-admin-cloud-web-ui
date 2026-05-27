@@ -566,7 +566,7 @@ async function fetchDictSystemDemo() {
         </div>
 
         <!-- 右侧日志输出区域 -->
-        <ElCard shadow="never" class="border flex flex-col h-[500px]">
+        <ElCard shadow="never" class="border flex flex-col h-full">
           <template #header>
             <div class="flex items-center justify-between">
               <span class="font-bold">分布式基座调用日志</span>
@@ -577,7 +577,7 @@ async function fetchDictSystemDemo() {
             </div>
           </template>
 
-          <div class="pr-2 flex-1 h-[390px] overflow-y-auto space-y-3">
+          <div class="pr-2 flex-1 h-[690px] overflow-y-auto space-y-3">
             <div v-if="logs.length === 0" class="text-gray-400 flex flex-col h-full items-center justify-center">
               <FaIcon name="i-ri:terminal-box-line" class="text-4xl mb-2" />
               <span>暂无调用日志，请尝试点击左侧操作</span>

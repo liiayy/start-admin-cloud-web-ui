@@ -1,111 +1,87 @@
 <script setup lang="ts">
 import apiDemo from '@/api/modules/demo'
+import { useTable } from '@/composables/useTable'
 import DemoFormDialog from './components/DemoFormDialog.vue'
 
 defineOptions({
   name: 'DemoCrud',
 })
 
-const { pagination, onSizeChange, onCurrentChange } = usePagination()
-const loading = ref(false)
-const dataList = ref([])
-
-// 搜索条件
-const search = ref({
-  name: '',
+// === 使用 Hook 管理表格基础逻辑 ===
+const {
+  loading,
+  list: dataList,
+  total,
+  pagination,
+  searchParams,
+  getList,
+  handleSearch,
+  handleReset,
+} = useTable({
+  api: apiDemo.page,
+  defaultParams: {
+    name: '',
+  },
 })
 
-function searchReset() {
-  search.value.name = ''
-  currentChange()
-}
-
-function getDataList() {
-  loading.value = true
-  const params = {
-    pageNum: pagination.value.page,
-    pageSize: pagination.value.size,
-    name: search.value.name || undefined,
-  }
-  apiDemo.page(params).then((res: any) => {
-    loading.value = false
-    dataList.value = res.list
-    pagination.value.total = res.total
-  }).catch(() => {
-    loading.value = false
-  })
-}
-
-// 每页数量切换
-function sizeChange(size: number) {
-  onSizeChange(size).then(() => getDataList())
-}
-
-// 当前页码切换
-function currentChange(page = 1) {
-  onCurrentChange(page).then(() => getDataList())
-}
-
-onMounted(() => {
-  getDataList()
-})
+// 表格是否自适应高度
+const tableAutoHeight = ref(true)
 
 // 弹窗控制
 const formDialogRef = ref<InstanceType<typeof DemoFormDialog>>()
 
-function onCreate() {
+function handleAdd() {
   formDialogRef.value?.openAdd()
 }
 
-function onEdit(row: any) {
+function handleEdit(row: any) {
   formDialogRef.value?.openEdit(row)
 }
 
-function onDel(row: any) {
+function handleDelete(row: any) {
   useFaModal().confirm({
     title: '确认删除',
     content: `确认删除「${row.name}」吗？该操作不可撤销！`,
-    onConfirm: () => {
-      apiDemo.delete(row.id).then(() => {
-        faToast.success('删除成功')
-        getDataList()
-      })
+    onConfirm: async () => {
+      await apiDemo.delete(row.id)
+      faToast.success('删除成功')
+      await getList()
     },
   })
 }
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'absolute flex flex-col size-full': tableAutoHeight }">
     <FaPageHeader title="基础 CRUD 演示" class="mb-0">
       <template #description>
         <p>
-          演示系统基础的数据库增删改查（CRUD）开发标准。包含后端分层架构（Controller -> Service -> Manager -> Mapper -> Entity）和前端 usePagination / useFaModal 等最佳实践组件的使用。
+          演示系统基础的数据库增删改查（CRUD）开发标准。包含后端分层架构（Controller -> Service -> Manager -> Mapper -> Entity）和前端 useTable / useFaModal 等最佳实践组件的使用。
         </p>
       </template>
     </FaPageHeader>
 
-    <FaPageMain>
+    <FaPageMain :class="{ 'flex-1 overflow-auto': tableAutoHeight }" :main-class="{ 'flex-1 flex flex-col overflow-auto': tableAutoHeight }">
       <!-- 搜索栏 -->
       <FaSearchBar :show-toggle="false">
         <template #default>
           <div class="flex flex-wrap gap-4 items-center">
             <FaLabel label="产品名称">
               <FaInput
-                v-model="search.name"
+                v-model="searchParams.name"
                 placeholder="请输入产品名称，支持模糊检索"
                 clearable
                 class="w-60"
-                @keydown.enter="currentChange()"
-                @clear="currentChange()"
+                @keyup.enter="handleSearch"
+                @clear="handleSearch"
               />
             </FaLabel>
             <div class="flex gap-2">
-              <FaButton variant="outline" @click="searchReset">
+              <FaButton variant="outline" @click="handleReset">
                 <FaIcon name="i-ri:refresh-line" />
                 重置
               </FaButton>
-              <FaButton type="primary" @click="currentChange()">
+              <FaButton type="primary" @click="handleSearch">
                 <FaIcon name="i-ri:search-line" />
                 查询
               </FaButton>
@@ -121,14 +97,14 @@ function onDel(row: any) {
         <div class="text-sm text-gray-500">
           演示数据来源于 PostgreSQL <code>demo</code> 表
         </div>
-        <FaButton v-auth="'demo:product:create'" @click="onCreate">
+        <FaButton v-auth="'demo:product:create'" @click="handleAdd">
           <FaIcon name="i-ri:add-line" />
           新增演示数据
         </FaButton>
       </div>
 
       <!-- 表格 -->
-      <ElTable v-loading="loading" :data="dataList" stripe highlight-current-row border class="mb-4 w-full">
+      <ElTable v-loading="loading" :data="dataList" stripe highlight-current-row border :height="tableAutoHeight ? '100%' : undefined" class="mb-4 w-full">
         <ElTableColumn prop="id" label="ID" width="100" align="center" />
         <ElTableColumn prop="name" label="名称" min-width="180" show-overflow-tooltip />
         <ElTableColumn prop="creator" label="创建人" width="150" align="center" />
@@ -138,13 +114,13 @@ function onDel(row: any) {
         <ElTableColumn label="操作" width="120" align="center" fixed="right">
           <template #default="{ row }">
             <div class="flex gap-2 items-center justify-center">
-              <FaButton v-auth="'demo:product:update'" variant="outline" size="icon-sm" @click="onEdit(row)">
+              <FaButton v-auth="'demo:product:update'" variant="outline" size="icon-sm" @click="handleEdit(row)">
                 <FaIcon name="i-ri:edit-line" />
               </FaButton>
               <FaDropdown
                 :items="[
                   [
-                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'demo:product:delete', handle: () => onDel(row) },
+                    { label: '删除', icon: 'i-ri:delete-bin-line', variant: 'destructive', vAuth: 'demo:product:delete', handle: () => handleDelete(row) },
                   ],
                 ]"
               >
@@ -159,15 +135,15 @@ function onDel(row: any) {
 
       <!-- 分页 -->
       <FaPagination
-        :page="pagination.page"
-        :size="pagination.size"
-        :total="pagination.total"
-        @page-change="currentChange"
-        @size-change="sizeChange"
+        v-model:page="pagination.pageNum"
+        v-model:size="pagination.pageSize"
+        :total="total"
+        @page-change="getList"
+        @size-change="getList"
       />
     </FaPageMain>
 
     <!-- 增改弹窗 -->
-    <DemoFormDialog ref="formDialogRef" @success="getDataList" />
+    <DemoFormDialog ref="formDialogRef" @success="getList" />
   </div>
 </template>
