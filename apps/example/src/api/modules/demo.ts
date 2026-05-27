@@ -26,6 +26,7 @@ export default {
   // 基座与高级特性
   testIdempotent: (data: string) => request.post<string>('api/admin/demo/feature/idempotent', null, { params: { data } }),
   testException: () => request.get<void>('api/admin/demo/feature/exception'),
+  testSysException: () => request.get<void>('api/admin/demo/feature/sys-exception'),
   getCache: (id: number) => request.get<DemoVO>('api/admin/demo/feature/cache', { params: { id } }),
   evictCache: (id: number) => request.delete<void>('api/admin/demo/feature/cache', { params: { id } }),
   testLock: (lockKey: string) => request.post<string>('api/admin/demo/feature/lock', null, { params: { lockKey } }),
@@ -33,4 +34,5 @@ export default {
   testSeata: (userId: number, nickname: string, demoName: string, throwEx: boolean) => request.post<void>('api/admin/demo/feature/seata', null, { params: { userId, nickname, demoName, throwEx } }),
   pushBroadcast: (title: string, message: string) => request.post<void>('api/admin/demo/feature/push/broadcast', null, { params: { title, message } }),
   pushToUser: (userId: number, title: string, message: string) => request.post<void>('api/admin/demo/feature/push/user', null, { params: { userId, title, message } }),
+  getDictSystemDemo: (sex?: number, status?: string) => request.get<any>('api/admin/demo/feature/dict-system-demo', { params: { sex, status } }),
 }

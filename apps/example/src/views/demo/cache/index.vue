@@ -162,6 +162,27 @@ async function triggerException() {
   }
 }
 
+const sysExceptionLoading = ref(false)
+
+async function triggerSysException() {
+  sysExceptionLoading.value = true
+  addLog('异常捕获', `发起会触发后端系统致命异常的请求...`, 'info')
+  try {
+    await apiDemo.testSysException()
+    addLog('异常捕获', `触发成功（这不符合预期）`, 'success')
+  }
+  catch (err: any) {
+    addLog(
+      '异常捕获',
+      `捕获系统异常！错误: "${err.msg || err.message}" (Code: ${err.code || '未知'}, 符合预期，此 ServiceException 已在系统异常日志中自动记录审计！)`,
+      'error',
+    )
+  }
+  finally {
+    sysExceptionLoading.value = false
+  }
+}
+
 // 5. RPC 远程调用测试
 const rpcUserId = ref(1)
 const rpcLoading = ref(false)
@@ -216,6 +237,55 @@ async function triggerSeata(throwEx: boolean) {
   }
   finally {
     seataLoading.value = false
+  }
+}
+
+// 7. 字典与系统参数演示
+const { sys_user_sex, sys_status } = useDict('sys_user_sex', 'sys_status')
+const { captchaEnabled: uiCaptchaEnabled, registerEnabled: uiRegisterEnabled } = useConfig(
+  'sys.captcha.enabled',
+  'sys.register.enabled',
+)
+
+// 定义字典/系统参数演示表单
+const demoForm = ref({
+  sex: 1,
+  status: '0',
+})
+
+const backendDictResult = ref<any>(null)
+const dictLoading = ref(false)
+
+async function fetchDictSystemDemo() {
+  dictLoading.value = true
+  addLog(
+    '字典与系统参数',
+    `[Composables 演示] 当前前端内存已缓存性别选项 ${sys_user_sex.value.length} 个，状态选项 ${sys_status.value.length} 个。`,
+    'info',
+  )
+  addLog(
+    '字典与系统参数',
+    `请求后端接口演示，传参: [性别Code: ${demoForm.value.sex}, 状态Code: ${demoForm.value.status}]`,
+    'info',
+  )
+  try {
+    const res = await apiDemo.getDictSystemDemo(demoForm.value.sex, demoForm.value.status)
+    backendDictResult.value = res.data
+    addLog(
+      '字典与系统参数',
+      `后端响应成功！翻译结果 -> 默认性别Label: "${res.data.sexLabel}"，指定状态Name: "${res.data.statusName}"，手动翻译性别: "${res.data.manualSexLabel}"。系统参数 -> 验证码开关: ${res.data.captchaEnabled}，默认密码: "${res.data.defaultPassword}"`,
+      'success',
+    )
+  }
+  catch (err: any) {
+    addLog(
+      '字典与系统参数',
+      `调用失败: ${err.msg || err.message}`,
+      'error',
+    )
+  }
+  finally {
+    dictLoading.value = false
   }
 }
 </script>
@@ -324,15 +394,18 @@ async function triggerSeata(throwEx: boolean) {
               </template>
               <div class="space-y-4">
                 <div class="text-xs text-gray-500">
-                  后端业务中抛出自定义的 <code>BusinessException</code>，带有自定义业务状态码和错误描述信息，前端可被统一优雅拦截并展示。
+                  统一捕获并返回。<code>BusinessException</code>（业务预期异常）<strong>不记录</strong>审计日志；而 <code>ServiceException</code>（系统致命异常）会<strong>自动上报记录</strong>到数据库异常表中。
                 </div>
-                <div class="text-xs text-gray-400 font-mono flex h-[38px] items-center justify-center">
-                  DemoErrorCode: CUSTOM_DEMO_ERROR
+                <div class="flex gap-2">
+                  <FaButton :loading="exceptionLoading" type="warning" class="flex-1 justify-center" @click="triggerException">
+                    <FaIcon name="i-ri:bug-line" />
+                    触发业务异常
+                  </FaButton>
+                  <FaButton :loading="sysExceptionLoading" type="danger" class="flex-1 justify-center" @click="triggerSysException">
+                    <FaIcon name="i-ri:close-circle-line" />
+                    触发系统异常
+                  </FaButton>
                 </div>
-                <FaButton :loading="exceptionLoading" type="warning" class="w-full justify-center" @click="triggerException">
-                  <FaIcon name="i-ri:bug-line" />
-                  触发自定义业务异常
-                </FaButton>
               </div>
             </ElCard>
 
@@ -363,7 +436,7 @@ async function triggerSeata(throwEx: boolean) {
               <template #header>
                 <div class="flex gap-2 items-center">
                   <FaIcon name="i-ri:git-merge-line" class="text-lg text-orange-500" />
-                  <span class="font-bold">Seata 分布式事务 (XA 模式)</span>
+                  <span class="font-bold">Seata 分布式事务 (AT 模式)</span>
                 </div>
               </template>
               <div class="space-y-4">
@@ -388,6 +461,104 @@ async function triggerSeata(throwEx: boolean) {
                   <FaButton :loading="seataLoading" type="danger" class="flex-1 justify-center" @click="triggerSeata(true)">
                     触发回滚
                   </FaButton>
+                </div>
+              </div>
+            </ElCard>
+
+            <!-- 7. 系统字典与系统参数 -->
+            <ElCard shadow="never" class="border md:col-span-2">
+              <template #header>
+                <div class="flex gap-2 items-center">
+                  <FaIcon name="i-ri:book-read-line" class="text-lg text-teal-500" />
+                  <span class="font-bold">系统字典与系统参数 (Dict & Config)</span>
+                </div>
+              </template>
+              <div class="space-y-6">
+                <div class="text-xs text-gray-500">
+                  演示前端 <code>useDict</code>、<code>useConfig</code> 机制及声明式专属组件 <code>&lt;DictSelect&gt;</code>、<code>&lt;DictRadio&gt;</code>、<code>&lt;DictTag&gt;</code>。同时展示后端 <code>@Dict</code> 零代码自动翻译。
+                </div>
+
+                <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
+                  <!-- 前端展示与表单绑定 -->
+                  <div class="border-gray-100 space-y-4 md:pr-6 md:border-r">
+                    <div class="text-sm text-teal-600 font-semibold flex gap-1 items-center">
+                      <FaIcon name="i-ri:profile-line" /> 前端组件与Composables演示
+                    </div>
+
+                    <div class="text-xs text-gray-700 p-3 rounded bg-teal-50/50 space-y-1.5">
+                      <div><strong>前端 useConfig 实时读取参数：</strong></div>
+                      <div>
+                        验证码是否启用 (sys.captcha.enabled): <el-tag size="small" :type="uiCaptchaEnabled ? 'success' : 'danger'">
+                          {{ uiCaptchaEnabled }}
+                        </el-tag>
+                      </div>
+                      <div>
+                        注册是否启用 (sys.register.enabled): <el-tag size="small" :type="uiRegisterEnabled ? 'success' : 'danger'">
+                          {{ uiRegisterEnabled }}
+                        </el-tag>
+                      </div>
+                    </div>
+
+                    <el-form :model="demoForm" label-width="120px" size="small" label-position="left">
+                      <el-form-item label="性别 (DictSelect)">
+                        <DictSelect v-model="demoForm.sex" type="sys_user_sex" value-type="number" class="w-full" />
+                      </el-form-item>
+                      <el-form-item label="状态 (DictRadio)">
+                        <DictRadio v-model="demoForm.status" type="sys_status" button />
+                      </el-form-item>
+                    </el-form>
+
+                    <div class="text-xs text-gray-600 space-y-1.5">
+                      <div><strong>前端 DictTag 实时翻译展示：</strong></div>
+                      <div class="flex gap-4">
+                        <span>当前性别: <DictTag type="sys_user_sex" :value="demoForm.sex" /></span>
+                        <span>当前状态: <DictTag type="sys_status" :value="demoForm.status" /></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 后端自动翻译结果 -->
+                  <div class="space-y-4">
+                    <div class="text-sm text-teal-600 font-semibold flex gap-1 items-center">
+                      <FaIcon name="i-ri:server-line" /> 后端 @Dict 零代码自动翻译演示
+                    </div>
+
+                    <FaButton :loading="dictLoading" type="success" class="bg-teal-600 w-full justify-center hover:bg-teal-700" @click="fetchDictSystemDemo">
+                      <FaIcon name="i-ri:send-plane-line" />
+                      发起后端翻译与参数查询 RPC 请求
+                    </FaButton>
+
+                    <div v-if="backendDictResult" class="text-xs text-gray-700 p-3 border border-teal-200 rounded bg-teal-50 space-y-2">
+                      <div class="font-bold mb-1 pb-1 border-b border-teal-200">
+                        后端返回的 DemoDictVO 实体数据:
+                      </div>
+                      <div class="gap-y-1 grid grid-cols-2">
+                        <div>原始 sex: <span class="text-blue-600 font-bold font-mono">{{ backendDictResult.sex }}</span></div>
+                        <div>自动翻译 sexLabel: <span class="text-green-600 font-bold">{{ backendDictResult.sexLabel }}</span></div>
+
+                        <div>原始 status: <span class="text-blue-600 font-bold font-mono">{{ backendDictResult.status }}</span></div>
+                        <div>自定义 statusName: <span class="text-green-600 font-bold">{{ backendDictResult.statusName }}</span></div>
+
+                        <div class="mt-1 pt-1.5 border-t border-teal-200 border-dashed col-span-2" />
+
+                        <div>手动翻译 sex:</div>
+                        <div class="text-indigo-600 font-bold">
+                          {{ backendDictResult.manualSexLabel }}
+                        </div>
+
+                        <div class="mt-1 pt-1.5 border-t border-teal-200 border-dashed col-span-2">
+                          <strong>后端 ConfigUtils 获取系统参数：</strong>
+                        </div>
+
+                        <div>
+                          验证码开关: <el-tag size="small">
+                            {{ backendDictResult.captchaEnabled }}
+                          </el-tag>
+                        </div>
+                        <div>默认密码: <span class="font-bold font-mono">{{ backendDictResult.defaultPassword }}</span></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </ElCard>
