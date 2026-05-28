@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'standardModuleExampleList',
-      component: () => import('@/views/standard_module_example/list.vue'),
+      component: () => import('@/views/example/standard_module_example/list.vue'),
       meta: {
         title: '列表',
         menu: false,
@@ -27,7 +27,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'detail/:id?',
       name: 'standardModuleExampleDetail',
-      component: () => import('@/views/standard_module_example/detail.vue'),
+      component: () => import('@/views/example/standard_module_example/detail.vue'),
       meta: {
         title: '详情',
         menu: false,

@@ -15,7 +15,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'keepAliveExample',
-      component: () => import('@/views/keep_alive_example/index.vue'),
+      component: () => import('@/views/example/keep_alive_example/index.vue'),
       meta: {
         title: '页面保活',
         menu: false,

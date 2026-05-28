@@ -15,7 +15,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'iconExample',
-      component: () => import('@/views/icon_example/index.vue'),
+      component: () => import('@/views/example/icon_example/index.vue'),
       meta: {
         title: '图标',
         menu: false,

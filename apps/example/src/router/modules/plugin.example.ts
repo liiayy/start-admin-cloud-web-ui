@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'hooksplus',
       name: 'pluginExampleHooksPlus',
-      component: () => import('@/views/plugin_example/hooks.plus.vue'),
+      component: () => import('@/views/example/plugin_example/hooks.plus.vue'),
       meta: {
         title: 'VueHooks Plus',
         icon: 'https://inhiblabcore.github.io/docs/hooks/logo.svg',
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'print',
       name: 'pluginExamplePrint',
-      component: () => import('@/views/plugin_example/print.vue'),
+      component: () => import('@/views/example/plugin_example/print.vue'),
       meta: {
         title: 'Print',
         icon: 'i-ri:printer-line',
@@ -34,7 +34,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'esign',
       name: 'pluginExampleEsign',
-      component: () => import('@/views/plugin_example/esign.vue'),
+      component: () => import('@/views/example/plugin_example/esign.vue'),
       meta: {
         title: 'E-sign',
         icon: 'i-mdi:draw',
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'animation',
       name: 'pluginExampleAnimation',
-      component: () => import('@/views/plugin_example/animation.vue'),
+      component: () => import('@/views/example/plugin_example/animation.vue'),
       meta: {
         title: 'Animate.css',
         icon: 'i-clarity:animation-line',
@@ -52,7 +52,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'swiper',
       name: 'pluginExampleSwiper',
-      component: () => import('@/views/plugin_example/swiper.vue'),
+      component: () => import('@/views/example/plugin_example/swiper.vue'),
       meta: {
         title: 'Swiper',
         icon: 'i-carbon:carousel-horizontal',
@@ -69,7 +69,7 @@ const routes: RouteRecordRaw = {
         {
           path: 'echarts',
           name: 'pluginExampleChartEcharts',
-          component: () => import('@/views/plugin_example/echarts.vue'),
+          component: () => import('@/views/example/plugin_example/echarts.vue'),
           meta: {
             title: 'Echarts',
           },
@@ -77,7 +77,7 @@ const routes: RouteRecordRaw = {
         {
           path: 'vchart',
           name: 'pluginExampleChartVchart',
-          component: () => import('@/views/plugin_example/vchart.vue'),
+          component: () => import('@/views/example/plugin_example/vchart.vue'),
           meta: {
             title: 'VChart',
           },
@@ -85,7 +85,7 @@ const routes: RouteRecordRaw = {
         {
           path: 'g2plot',
           name: 'pluginExampleChartG2plot',
-          component: () => import('@/views/plugin_example/g2plot.vue'),
+          component: () => import('@/views/example/plugin_example/g2plot.vue'),
           meta: {
             title: 'G2plot',
           },
@@ -93,7 +93,7 @@ const routes: RouteRecordRaw = {
         {
           path: 'vue-data-ui',
           name: 'pluginExampleChartVueDataUi',
-          component: () => import('@/views/plugin_example/vue-data-ui.vue'),
+          component: () => import('@/views/example/plugin_example/vue-data-ui.vue'),
           meta: {
             title: 'VueDataUI',
           },
@@ -103,7 +103,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'tinymce',
       name: 'pluginExampleTinymce',
-      component: () => import('@/views/plugin_example/tinymce.vue'),
+      component: () => import('@/views/example/plugin_example/tinymce.vue'),
       meta: {
         title: 'TinyMCE',
         icon: 'i-file-icons:tinymce',
@@ -112,7 +112,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'markdown',
       name: 'pluginExampleMarkdown',
-      component: () => import('@/views/plugin_example/markdown.vue'),
+      component: () => import('@/views/example/plugin_example/markdown.vue'),
       meta: {
         title: 'Bytemd',
         icon: 'i-teenyicons:markdown-outline',
@@ -121,7 +121,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'currencyinput',
       name: 'pluginExampleCurrencyInput',
-      component: () => import('@/views/plugin_example/currency.input.vue'),
+      component: () => import('@/views/example/plugin_example/currency.input.vue'),
       meta: {
         title: 'Currency Input',
         icon: 'i-ph:currency-cny-bold',
@@ -130,7 +130,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'splitpanes',
       name: 'pluginExampleSplitpanes',
-      component: () => import('@/views/plugin_example/splitpanes.vue'),
+      component: () => import('@/views/example/plugin_example/splitpanes.vue'),
       meta: {
         title: 'Splitpanes',
         icon: 'i-icon-park-outline:split-cells',
@@ -139,7 +139,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'vxe-table',
       name: 'pluginExampleVxeTable',
-      component: () => import('@/views/plugin_example/vxe-table.vue'),
+      component: () => import('@/views/example/plugin_example/vxe-table.vue'),
       meta: {
         title: 'Vxe Table',
         icon: 'i-mdi:table-large',
@@ -148,7 +148,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'cropper',
       name: 'pluginExampleCropper',
-      component: () => import('@/views/plugin_example/cropper.vue'),
+      component: () => import('@/views/example/plugin_example/cropper.vue'),
       meta: {
         title: 'Cropper',
         icon: 'i-mdi:crop',

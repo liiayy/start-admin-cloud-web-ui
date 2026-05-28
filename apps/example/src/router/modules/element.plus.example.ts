@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'elementPlusExample',
-      component: () => import('@/views/element_plus_example/index.vue'),
+      component: () => import('@/views/example/element_plus_example/index.vue'),
       meta: {
         title: 'Element Plus',
         menu: false,

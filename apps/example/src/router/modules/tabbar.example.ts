@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'api',
       name: 'tabbarExampleApi',
-      component: () => import('@/views/tabbar_example/api.vue'),
+      component: () => import('@/views/example/tabbar_example/api.vue'),
       meta: {
         title: '常用API',
       },

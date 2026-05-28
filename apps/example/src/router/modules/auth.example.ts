@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'authExampleIndex',
-      component: () => import('@/views/auth_example/index.vue'),
+      component: () => import('@/views/example/auth_example/index.vue'),
       meta: {
         title: '权限验证',
         menu: false,
@@ -27,7 +27,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'test',
       name: 'authExampleTest',
-      component: () => import('@/views/auth_example/test.vue'),
+      component: () => import('@/views/example/auth_example/test.vue'),
       meta: {
         title: '测试页面',
         auth: ['pages.general:browse'],

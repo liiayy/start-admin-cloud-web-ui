@@ -15,7 +15,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'fakeExample',
-      component: () => import('@/views/fake_example/index.vue'),
+      component: () => import('@/views/example/fake_example/index.vue'),
       meta: {
         title: '假数据',
         menu: false,

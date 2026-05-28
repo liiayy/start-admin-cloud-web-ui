@@ -16,7 +16,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'list1',
       name: 'breadcrumbExampleList1',
-      component: () => import('@/views/breadcrumb_example/list1.vue'),
+      component: () => import('@/views/example/breadcrumb_example/list1.vue'),
       meta: {
         title: '列表1（平级模式）',
       },
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw = {
     {
       path: 'detail1',
       name: 'breadcrumbExampleDetail1',
-      component: () => import('@/views/breadcrumb_example/detail1.vue'),
+      component: () => import('@/views/example/breadcrumb_example/detail1.vue'),
       meta: {
         title: '详情1',
         menu: false,
@@ -40,7 +40,7 @@ const routes: RouteRecordRaw = {
         {
           path: '',
           name: 'breadcrumbExampleList2',
-          component: () => import('@/views/breadcrumb_example/list2.vue'),
+          component: () => import('@/views/example/breadcrumb_example/list2.vue'),
           meta: {
             title: '列表2（层级模式）',
             menu: false,
@@ -50,7 +50,7 @@ const routes: RouteRecordRaw = {
         {
           path: 'detail2',
           name: 'breadcrumbExampleDetail2',
-          component: () => import('@/views/breadcrumb_example/detail2.vue'),
+          component: () => import('@/views/example/breadcrumb_example/detail2.vue'),
           meta: {
             title: '详情2',
             menu: false,

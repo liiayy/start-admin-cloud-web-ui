@@ -15,7 +15,7 @@ const routes: RouteRecordRaw = {
     {
       path: '',
       name: 'jsxExample',
-      component: () => import('@/views/jsx_example/index.vue'),
+      component: () => import('@/views/example/jsx_example/index.vue'),
       meta: {
         title: 'JSX',
         menu: false,
