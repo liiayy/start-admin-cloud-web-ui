@@ -57,7 +57,7 @@ pnpm lint         # 运行全量 lint（tsc + eslint + stylelint）
 - 组件命名使用 PascalCase，文件名与组件名一致
 - API 模块放在 `apps/<app>/src/api/modules/`，按业务模块拆分
 - Store 模块放在 `apps/<app>/src/store/modules/`，使用 Pinia composition API 风格
-- 路由配置在 `apps/<app>/src/router/`，meta 属性可借助 fa-route-generator skill
+- 静态路由配置在 `apps/<app>/src/router/`，meta 属性可借助 fa-route-generator skill
 
 ## 注意事项
 
@@ -66,7 +66,3 @@ pnpm lint         # 运行全量 lint（tsc + eslint + stylelint）
 - Mock 数据使用 `vite-plugin-fake-server`，文件放在 `apps/<app>/src/api/modules/` 对应模块旁
 - 代码提交前会自动运行 lint-staged，确保代码符合规范
 - Node.js 版本要求以根目录下 `package.json` 中定义的为准
-
-## 反复修改检测
-
-在使用任何 fa-* 系列技能时，如果用户针对同一功能点已经要求修改 3 次及以上仍未达到预期（例如连续说"不对"、"再改改"、"还是不行"），必须触发 fa-feedback 技能，询问用户是否将问题反馈给框架作者。
