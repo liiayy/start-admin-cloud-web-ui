@@ -360,7 +360,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   后端方法标注了 <code>@Idempotent(time = 5)</code>，限制同一用户在 5 秒内不能提交相同参数的请求。
                 </div>
                 <FaLabel label="提交内容">
@@ -387,7 +387,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   使用 Redisson 锁客户端。尝试获取分布式锁（锁定期5s），加锁失败的并发请求将立即抛出异常，从而保障并发安全。
                 </div>
                 <FaLabel label="锁定资源Key">
@@ -413,7 +413,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   基于 Spring Cache 机制。获取数据时自动写入 Redis 缓存；清除缓存后再次获取将重新查询数据库，能直观反映请求耗时差距。
                 </div>
                 <FaLabel label="产品 ID">
@@ -439,7 +439,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   统一捕获并返回。<code>BusinessException</code>（业务预期异常）<strong>不记录</strong>审计日志；而 <code>ServiceException</code>（系统致命异常）会<strong>自动上报记录</strong>到数据库异常表中。
                 </div>
                 <div class="flex gap-2">
@@ -464,7 +464,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   基于 Spring Cloud OpenFeign 客户端。<code>demo-service</code> 会在后台远程调用 <code>system-service</code> 的用户 RPC 接口，查询对应的系统用户信息。
                 </div>
                 <FaLabel label="系统用户 ID">
@@ -486,7 +486,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   基于 Seata 协调器。<code>demo-service</code> 调用 <code>system-service</code> 修改用户昵称，同时本地库插入一条数据。验证在发生异常时两边数据同时回滚。
                 </div>
                 <div class="gap-2 grid grid-cols-2">
@@ -520,7 +520,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-6">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   演示前端 <code>useDict</code>、<code>useConfig</code> 机制及声明式专属组件 <code>&lt;DictSelect&gt;</code>、<code>&lt;DictRadio&gt;</code>、<code>&lt;DictTag&gt;</code>。同时展示后端 <code>@Dict</code> 零代码自动翻译。
                 </div>
 
@@ -531,7 +531,7 @@ async function triggerUpload() {
                       <FaIcon name="i-ri:profile-line" /> 前端组件与Composables演示
                     </div>
 
-                    <div class="text-xs text-gray-700 p-3 rounded bg-teal-50/50 space-y-1.5">
+                    <div class="text-xs text-gray-700 p-3 rounded bg-teal-50/50 space-y-1.5 dark:text-gray-300 dark:bg-teal-950/10">
                       <div><strong>前端 useConfig 实时读取参数：</strong></div>
                       <div>
                         验证码是否启用 (sys.captcha.enabled): <el-tag size="small" :type="uiCaptchaEnabled ? 'success' : 'danger'">
@@ -554,7 +554,7 @@ async function triggerUpload() {
                       </el-form-item>
                     </el-form>
 
-                    <div class="text-xs text-gray-600 space-y-1.5">
+                    <div class="text-xs text-gray-600 space-y-1.5 dark:text-gray-400">
                       <div><strong>前端 DictTag 实时翻译展示：</strong></div>
                       <div class="flex gap-4">
                         <span>当前性别: <DictTag type="sys_user_sex" :value="demoForm.sex" /></span>
@@ -574,7 +574,7 @@ async function triggerUpload() {
                       发起后端翻译与参数查询 RPC 请求
                     </FaButton>
 
-                    <div v-if="backendDictResult" class="text-xs text-gray-700 p-3 border border-teal-200 rounded bg-teal-50 space-y-2">
+                    <div v-if="backendDictResult" class="text-xs text-gray-700 p-3 border border-teal-200 rounded bg-teal-50 space-y-2 dark:text-gray-300 dark:border-teal-900/50 dark:bg-teal-950/10">
                       <div class="font-bold mb-1 pb-1 border-b border-teal-200">
                         后端返回的 DemoDictVO 实体数据:
                       </div>
@@ -618,7 +618,7 @@ async function triggerUpload() {
                 </div>
               </template>
               <div class="space-y-4">
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-gray-500 dark:text-gray-400">
                   演示文件上传并结合系统参数大小校验。后端通过 <code>ConfigUtils</code> 动态读取系统参数 <code>sys.upload.maxSizeMB</code>（当前：<el-tag size="small" type="warning">
                     {{ uiUploadMaxSize || 10 }} MB
                   </el-tag>）。若上传文件超出该限制，后端会自动抛出自定义业务异常。
@@ -638,7 +638,7 @@ async function triggerUpload() {
                     </FaButton>
                   </div>
                   <div class="text-xs text-gray-600">
-                    <span v-if="uploadFile">已选文件: <strong class="text-blue-600">{{ uploadFile.name }}</strong> ({{ (uploadFile.size / 1024 / 1024).toFixed(2) }} MB)</span>
+                    <span v-if="uploadFile">已选文件: <strong class="text-blue-600 dark:text-blue-400">{{ uploadFile.name }}</strong> ({{ (uploadFile.size / 1024 / 1024).toFixed(2) }} MB)</span>
                     <span v-else class="text-gray-400">未选择任何文件</span>
                   </div>
                   <FaButton
@@ -654,7 +654,7 @@ async function triggerUpload() {
                 </div>
 
                 <!-- 结果展示 -->
-                <div v-if="uploadResult" class="text-xs text-gray-700 p-3 border border-orange-200 rounded bg-orange-50 space-y-1.5">
+                <div v-if="uploadResult" class="text-xs text-gray-700 p-3 border border-orange-200 rounded bg-orange-50 space-y-1.5 dark:text-gray-300 dark:border-orange-900/50 dark:bg-orange-950/10">
                   <div class="text-orange-800 font-bold">
                     后端模拟上传成功响应数据:
                   </div>
@@ -685,7 +685,7 @@ async function triggerUpload() {
           </template>
 
           <div class="pr-2 flex-1 h-[690px] overflow-y-auto space-y-3">
-            <div v-if="logs.length === 0" class="text-gray-400 flex flex-col h-full items-center justify-center">
+            <div v-if="logs.length === 0" class="text-gray-400 flex flex-col h-full items-center justify-center dark:text-gray-600">
               <FaIcon name="i-ri:terminal-box-line" class="text-4xl mb-2" />
               <span>暂无调用日志，请尝试点击左侧操作</span>
             </div>
@@ -694,12 +694,12 @@ async function triggerUpload() {
               <div
                 v-for="log in logs"
                 :key="log.id"
-                class="text-xs font-mono p-3 border rounded-lg bg-gray-50 transition-all duration-300"
+                class="text-xs font-mono p-3 border rounded-lg bg-gray-50 transition-all duration-300 dark:border-zinc-800 dark:bg-zinc-900/40"
                 :class="{
                   'border-l-4 border-l-blue-500': log.status === 'info',
                   'border-l-4 border-l-green-500': log.status === 'success',
                   'border-l-4 border-l-yellow-500': log.status === 'warning',
-                  'border-l-4 border-l-red-500 border-red-200 bg-red-50': log.status === 'error',
+                  'border-l-4 border-l-red-500 border-red-200 dark:border-red-950 bg-red-50 dark:bg-red-950/10': log.status === 'error',
                 }"
               >
                 <div class="mb-1 flex items-center justify-between">
@@ -715,7 +715,7 @@ async function triggerUpload() {
                   </span>
                   <span class="text-gray-400">{{ log.time }}</span>
                 </div>
-                <div class="text-gray-600 leading-relaxed break-all">
+                <div class="text-gray-600 leading-relaxed break-all dark:text-gray-400">
                   {{ log.content }}
                 </div>
               </div>
