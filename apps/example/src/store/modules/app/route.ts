@@ -125,11 +125,7 @@ export const useAppRouteStore = defineStore(
     // 转换后端菜单为框架路由格式
     function transformMenuToRoute(menus: any[]): any[] {
       return menus.map((menu) => {
-        let path = menu.path || ''
-        // 路径规范化：如果不是外部链接且不以 / 开头，则补全 /
-        if (path && !/^(?:https?:|mailto:|tel:)/.test(path) && !path.startsWith('/')) {
-          path = `/${path}`
-        }
+        const path = menu.path || ''
         const route: any = {
           path,
           name: menu.componentName || `Menu_${menu.id}`,
